@@ -13,6 +13,14 @@ var player;
 
 var obstacleSprites;
 
+
+
+function preload() {
+    playerImage = loadImage("vegeta.png");
+    console.log("Image loaded succefully");
+}
+
+
 function setup() {
     isGameOver = false;
     score = 0;
@@ -30,6 +38,15 @@ function setup() {
 
     player = createSprite(100, height - 75, 50, 50);
 
+    player.addImage(playerImage);
+
+    //player.setCollider("circle", 0, 0, player.width * 0.6, player.height * 0.5);
+
+
+     player.scale = 0.08;
+
+    //player.setCollider("rectangle", 0, 0, player.width, player.height);
+    
     obstacleSprites = new Group();
 }
 
