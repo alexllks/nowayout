@@ -13,13 +13,13 @@ var playerImage;
 var backgroundImage;
 var groundImage;
 var player;
-
+var treeX;
 var obstacleSprites;
 
 
 
 function preload() {
-    playerImage = loadImage("vegeta.png");
+    playerImage = loadImage("evil.png");
     backgroundImage = loadImage("images/background.png");
     groundImage = loadImage("images/ground.png");
     roofImage = loadImage("images/pallete.png");
@@ -84,7 +84,7 @@ function draw() {
         text("Game Over! Click anywhere to restart", camera.position.x, camera.position.y);
     } else {
 
-        
+
         //background(150, 200, 250);
         background(backgroundImage);  // Ορισμός της εικόνας ως φόντο
         player.velocity.y = player.velocity.y + GRAVITY;
@@ -151,7 +151,8 @@ function draw() {
         obstacleSprites.overlap(player, endGame);
 
         drawSprites();
-
+        drawTree(width  - 200, height - 85);  // Δέντρο στο έδαφος
+        drawTree(width - 100, height - 85);
         score = score + 1;
         textAlign(CENTER);
         text(score, camera.position.x, 10);
@@ -159,6 +160,20 @@ function draw() {
         text("Player Y: " + Math.round(player.position.y), camera.position.x, 50);
     }
 }
+
+function drawTree(x, y) {
+    var treeHeight = 50;  // Ύψος του κορμού του δέντρου
+    var treeWidth = 20;   // Πλάτος του κορμού
+    var foliageRadius = 60; // Διάμετρος του φυλλώματος
+
+    // Αντί για σταθερό groundLevel, χρησιμοποιούμε τη συντεταγμένη y
+    fill(139, 69, 19);  // Χρώμα για τον κορμό
+    rect(x, y - treeHeight, treeWidth, treeHeight);  // Τοποθέτηση του κορμού με βάση το y
+
+    fill(34, 139, 34);  // Χρώμα για το φύλλωμα
+    ellipse(x + treeWidth / 2, y - treeHeight - foliageRadius / 2, foliageRadius, foliageRadius);  // Σχεδίαση του φυλλώματος
+}
+
 function stopFalling(player, ground) {
     player.velocity.y = 0;
 }
