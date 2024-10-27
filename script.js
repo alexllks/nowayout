@@ -2,7 +2,7 @@ var isGameOver;
 var score;
 
 var GRAVITY = 0.3;
-var JUMP = -5;
+var JUMP = -3;
 
 var groundSprites;
 var GROUND_SPRITE_WIDTH = 50;
@@ -20,7 +20,7 @@ var obstacleSprites;
 
 function preload() {
     playerImage = loadImage("evil.png");
-    backgroundImage = loadImage("images/background.png");
+    backgroundImage = loadImage("images/image.png");
     groundImage = loadImage("images/ground.png");
     roofImage = loadImage("images/pallete.png");
 
