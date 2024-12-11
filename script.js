@@ -1,204 +1,312 @@
-var isGameOver;
-var score;
+let canvas2D;
+let playerX, playerY; // Θέση του παίκτη
+let velocityY = 0; // Ταχύτητα στον άξονα Y
+let velocityX = 0; // Ταχύτητα στον άξονα X
+const GRAVITY = 0.3; // Βαρύτητα
+const JUMP = -16; // Ταχύτητα άλματος
+const SPEED = 9; // Ταχύτητα κίνησης στον άξονα X
+let platforms = []; // Λίστα για τις πλατφόρμες
 
-var GRAVITY = 0.3;
-var JUMP = -3;
+const PLATFORM_HEIGHT = 50; // Ύψος πλατφόρμας
+const PLATFORM_WIDTH = 5000; // Μήκος πλατφόρμας
+const CEILING_HEIGHT = 0; // Ύψος ταβανιού
 
-var groundSprites;
-var GROUND_SPRITE_WIDTH = 50;
-var GROUND_SPRITE_HEIGHT = 50;
-var ROOF_SPRITE_WIDTH = 50;
-var numGroundSprites;
-var playerImage;
-var backgroundImage;
-var groundImage;
-var player;
-var treeX;
-var obstacleSprites;
+let gameStarted = false; // Αρχική κατάσταση του παιχνιδιού
 
+let showDoorMessage = false; // Αν το μήνυμα πρέπει να εμφανιστεί
 
+let doorX = 4550; // Θέση της κύριας πόρτας στον άξονα X
+let doorY = 355; // Θέση της πόρτας στον άξονα Y
+let doorWidth = 70; // Πλάτος της πόρτας
+let doorHeight = 150; // Ύψος της πόρτας
+let doorOffset = 0; // Μετατόπιση της πόρτας
+let doorOpening = false; // Κατάσταση ανοίγματος
+
+let backgroundMusic = false; // Μεταβλητή για τον ήχο φόντου
+let doorSound = false; // Ήχος για την πόρτα
 
 function preload() {
+    doorSound = loadSound("sounds/door-open.mp3"); // Φόρτωση ήχου για την πόρτα
     playerImage = loadImage("evil.png");
-    backgroundImage = loadImage("images/image.png");
-    groundImage = loadImage("images/ground.png");
-    roofImage = loadImage("images/pallete.png");
-
-
+    backgroundMusic = loadSound("sounds/scary-background.mp3");
 }
-
 
 function setup() {
-    isGameOver = false;
-    score = 0;
-    createCanvas(1200, 1080);
-    background(150, 200, 250);
-    groundSprites = new Group();
+  createCanvas(1224, 576);
 
-    numGroundSprites = Math.ceil(width / GROUND_SPRITE_WIDTH) + 1;
+  
 
-    numRoofSprites = Math.ceil(width / ROOF_SPRITE_WIDTH ) +1 ;
+  // Αρχική θέση παίκτη
+  playerX = 100;
+  playerY = height - PLATFORM_HEIGHT - 50; // Τοποθέτηση πάνω από την πλατφόρμα
 
-    roofSprites = new Group ();
-    // createCanvas(400, 300);
-    // background(150, 200, 250);
-    // groundSprites = new Group();
-
-    // numGroundSprites = width / GROUND_SPRITE_WIDTH + 2;
-
-    for (var n = 0; n < numGroundSprites; n++) {
-        var groundSprite = createSprite(n * GROUND_SPRITE_WIDTH, height - 25, GROUND_SPRITE_WIDTH, GROUND_SPRITE_HEIGHT);
-        groundSprite.addImage(groundImage);  // Προσθήκη της εικόνας του πατώματος
-        groundSprite.immovable = true;
-        groundSprites.add(groundSprite);
-
-
-    }
-    for ( var n = 0; n < numRoofSprites; n++) {
-        var roofSprite = createSprite(n * GROUND_SPRITE_WIDTH, 25, GROUND_SPRITE_WIDTH, GROUND_SPRITE_HEIGHT);
-        roofSprite.addImage(roofImage);
-        roofSprite.immovable = true;
-        roofSprites.add(roofSprite);
-    }
-
-    player = createSprite(100, height - 75, 50, 50);
-
-    player.addImage(playerImage);
-
-     player.scale = 0.08;
-
-    
-    obstacleSprites = new Group();
+  createPlatforms();
 }
 
+// Συνάρτηση για να ξεκινήσει το παιχνίδι όταν ο χρήστης πατήσει Enter
+function keyPressed() {
+    if (!gameStarted && keyCode === ENTER) {
+        gameStarted = true; // Το παιχνίδι ξεκινάει
+        if (!backgroundMusic.isPlaying()) {
+            backgroundMusic.loop(); // Ξεκινά ο ήχος όταν ξεκινά το παιχνίδι
+        }
+    }
+}
 
 function draw() {
+    
+    
+    if (!gameStarted) {
+        // Μαύρη οθόνη με μήνυμα
+        background(0); // Μαύρο φόντο
+        fill(255); // Λευκό κείμενο
+        textSize(32);
+        textAlign(CENTER, CENTER);
+        text("Welcome. Press Enter to play", width / 2, height / 2);
+        return; // Διακοπή της σχεδίασης αν το παιχνίδι δεν έχει ξεκινήσει
+    }
 
+    // Κίνηση κάμερας για 2D παιχνίδι
+    translate(-playerX + width / 2, 0);
+    
 
+    // Σχεδίαση 2D στοιχείων
+    background(240, 230, 140);
 
-    if (isGameOver) {
-        background(0);
-        fill(255);
+    // Πλατφόρμα
+    fill(100);
+    rect(0, height - PLATFORM_HEIGHT, PLATFORM_WIDTH, PLATFORM_HEIGHT);
+
+    // Ταβάνι
+    fill(100);
+    rect(0, CEILING_HEIGHT, PLATFORM_WIDTH, PLATFORM_HEIGHT);
+    drawNoSmokingSign(); // Σχεδίαση σήματος "No Smoking"
+    // Κορνίζες με πρόσωπα
+    drawFrames(); // Σχεδίαση κορνιζών με πρόσωπα
+
+    // Πλατφόρμες
+    drawPlatforms();
+
+    // Πόρτα
+    drawDoor();
+    checkDoorInteraction(); // Έλεγχος για άνοιγμα πόρτας
+
+    // Εμφάνιση μηνύματος αν ο παίκτης είναι κοντά στην πόρτα
+    if (showDoorMessage) {
+        fill(255, 255, 255);
+        stroke(0);
+        strokeWeight(2);
+        textSize(24);
         textAlign(CENTER);
-        text("Your score was: " + score, camera.position.x, camera.position.y - 20);
-        text("Game Over! Click anywhere to restart", camera.position.x, camera.position.y);
+        text("Press F to pass this door", playerX - 500 + width / 2, height - 100);
+    }
+
+
+    // Ενημέρωση θέσης και φυσικής του παίκτη
+    updatePlayer();
+
+    // Σχεδίαση παίκτη ως εικόνα
+    image(playerImage, playerX, playerY, 50, 50); // Σχεδίαση της εικόνας στις διαστάσεις του παίκτη
+}
+
+function drawDoor() {
+    // Σχεδίαση λευκής πόρτας (εξωτερικό πλαίσιο)
+    fill(255, 255, 255);
+    rect(doorX, doorY, doorWidth + 10, doorHeight + 10);
+
+    // Σχεδίαση εσωτερικής καφέ πόρτας που κινείται
+    fill(60, 30, 15);
+    rect(doorX + doorOffset, doorY + 3, doorWidth + 10, doorHeight + 13);
+}
+
+function checkDoorInteraction() {
+  if (
+    playerX + 50 > doorX && // Παίκτης αγγίζει την αριστερή πλευρά της πόρτας
+    playerX < doorX + doorWidth && // Παίκτης αγγίζει τη δεξιά πλευρά της πόρτας
+    playerY + 50 > doorY && // Παίκτης στο ύψος της πόρτας
+    playerY < doorY + doorHeight
+  ) { 
+     showDoorMessage = true;
+    }
+  else {
+    showDoorMessage=false;
+  }
+  // Ελέγχει αν ο παίκτης βρίσκεται μπροστά στην πόρτα και πατάει 'F'
+  if (
+      playerX + 50 > doorX && // Παίκτης αγγίζει την αριστερή πλευρά της πόρτας
+      playerX < doorX + doorWidth && // Παίκτης αγγίζει τη δεξιά πλευρά της πόρτας
+      playerY + 50 > doorY && // Παίκτης στο ύψος της πόρτας
+      playerY < doorY + doorHeight && // Παίκτης βρίσκεται εντός των ορίων της πόρτας
+      keyIsDown(70) // Παίκτης πατάει το πλήκτρο 'F'
+  ) {
+   
+      if (!doorOpening) {
+          doorOpening = true; // Η πόρτα ανοίγει
+          if (!doorSound.isPlaying()) {
+              doorSound.play(); // Παίζει ο ήχος της πόρτας
+          }
+      }
+  }
+
+  // Διαχείριση της μετακίνησης της πόρτας όταν ανοίγει
+  if (doorOpening && doorOffset < 50) {
+        doorOffset += 5; // Αργή κίνηση της πόρτας για εφέ
+    } else if (doorOpening && doorOffset >= 50) {
+        setTimeout(() => { // Καθυστέρηση πριν την είσοδο του παίκτη
+            playerX = 100; // Επαναφορά παίκτη στην αρχική θέση
+            playerY = height - PLATFORM_HEIGHT - 50;
+            doorOpening = false; // Επαναφορά κατάστασης πόρτας
+            doorOffset = 0; // Επαναφορά μετατόπισης πόρτας
+            showDoorMessage = false; // Απόκρυψη μηνύματος
+        }, 2700);
+  } else if (doorOpening && doorOffset >= 50) {
+      // Ο παίκτης περνάει την πόρτα και επαναφέρεται
+      playerX = 100; // Επαναφορά παίκτη στην αρχική θέση
+      playerY = height - PLATFORM_HEIGHT - 50;
+      doorOpening = false; // Επαναφορά κατάστασης πόρτας
+      doorOffset = 0; // Επαναφορά μετατόπισης πόρτας
+      showDoorMessage = false; // Απόκρυψη μηνύματος
+  }
+}
+
+
+function createPlatforms() {
+    // Προσθήκη πλατφορμών με κενά
+    platforms = [
+        { x: 0, y: height - PLATFORM_HEIGHT, width: 400 }, // Αρχική πλατφόρμα
+        { x: 600, y: height - 200, width: 200 }, // Δεύτερη πλατφόρμα με κενό
+        { x: 1000, y: height - 300, width: 300 }, // Μεγαλύτερη πλατφόρμα ψηλά
+        { x: 1500, y: height - 250, width: 150 }, // Μικρή πλατφόρμα με κενό
+        { x: 1900, y: height - 230, width: 150 },
+        { x: 3400, y: height - 230, width: 150 },
+        { x: 4000, y: height - 300, width: 150 },
+        { x: 4500, y: height - 400, width: 150 }, // Μικρή πλατφόρμα με κενό
+        { x: 2000, y: height - PLATFORM_HEIGHT, width: 400 }, // Επιστροφή στο έδαφος
+    ];
+}
+
+function drawPlatforms() {
+    fill(100);
+    for (let platform of platforms) {
+        rect(platform.x, platform.y, platform.width, PLATFORM_HEIGHT); // Σχεδίαση πλατφόρμας
+    }
+}
+
+function drawFrames() {
+    // Λίστα κορνιζών με θέσεις και διαστάσεις
+    const frames = [
+        { x: 200, y: 100, width: 80, height: 100 },
+        { x: 400, y: 150, width: 80, height: 100 },
+        { x: 600, y: 200, width: 80, height: 100 }
+    ];
+
+    // Χρώμα κορνίζας
+    fill(139, 69, 19);
+    stroke(0);
+    strokeWeight(2);
+
+    // Σχεδίαση κάθε κορνίζας
+    for (let frame of frames) {
+        rect(frame.x, frame.y, frame.width, frame.height); // Σχεδίαση κορνίζας
+
+        // Προσθήκη προσώπου μέσα στην κορνίζα
+        fill(255, 224, 189); // Χρώμα δέρματος
+        noStroke();
+        ellipse(frame.x + frame.width / 2, frame.y + frame.height / 2, frame.width * 0.6, frame.height * 0.6); // Πρόσωπο
+
+        // Προσθήκη ματιών
+        fill(0);
+        ellipse(frame.x + frame.width / 3, frame.y + frame.height / 2.5, 5, 5); // Αριστερό μάτι
+        ellipse(frame.x + 2 * frame.width / 3, frame.y + frame.height / 2.5, 5, 5); // Δεξί μάτι
+
+        // Προσθήκη χαμόγελου
+        noFill();
+        stroke(0);
+        strokeWeight(1);
+        arc(frame.x + frame.width / 2, frame.y + frame.height / 1.8, frame.width / 2.5, frame.height / 4, 0, PI);
+    }
+}
+
+function drawNoSmokingSign() {
+    // Τοποθεσία και μέγεθος του σήματος
+    const x = width - 150;
+    const y = 200;
+    const diameter = 100;
+
+    // Σχεδίαση κύκλου
+    fill(255, 0, 0);
+    noStroke();
+    ellipse(x, y, diameter);
+
+    // Σχεδίαση διαγώνιας γραμμής
+    stroke(255);
+    strokeWeight(10);
+    line(x - diameter / 2.5, y - diameter / 2.5, x + diameter / 2.5, y + diameter / 2.5);
+
+    // Σχεδίαση εικονιδίου τσιγάρου
+    noStroke();
+    fill(255);
+    rect(x - 20, y + 10, 40, 10); // Σώμα του τσιγάρου
+    fill(255, 165, 0);
+    rect(x + 20, y + 10, 10, 10); // Άκρη του τσιγάρου
+
+    // Σχεδίαση καπνού
+    noFill();
+    stroke(255);
+    strokeWeight(2);
+    arc(x - 30, y - 10, 20, 20, PI / 4, (3 * PI) / 4);
+    arc(x - 35, y - 20, 15, 15, PI / 4, (3 * PI) / 4);
+}
+
+function updatePlayer() {
+    // Εφαρμογή βαρύτητας
+    velocityY += GRAVITY;
+    playerY += velocityY;
+
+    // Κίνηση δεξιά/αριστερά
+    if (keyIsDown(RIGHT_ARROW)) {
+        velocityX = SPEED;
+    } else if (keyIsDown(LEFT_ARROW)) {
+        velocityX = -SPEED;
     } else {
-
-
-        //background(150, 200, 250);
-        background(backgroundImage);  // Ορισμός της εικόνας ως φόντο
-        player.velocity.y = player.velocity.y + GRAVITY;
-        player.collide(groundSprites, stopFalling);  // stamatame thn ptwsi otan akoumpaei to edafos
-        player.collide(roofSprites,stopFallingRoof);
-        if (groundSprites.overlap(player)) {
-            player.velocity.y = 0;
-            player.position.y = (height - 50) - (player.height / 2);
-        }
-
-        // Κίνηση του παίκτη δεξιά και αριστερά
-        if (keyIsDown(RIGHT_ARROW)) {
-            player.velocity.x = 5;  // Κίνηση δεξιά με σταθερή ταχύτητα
-        }
-        else if (keyIsDown(LEFT_ARROW)) {
-            player.velocity.x = -5;  // Κίνηση αριστερά με σταθερή ταχύτητα
-        } else {
-            player.velocity.x = 0;  // Όταν δεν πατιέται κανένα κουμπί, σταματάει
-        }
-
-
-
-        if (keyDown(UP_ARROW)) {
-            player.velocity.y = JUMP;
-        }
-
-
-        
-
-        player.position.x = player.position.x;
-        camera.position.x = player.position.x + (width /4) ;
-
-        for (var i = 0; i < groundSprites.length; i++) {
-            var groundSprite = groundSprites[i];
-
-            // Όταν το πλακίδιο βγαίνει εκτός οθόνης στα αριστερά, το μεταφέρουμε στο τέλος
-            if (groundSprite.position.x <= camera.position.x - width / 2) {
-                groundSprite.position.x += numGroundSprites * GROUND_SPRITE_WIDTH;
-            }
-        }
-
-        
-        for (var i = 0; i < roofSprites.length; i++) {
-            var roofSprite = roofSprites[i];
-
-            // Όταν το πλακίδιο βγαίνει εκτός οθόνης στα αριστερά, το μεταφέρουμε στο τέλος
-            if (roofSprite.position.x <= camera.position.x - width / 2) {
-                roofSprite.position.x += numRoofSprites * GROUND_SPRITE_WIDTH;
-            }
-        }
-        
-
-
-        if (random() > 0.95) {
-            var obstacle = createSprite(camera.position.x + width, random(0, (height - 50) - 15), 30, 30);
-            obstacleSprites.add(obstacle);
-        }
-
-        var firstObstacle = obstacleSprites[0];
-        if (obstacleSprites.length > 0 && firstObstacle.position.x <= camera.position.x - (width / 2 + firstObstacle.width / 2)) {
-            removeSprite(firstObstacle);
-        }
-
-        obstacleSprites.overlap(player, endGame);
-
-        drawSprites();
-        drawTree(width  - 200, height - 85);  // Δέντρο στο έδαφος
-        drawTree(width - 100, height - 85);
-        score = score + 1;
-        textAlign(CENTER);
-        text(score, camera.position.x, 10);
-        text("Player X: " + Math.round(player.position.x), camera.position.x, 30);
-        text("Player Y: " + Math.round(player.position.y), camera.position.x, 50);
+        velocityX = 0;
     }
-}
+    playerX += velocityX;
 
-function drawTree(x, y) {
-    var treeHeight = 50;  // Ύψος του κορμού του δέντρου
-    var treeWidth = 20;   // Πλάτος του κορμού
-    var foliageRadius = 60; // Διάμετρος του φυλλώματος
-
-    // Αντί για σταθερό groundLevel, χρησιμοποιούμε τη συντεταγμένη y
-    fill(139, 69, 19);  // Χρώμα για τον κορμό
-    rect(x, y - treeHeight, treeWidth, treeHeight);  // Τοποθέτηση του κορμού με βάση το y
-
-    fill(34, 139, 34);  // Χρώμα για το φύλλωμα
-    ellipse(x + treeWidth / 2, y - treeHeight - foliageRadius / 2, foliageRadius, foliageRadius);  // Σχεδίαση του φυλλώματος
-}
-
-function stopFalling(player, ground) {
-    player.velocity.y = 0;
-}
-
-function stopFallingRoof(player, roof) {
-    player.velocity.y = 0;
-}
-function endGame() {
-    isGameOver = true;
-}
-
-function mouseClicked() {
-    if (isGameOver) {
-
-        for (var n = 0; n < numGroundSprites; n++) {
-            var groundSprite = groundSprites[n];
-            groundSprite.position.x = n * 50;
+    // Έλεγχος αν ο παίκτης βρίσκεται πάνω σε πλατφόρμα
+    let onPlatform = false;
+    for (let platform of platforms) {
+        if (
+            playerX + 50 > platform.x && // Δεξιά άκρη του παίκτη πάνω στην πλατφόρμα
+            playerX < platform.x + platform.width && // Αριστερή άκρη του παίκτη πάνω στην πλατφόρμα
+            playerY + 50 >= platform.y && // Πόδια του παίκτη πάνω στην πλατφόρμα
+            playerY + 50 <= platform.y + 15 // Ο παίκτης κοντά στην επιφάνεια της πλατφόρμας
+        ) {
+            onPlatform = true;
+            playerY = platform.y - 50; // Σταθεροποίηση του παίκτη πάνω στην πλατφόρμα
+            velocityY = 0; // Σταμάτημα της πτώσης
+            break;
         }
-
-        player.position.x = 100;
-        player.position.y = height - 75;
-
-        obstacleSprites.removeSprites();
-
-        score = 0;
-        isGameOver = false;
     }
+
+    // Έλεγχος για το έδαφος αν ο παίκτης δεν βρίσκεται σε πλατφόρμα
+    if (!onPlatform && playerY + 50 >= height - PLATFORM_HEIGHT) {
+        playerY = height - PLATFORM_HEIGHT - 50; // Σταθεροποίηση στο έδαφος
+        velocityY = 0;
+        onPlatform = true;
+    }
+
+    // Έλεγχος για το ταβάνι
+    if (playerY <= CEILING_HEIGHT + PLATFORM_HEIGHT) {
+        playerY = CEILING_HEIGHT + PLATFORM_HEIGHT; // Περιορισμός στο ύψος
+        velocityY = 0;
+    }
+
+    // Άλμα μόνο αν είναι σε πλατφόρμα ή στο έδαφος
+    if (keyIsDown(UP_ARROW) && onPlatform) {
+        velocityY = JUMP;
+    }
+
+    // Περιορισμός εντός του κόσμου
+    playerX = constrain(playerX, 0, PLATFORM_WIDTH - 50);
 }
