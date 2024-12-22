@@ -126,7 +126,7 @@ function drawFloodingWater(startX, startY, isAnomaly) {
 
 function setupRoom() {
   // Λίστα ανωμαλιών με βάρη
-  const anomalies = ["sofa", "fridge", "kitchen", "table","mirror", "doll", "TV", "Bookshelf","radio", "ghost", "ghost", "ghost","none","none","none","none","none","none" ];
+  const anomalies = ["sofa", "fridge", "kitchen", "table","mirror", "doll", "TV", "Bookshelf","radio", "ghost","none","none","none","none","none","none" ];
   // Το "ghost" εμφανίζεται περισσότερες φορές για να έχει μεγαλύτερη πιθανότητα
 
 

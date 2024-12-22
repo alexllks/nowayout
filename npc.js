@@ -66,11 +66,6 @@ update(platforms) {
     this.y = Math.round(this.y);
 }
 
-    
-
-
-
-
     show() {
         const scale = 1.0; // Κλίμακα μεγέθους
         noStroke();
@@ -120,4 +115,28 @@ update(platforms) {
     
     
 }    
+
+
+function initializeNPCs() {
+    npcs.push(new NPC(5000,540)); // Δημιουργία ενός NPC
+}
+
+function updateNPCs(platforms) {
+    for (let npc of npcs) {
+        npc.update(platforms);
+    }
+}
+
+function drawNPCs() {
+    for (let npc of npcs) {
+        npc.show();
+    }
+}
+
+
+function resetNPCs() {
+  npcs = []; // Καθαρίζει τη λίστα NPCs
+  initializeNPCs(); // Επαναρχικοποίηση των NPCs
+  npcActivated = false; // Επαναφορά της κατάστασης ενεργοποίησης
+}
 

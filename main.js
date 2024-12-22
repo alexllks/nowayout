@@ -26,13 +26,13 @@ let RIGHT_WALL_X = 5200; // Σταθερή θέση δεξιού τοίχου
 let npcActivated = false; // Αρχικά ο NPC είναι ανενεργός
 
 
-var lights = []; // Φωτισμός
+let lights = []; // Φωτισμός
 var lightToggleTime = 0; // Χρόνος για αναβόσβημα
 
 let enemy;
 let battleStartTime;
 
-
+let audioContext;
 
 
 let npcs = []; // Λίστα NPCs
@@ -64,118 +64,6 @@ function preload() {
 
 
 
-function drawAnomaliesSignBoard(x, y) {
-  const boardWidth = 300; // Μικρότερο πλάτος
-  const boardHeight = 150; // Μικρότερο ύψος
-
-  // Πλαίσιο πινακίδας
-  fill(139, 69, 19); // Καφέ για το ξύλο
-  rect(x, y, boardWidth, boardHeight, 5); // Πλαίσιο με στρογγυλεμένες γωνίες
-
-  // Εσωτερικό πινακίδας
-  fill(255, 240, 240); // Απαλό κόκκινο για σχετική προειδοποίηση
-  rect(x + 5, y + 5, boardWidth - 10, boardHeight - 10, 5);
-
-  // Κείμενο
-  fill(0); // Μαύρο για το κείμενο
-  textSize(14); // Τίτλος
-  textAlign(CENTER, CENTER);
-  text("Anomalies Rules", x + boardWidth / 2, y + 30);
-  
-  textSize(12); // Κανόνες
-  text("- Don't overlook any anomalies.", x + boardWidth / 2, y + 65);
-  text("- If you find anomalies, turn back immediately.", x + boardWidth / 2, y + 85);
-  text("- If you don't find anomalies, do not turn back.", x + boardWidth / 2, y + 105);
-}
-
-
-function drawSignBoard(x, y) {
-  const boardWidth = 350; // Μικρότερο πλάτος
-  const boardHeight = 150; // Μικρότερο ύψος
-
-  // Πλαίσιο πινακίδας
-  fill(139, 69, 19); // Καφέ για το ξύλο
-  rect(x, y, boardWidth, boardHeight, 5); // Στρογγυλεμένες γωνίες
-
-
-  // Εσωτερικό πινακίδας
-  fill(255, 240, 240); // Απαλό κόκκινο για σχετική προειδοποίηση
-  rect(x + 5, y + 5, boardWidth - 10, boardHeight - 10, 5);
-
-  // Κείμενο
-  fill(0); // Μαύρο για το κείμενο
-  textSize(14); // Μικρότερη γραμματοσειρά
-  textAlign(CENTER, CENTER);
-  text("Welcome!", x + boardWidth / 2, y + 30);
-  textSize(12);
-  text("- You are trapped in an endless corridor.", x + boardWidth / 2, y + 60);
-  text("- Observe your surroundings carefully to reach The Exit.", x + boardWidth / 2, y + 85);
-  text("- Press F for doors.", x + boardWidth / 2, y + 105);
-}
-
-function drawSignBoard3(x, y) { 
-  const boardWidth = 200; // Πλάτος
-  const boardHeight = 150; // Ύψος
-
-  // Πλαίσιο πινακίδας
-  fill(139, 69, 19); // Καφέ για το ξύλο
-  rect(x, y, boardWidth, boardHeight, 5); // Στρογγυλεμένες γωνίες
-
-  // Εσωτερικό πινακίδας
-  fill(255, 240, 240); // Απαλό κόκκινο για σχετική προειδοποίηση
-  rect(x + 5, y + 5, boardWidth - 10, boardHeight - 10, 5);
-
-  // Κείμενο
-  fill(0); // Μαύρο για το κείμενο
-  textSize(16); 
-  textAlign(CENTER, CENTER);
-  text("Good Luck!!!", x + boardWidth / 2, y + 50);
-
-  // Χαμογελαστή φατσούλα
-  fill(255, 220, 0); // Κίτρινο για το πρόσωπο
-  ellipse(x + boardWidth / 2, y + 100, 40, 40); // Κύκλος για πρόσωπο
-
-  fill(0); // Μαύρο για τα μάτια
-  ellipse(x + boardWidth / 2 - 10, y + 95, 5, 5); // Αριστερό μάτι
-  ellipse(x + boardWidth / 2 + 10, y + 95, 5, 5); // Δεξί μάτι
-
-  noFill();
-  stroke(0); // Μαύρο περίγραμμα για χαμόγελο
-  arc(x + boardWidth / 2, y + 105, 20, 10, 0, PI); // Χαμόγελο
-}
-
-
-
-function initializeGame() {
-
-  
-  isGameOver = false;
-  score = 0;
-
-  // when gameOver, update the current level
-  // currentLevel = 1;
-  // updateLevelTracker();
-}
-
-
-
-
-  
-
-
-function draw() {
-  if (gameState === "menu") {
-      displayMenu();
-  } else if (gameState === "playing") {
-      playGame();
-  } else if (gameState === "gameover") {
-     playGameAfterLost();
-  }
-  else if(gameState === "battle"){
-    playBattle();
-  }
-}
-
 function setup() {
   createCanvas(1224, 576);
   horrorbackgroundMusic();
@@ -184,8 +72,6 @@ function setup() {
   player = new Player();
   initializeLevelTracker();
   setupRoom();
-
-
 
   initializeNPCs(); // Δημιουργία NPCs
   //createGhosts(1);
@@ -201,6 +87,31 @@ function setup() {
   stairStepSound.setVolume(0); // Αρχικά μηδενική ένταση
   stairStepSound.loop();
 
+}
+
+function draw() {
+  if (gameState === "menu") {
+      displayMenu();
+  } else if (gameState === "playing") {
+      playGame();
+  } else if (gameState === "gameover") {
+     playGameAfterLost();
+  }
+  else if(gameState === "battle"){
+    playBattle();
+  }
+}
+
+
+function initializeGame() {
+
+  
+  isGameOver = false;
+  score = 0;
+
+  // when gameOver, update the current level
+  // currentLevel = 1;
+  // updateLevelTracker();
 }
 
 
@@ -227,44 +138,6 @@ function playBattle() {
   }
 }
 
-function drawWalls() {
-  // Αριστερός τοίχος
-  fill(60, 60, 60);
-  rect(0, 0, 20, height);
-
-  // Δεξιός τοίχος
-  fill(60, 60, 60);
-  rect(RIGHT_WALL_X, 0, 20, height);
-
-  
-  
-
-  // Φανταστικές πόρτες
-  drawRealisticDoor(5, height - 170); // Αριστερή πόρτα
-  drawRealisticDoor(RIGHT_WALL_X + 5, height - 170); // Δεξιά πόρτα
-}
-
-function drawRealisticDoor(x, y) {
-  // Σχεδίαση πλαισίου πόρτας
-  fill(100, 50, 30); // Καφέ για το ξύλο
-  rect(x, y, 15, 150, 2); // Πλαίσιο με μικρή καμπύλη
-
-  // Χρωματική διαβάθμιση για 3D εφέ
-  noStroke();
-  for (let i = 0; i < 15; i++) {
-      let colorValue = map(i, 0, 15, 120, 80); // Από ανοιχτό σε σκούρο καφέ
-      fill(colorValue, 50, 30);
-      rect(x + i, y + 3, 1, 144); // Σκίαση προς τα δεξιά
-  }
-
-  // Χερούλι πόρτας
-  fill(180, 180, 0); // Χρυσό
-  ellipse(x + 12, y + 75, 4, 4); // Κυκλικό χερούλι
-
-  // Εσωτερικό σκούρο μέρος για βάθος
-  fill(50, 30, 20, 100); // Σκούρο καφέ με διαφάνεια
-  rect(x + 2, y + 5, 11, 140, 2);
-}
 
 
 
@@ -282,20 +155,6 @@ function checkWallCollision() {
   }
 }
 
-// function playGame() {
-//   let cameraX = constrain(player.x - width / 2, 0, PLATFORM_WIDTH - width);
-//   translate(-cameraX, 0);
-
-//   background(240, 230, 140);
-
-//   drawWalls(); // Σχεδιάζει τους τοίχους
-//   checkWallCollision(); // Ελέγχει αν ο παίκτης ακουμπά τους τοίχους
-
-//   Platform.drawPlatforms(platforms);
-//   player.update();
-//   player.show();
-//   drawDoor(); // Σχεδιάζει την πόρτα (αν υπάρχει)
-// }
 
 
 
@@ -308,11 +167,6 @@ function playGame() {
   background(240, 230, 140);
 
   drawWall();
-  //drawLamps();
- // drawLamp();
- 
-
-
  drawStairs(); // Σχεδίαση σκάλας
   drawTopBorder();
   drawWallLights();
@@ -326,16 +180,10 @@ function playGame() {
   drawDoors();
   drawWindow();
   drawBookshelfs();
-
   drawScaryObjects();
-
-  drawSignBoard(270, height - PLATFORM_HEIGHT - 210); // Νέες συντεταγμένες
-  drawSignBoard(5450, height - PLATFORM_HEIGHT - 210); // Νέες συντεταγμένες
- 
-
-  drawAnomaliesSignBoard(875, height - PLATFORM_HEIGHT - 210); // Θέση 2ης πινακίδας
-
-
+  drawSignBoard1(270, height - PLATFORM_HEIGHT - 210); // Νέες συντεταγμένες
+  drawSignBoard1(5450, height - PLATFORM_HEIGHT - 210); // Νέες συντεταγμένες
+  drawSignBoard2(875, height - PLATFORM_HEIGHT - 210); // Θέση 2ης πινακίδας
   drawSignBoard3(1590, height - PLATFORM_HEIGHT - 210);
   if (
     !npcActivated &&
@@ -351,28 +199,6 @@ if (npcActivated) {
     drawNPCs();
 }
 
-
-
- 
-  // updateNPCs(platforms); // Ενημέρωση NPCs
-  // drawNPCs(); // Σχεδίαση NPCs
- 
-  // if (frameCount % 180 === 0) {
-  //   setRandomAnomaly();
-  // }
-
-  // drawNormalWindow();
-  // drawWindow2();
-  // drawWindow3();
-  //drawPoster();
-  
-    //   // Draw flooding water as an anomaly
-    //   if (hasAnomaly) {
-    //     drawFloodingWater(PLATFORM_WIDTH, height - 100, hasAnomaly);
-    // }
-  
-  
-
   Platform.drawPlatforms(platforms);
   
 
@@ -382,9 +208,7 @@ if (npcActivated) {
   } else if (player.x < 0) {
     checkExit(true); // Έξοδος από αριστερά
   }
-
  checkDoorInteraction(player); // Έλεγχος για άνοιγμα πόρτας
-
 
  // Εμφάνιση μηνύματος αν ο παίκτης είναι κοντά στην πόρτα
  if (showDoorMessage) {
@@ -400,8 +224,6 @@ if (npcActivated) {
  player.update();
  // Σχεδίαση παίκτη
  player.show();
-
- 
 
 }
 
@@ -419,6 +241,22 @@ function displayMenu() {
       setupRoom();
   }
 }
+
+
+// function displayMenu() {
+//   background(30);
+//   textAlign(CENTER, CENTER);
+//   fill(255);
+//   textSize(32);
+//   text("Welcome to the Game", width / 2, height / 2 - 20);
+//   textSize(20);
+//   text("Press ENTER to Play", width / 2, height / 2 + 20);
+//   if (keyIsDown(ENTER)) {
+//       gameState = "playing";
+//       initializeGame();
+//       setupRoom();
+//   }
+// }
 
 function  playGameAfterLost() {
       
@@ -507,32 +345,9 @@ function updateLevelTracker() {
 
 
 
+  
 
 
-
-
-function initializeNPCs() {
-    npcs.push(new NPC(5000,540)); // Δημιουργία ενός NPC
-}
-
-function updateNPCs(platforms) {
-    for (let npc of npcs) {
-        npc.update(platforms);
-    }
-}
-
-function drawNPCs() {
-    for (let npc of npcs) {
-        npc.show();
-    }
-}
-
-
-function resetNPCs() {
-  npcs = []; // Καθαρίζει τη λίστα NPCs
-  initializeNPCs(); // Επαναρχικοποίηση των NPCs
-  npcActivated = false; // Επαναφορά της κατάστασης ενεργοποίησης
-}
 
 
 
