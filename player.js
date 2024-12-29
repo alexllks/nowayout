@@ -4,9 +4,9 @@ class Player {
     this.y = height - PLATFORM_HEIGHT - 60;
     this.width = 40;
     this.height = 0;
-    this.speed = 15;
+    this.speed = 20;
     this.velocityY = 0;
-    this.gravity = 3;
+    this.gravity = 1;
 
     // Καταστάσεις του παίκτη
     this.isLeft = false;
@@ -33,6 +33,10 @@ class Player {
     if (keyIsDown(LEFT_ARROW)) {
         this.x -= this.speed;
 
+//    // Έλεγχος σύγκρουσης με τον νέο τοίχο (από δεξιά)
+//    if (this.x <= NEW_WALL_X + 50 && this.x + this.width / 2 > NEW_WALL_X) {
+//     this.x = NEW_WALL_X + 50; // Σταματάει δεξιά από τον τοίχο
+// }
 
         footstepSound.setVolume(0.3); // Ένταση βημάτων
 
@@ -52,6 +56,13 @@ class Player {
         this.x += this.speed;
 
 
+        // Έλεγχος σύγκρουσης με τον νέο τοίχο (από αριστερά) (X2 γιατι μιλαμε για τον δεξια τοιχο του secret )
+        if (this.x + this.width / 2 >= NEW_WALL_X2  && this.x < NEW_WALL_X2) {
+            this.x = NEW_WALL_X2  - this.width / 2; // Σταματάει αριστερά από τον τοίχο
+
+        }
+        
+        
         footstepSound.setVolume(0.3); // Ένταση βημάτων
 
 
@@ -134,8 +145,6 @@ class Player {
         this.canJump = false;
     }
 }
-
-
 
   show() {
     drawGameChar(this.x, this.y, this.isLeft, this.isRight, this.isFalling, this.isPlummeting);

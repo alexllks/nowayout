@@ -1,103 +1,4 @@
 
-
-// let windowPositions = [
-//   { x: 800, y: 350, isAnomaly: false }, // Κανονικό παράθυρο
-//   { x: 50, y: 350, isAnomaly: false  },   // Παράθυρο με ανωμαλία
-//   { x: 1300, y: 350, isAnomaly: false  } // Κανονικό παράθυρο
-// ];
-
-
-// function setRandomAnomaly() {
-//   // Αρχικοποίηση όλων των παραθύρων σε "false"
-//   for (let pos of windowPositions) {
-//     pos.isAnomaly = false;
-//   }
-
-//   // Επιλογή ενός τυχαίου παραθύρου για ανωμαλία
-//   let randomIndex = floor(random(windowPositions.length));
-//   windowPositions[randomIndex].isAnomaly = true;
-// }
-
-// function drawWindow() {
-//   const windowWidth = 100; // Πλάτος παραθύρου
-//   const windowHeight = 150; // Ύψος παραθύρου
-
-//   for (let pos of windowPositions) {
-//     drawNormalWindow(pos.x,pos.y,windowWidth,windowHeight,pos.isAnomaly);
-//   }
-// }
-
-
-// function drawNormalWindow(x, y, windowWidth, windowHeight, isAnomaly) {
-//   if (isAnomaly) {
-//     drawAnomalousWindow(x, y, windowWidth, windowHeight);
-//   } else {
-//     // Κανονικό παράθυρο
-//     fill(139, 69, 19);
-//     rect(x, y, windowWidth, windowHeight);
-
-//     fill(173, 216, 230, 150);
-//     rect(x + 5, y + 5, windowWidth - 10, windowHeight - 10);
-
-//     stroke(139, 69, 19);
-//     line(x + windowWidth / 2, y + 5, x + windowWidth / 2, y + windowHeight - 5);
-//     line(x + 5, y + windowHeight / 2, x + windowWidth - 5, y + windowHeight / 2);
-//     noStroke();
-
-//     drawRain(x + 5, y + 5, windowWidth - 10, windowHeight - 10);
-//     drawLightning(x ,y, windowWidth, windowHeight);
-//   }
-// }
-
-// function drawAnomalousWindow(x, y, windowWidth, windowHeight) {
-//   // Κανονικό παράθυρο
-//   fill(139, 69, 19);
-//   rect(x, y, windowWidth, windowHeight);
-
-//   fill(173, 216, 230, 150);
-//   rect(x + 5, y + 5, windowWidth - 10, windowHeight - 10);
-
-//   stroke(139, 69, 19);
-//   line(x + windowWidth / 2, y + 5, x + windowWidth / 2, y + windowHeight - 5);
-//   line(x + 5, y + windowHeight / 2, x + windowWidth - 5, y + windowHeight / 2);
-//   noStroke();
-
- 
-// }
-
-// function drawRain(x, y, width, height) {
-//   const drops = 50; // Πλήθος σταγόνων
-//   fill(135, 206, 235, 150); // Μπλε-διαφανές για σταγόνες
-//   noStroke();
-
-//   for (let i = 0; i < drops; i++) {
-//       const dropX = x + random(width);
-//       const dropY = y + random(height);
-//       rect(dropX, dropY/1.005, 2, 10); // Μικρές γραμμές για σταγόνες
-//   }
-// }
-// function drawLightning(x, y, width, height) {
-//   if (random() > 0.98) { // Κεραυνός εμφανίζεται τυχαία
-//       stroke(255, 255, 0); // Κίτρινο για κεραυνό
-//       strokeWeight(2);
-//       let startX = x + random(width);
-//       let startY = y;
-//       let endX = startX + random(-20, 20);
-//       let endY = y + random(height / 2, height);
-
-//       // Γραμμές κεραυνού
-//       for (let i = 0; i < 5; i++) {
-//           line(startX, startY, endX, endY);
-//           startX = endX;
-//           startY = endY;
-//           endX = startX + random(-20, 20);
-//           endY = startY + random(10, 30);
-//       }
-
-//       noStroke();
-//   }
-// }
-
 function drawFloodingWater(startX, startY, isAnomaly) {
   let waveHeight = 10; // Height of the wave peaks
   let waveSpeed = 2; // Speed of the waves' motion
@@ -126,11 +27,11 @@ function drawFloodingWater(startX, startY, isAnomaly) {
 
 function setupRoom() {
   // Λίστα ανωμαλιών με βάρη
-  const anomalies = ["sofa", "fridge", "kitchen", "table","mirror", "doll", "TV", "Bookshelf","radio", "ghost","none","none","none","none","none","none" ];
+  const anomalies = ["sofa", "fridge", "kitchen", "table","mirror", "doll", "TV", "Bookshelf","radio", "ghost", "ghost", "ghost" ];
   // Το "ghost" εμφανίζεται περισσότερες φορές για να έχει μεγαλύτερη πιθανότητα
 
 
-  if (gameState != 'menu'){   // to evala etsi gia na min ta emfanizei kai sto menu
+  if (gameState != 'menu'){  
 
     const selectedAnomaly = random(anomalies); // Επιλογή ανωμαλίας με βάση τα βάρη
     console.log(`Selected anomaly: ${selectedAnomaly}`);

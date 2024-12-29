@@ -64,7 +64,7 @@ let scaryObjects = [
   // { type: 'book', x: 800, y: 400 },
   // //{ type: 'lantern', x: 500, y: 250 },
  //  { type: 'rope', x: 1600, y: 50 },
-  { type: 'bed', x: 3900, y: 525 },
+  { type: 'bed', x: 4000, y: 210 },
 
   { type: 'bloodyHandprint', x: 2700, y: 450 },
     { type: 'bloodyHandprint', x: 2550, y: 450 },
@@ -923,7 +923,9 @@ function checkDoorInteraction(player) {
 
       if (keyIsDown(70) && !isTransitioning) { // Πατά το "F"
           isTransitioning = true;
-          gameState = "battle"; // Μετάβαση σε κατάσταση μάχης
+          gameState =="secretRoom"; // Μετάβαση στο secret room
+          enterSecretRoom();
+          //isTransitioning = false;
       }
   } else {
       showDoorMessage = false;
@@ -965,7 +967,8 @@ function drawLight(x, y) {
     fill(255, 240, 200);
     rect(x - 20, y - 10, 40, 20);
 }   
-
+let doorCosmicX = 4000;
+let doorCosmicY = 420;
 
 let doorX = 1800; // Θέση της κύριας πόρτας στον άξονα X
 let doorY = 420; // Θέση της πόρτας στον άξονα Y
@@ -982,6 +985,186 @@ function drawDoor() {
     fill(60, 30, 15);
     rect(doorX + doorOffset, doorY + 3, doorWidth + 10, doorHeight + 13);
 }
+
+
+function drawWalls() {
+  // Αριστερός τοίχος
+  fill(60, 60, 60);
+  rect(0, 0, 20, height);
+
+  // Δεξιός τοίχος
+  fill(60, 60, 60);
+  rect(RIGHT_WALL_X, 0, 20, height);
+
+
+
+  // Φανταστικές πόρτες
+  drawRealisticDoor(5, height - 170); // Αριστερή πόρτα
+  drawRealisticDoor(RIGHT_WALL_X + 5, height - 170); // Δεξιά πόρτα
+
+  // Μεσαίος τοίχος με χαμηλότερο κενό
+  fill(60, 60, 60);
+  rect(MIDDLE_WALL_X, 0, 20, height / 2 + 165); // Πάνω μέρος
+  rect(MIDDLE_WALL_X, height / 2 + 275, 20, height / 2 - 275); // Κάτω μέρος
+
+ // Ρεαλιστική πόρτα με πόμολο αριστερά
+ drawElegantDoor(MIDDLE_WALL_X-55 , height / 2 +160);
+
+   // Νέος τοίχος
+   fill(60, 60, 60);
+   rect(NEW_WALL_X, 0,WALL_WIDTH, height);
+
+
+
+   fill(60, 60, 60);
+   rect(NEW_WALL_X2, 0,WALL_WIDTH, height);
+
+ 
+}
+
+function drawRealisticDoor(x, y) {
+  // Σχεδίαση πλαισίου πόρτας
+  fill(100, 50, 30); // Καφέ για το ξύλο
+  rect(x, y, 15, 150, 2); // Πλαίσιο με μικρή καμπύλη
+
+  // Χρωματική διαβάθμιση για 3D εφέ
+  noStroke();
+  for (let i = 0; i < 15; i++) {
+      let colorValue = map(i, 0, 15, 120, 80); // Από ανοιχτό σε σκούρο καφέ
+      fill(colorValue, 50, 30);
+      rect(x + i, y + 3, 1, 144); // Σκίαση προς τα δεξιά
+  }
+
+  // Χερούλι πόρτας
+  fill(180, 180, 0); // Χρυσό
+  ellipse(x + 12, y + 75, 4, 4); // Κυκλικό χερούλι
+
+  // Εσωτερικό σκούρο μέρος για βάθος
+  fill(50, 30, 20, 100); // Σκούρο καφέ με διαφάνεια
+  rect(x + 2, y + 5, 11, 140, 2);
+}
+
+
+
+// Συνάρτηση για τη σχεδίαση μιας elegant πόρτας
+function drawElegantDoor(x, y) {
+  const scale = 0.9; // Κλίμακα για το μέγεθος της πόρτας
+
+  // Πλαίσιο της πόρτας
+  fill(120, 60, 30); // Καφέ ξύλινο πλαίσιο
+  rect(x, y, 60 * scale, 120 * scale, 10); // Κυρίως σώμα
+
+    // Κενό μέσα στην πόρτα
+fill(0); // Μαύρο για το εσωτερικό
+rect(x + 55, y , 20, 115); // Εσωτερικό της πόρτας
+
+  // Διακοσμητικά στοιχεία
+  fill(100, 50, 25); // Σκούρο καφέ για διακοσμητικά
+  rect(x + 10 * scale, y + 10 * scale, 40 * scale, 20 * scale, 5); // Πάνω διακοσμητικό
+  rect(x + 10 * scale, y + 40 * scale, 40 * scale, 20 * scale, 5); // Κεντρικό διακοσμητικό
+  rect(x + 10 * scale, y + 70 * scale, 40 * scale, 30 * scale, 5); // Κάτω διακοσμητικό
+
+  // Πόμολο
+  fill(255, 215, 0); // Χρυσό πόμολο
+  ellipse(x + 15 * scale, y + 60 * scale, 8 * scale, 8 * scale); // Τοποθέτηση αριστερά
+
+  // Διακοσμητική κορυφή
+  fill(139, 69, 19); // Πιο σκούρο καφέ για την κορυφή
+  arc(x + 30 * scale, y - 25 * scale, 50 * scale, 20 * scale, PI, TWO_PI);
+
+  // Χρυσό κόσμημα στην κορυφή
+  fill(255, 223, 0); // Χρυσό
+  ellipse(x + 30 * scale, y - 25 * scale, 10 * scale, 10 * scale);
+}
+
+
+
+// Συνάρτηση για τη σχεδίαση μιας πόρτας με φωτεινό εφέ όπως στην εικόνα
+function drawCosmicDoor(x, y) {
+  const scale = 1.2; // Κλίμακα για την πόρτα
+
+  // Σχεδίαση λαμπερής αύρας γύρω από την πόρτα
+  noStroke();
+  for (let i = 0; i < 12; i++) {
+    fill(20, 70, 150, 100 - i * 8); // Ακόμα πιο σκούρο μπλε με σταδιακή διαφάνεια
+      rect(
+          x - 20 * scale - i * 6, 
+          y - 30 * scale - i * 6, 
+          130 * scale + i * 12, 
+          210 * scale + i * 12, 
+          20
+      );
+  }
+
+
+
+  // Σώμα της πόρτας
+  fill(10, 10, 40); // Σκούρο μπλε για την πόρτα
+  rect(x + 15, y, 70 * scale, 150 * scale, 5); // Κυρίως σώμα
+
+  // Φωτεινό περίγραμμα της πόρτας
+  stroke(80, 200, 255);
+  strokeWeight(6);
+  noFill();
+  rect(x + 15, y, 70 * scale, 150 * scale, 5);
+
+  // Εσωτερική λάμψη
+  noStroke();
+  fill(255, 200, 50, 200); // Φωτεινό χρυσό
+ // ellipse(x + 50 * scale, y + 75 * scale, 10 * scale, 10 * scale); // Κεντρική λάμψη
+
+  // Σωματίδια φωτός
+  for (let i = 0; i < 40; i++) {
+      let particleX = x + 25 * scale + Math.random() * 40 * scale;
+      let particleY = y + 20 * scale + Math.random() * 110 * scale;
+      fill(255, 255, 200, 180);
+      ellipse(particleX, particleY, 3, 3);
+  }
+
+  // Δεξιά και αριστερά φύλλα της πόρτας
+  fill(10, 10, 40); // Σκούρο μπλε
+  rect(x - 60, y, 60 * scale, 150 * scale, 5); // Αριστερό φύλλο
+  rect(x + 101, y, 60 * scale, 150 * scale, 5); // Δεξιό φύλλο
+
+  // Χερούλια
+  fill(200, 200, 200);
+  rect(x - 35, y + 70, 8, 4); // Αριστερό χερούλι
+  rect(x + 110, y + 70, 8, 4); // Δεξιό χερούλι
+}
+
+
+//secretRoomStartX + secretRoomWidth - 215, height - 200
+
+
+let isTransitioningCosmic = false;
+let showDoorCosmicMessage = false;
+function checkCosmicDoorInteraction(player) {
+  if (
+      player.x + player.width > secretRoomStartX &&
+      player.x >= secretRoomStartX + secretRoomWidth - 185 &&
+      player.y + player.height > doorY &&
+      player.y < doorY + height - 200
+  ) {
+      showDoorCosmicMessage = true
+
+      if (keyIsDown(70) && !isTransitioningCosmic) { // Πατά το "F"
+        isTransitioningCosmic = true;
+        gameState =="playing"; // Μετάβαση στο secret room
+        // Μεταφορά του παίκτη στη νέα θέση
+        player.x =100; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο
+        player.y = height - PLATFORM_HEIGHT - player.height;
+        currentLevel ++;
+        updateLevelTracker();
+        // Απελευθέρωση του flag μετά τη μετάβαση
+        setTimeout(() => {
+          isTransitioning = false; // Επαναφορά του flag
+      }, 500); // Χρονική καθυστέρηση για να ολοκληρωθεί η μετάβαση
+      }
+  } else {
+      showDoorCosmicMessage = false;
+  }
+}
+
 
 function drawNoSmokingSign() {
   const x = width +550;
@@ -1009,41 +1192,6 @@ function drawNoSmokingSign() {
   arc(x - 8, y - 4, 4, 4, PI / 4, (3 * PI) / 4);
 }
 
-function drawWalls() {
-  // Αριστερός τοίχος
-  fill(60, 60, 60);
-  rect(0, 0, 20, height);
-
-  // Δεξιός τοίχος
-  fill(60, 60, 60);
-  rect(RIGHT_WALL_X, 0, 20, height);
-
-  // Φανταστικές πόρτες
-  drawRealisticDoor(5, height - 170); // Αριστερή πόρτα
-  drawRealisticDoor(RIGHT_WALL_X + 5, height - 170); // Δεξιά πόρτα
-}
-
-function drawRealisticDoor(x, y) {
-  // Σχεδίαση πλαισίου πόρτας
-  fill(100, 50, 30); // Καφέ για το ξύλο
-  rect(x, y, 15, 150, 2); // Πλαίσιο με μικρή καμπύλη
-
-  // Χρωματική διαβάθμιση για 3D εφέ
-  noStroke();
-  for (let i = 0; i < 15; i++) {
-      let colorValue = map(i, 0, 15, 120, 80); // Από ανοιχτό σε σκούρο καφέ
-      fill(colorValue, 50, 30);
-      rect(x + i, y + 3, 1, 144); // Σκίαση προς τα δεξιά
-  }
-
-  // Χερούλι πόρτας
-  fill(180, 180, 0); // Χρυσό
-  ellipse(x + 12, y + 75, 4, 4); // Κυκλικό χερούλι
-
-  // Εσωτερικό σκούρο μέρος για βάθος
-  fill(50, 30, 20, 100); // Σκούρο καφέ με διαφάνεια
-  rect(x + 2, y + 5, 11, 140, 2);
-}
 
 
 // ************************* SIGN BOARDS ******************************* //
