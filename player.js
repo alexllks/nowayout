@@ -64,7 +64,11 @@ class Player {
         
         
         footstepSound.setVolume(0.3); // Ένταση βημάτων
-
+        if (player.isInHelicopter) {
+            player.x = helicopter.x + helicopter.width / 2; // Ο παίκτης ακολουθεί το ελικόπτερο
+            player.y = helicopter.y - player.height;
+        }
+        
 
         // Έλεγχος αν βρίσκεται σε σκάλα και μετακίνηση στο επόμενο σκαλί
         if (this.onStair) {

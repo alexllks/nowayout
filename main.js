@@ -71,8 +71,9 @@ function setup() {
   createCanvas(1224, 576);
   horrorbackgroundMusic();
   bufferCanvas = createGraphics(settings.canvasWidth, settings.canvasHeight); // Δημιουργία buffer canvas
-  
+
   player = new Player();
+
   initializeLevelTracker();
   setupRoom();
   initializeNPCs(); // Δημιουργία NPCs
@@ -104,6 +105,39 @@ function draw() {
   }
 }
 
+
+
+
+function drawWater() {
+  // Βασικές ρυθμίσεις για το νερό
+  let waveHeight = 20; // Ύψος κυμάτων
+  let waveFrequency = 0.03; // Συχνότητα κυμάτων
+  let waveSpeed = 2; // Ταχύτητα κυμάτων
+
+  // Χρώμα και διαφάνεια νερού
+  fill(0, 0, 255, 180);
+  rect(secretRoomStartX + 200, height - PLATFORM_HEIGHT, PLATFORM_WIDTH - secretRoomStartX, PLATFORM_HEIGHT);
+
+  // Σχεδίαση κυμάτων στην επιφάνεια
+  fill(135, 206, 250, 100); // Ανοιχτό μπλε για κύματα
+  noStroke();
+  beginShape();
+  for (let x = secretRoomStartX+200; x <= PLATFORM_WIDTH; x += 10) {
+      let y = height - PLATFORM_HEIGHT + Math.sin((x + frameCount * waveSpeed) * waveFrequency) * waveHeight;
+      vertex(x, y);
+  }
+  vertex(PLATFORM_WIDTH, height - PLATFORM_HEIGHT); // Κλείσιμο δεξιά
+  vertex(secretRoomStartX+200, height - PLATFORM_HEIGHT); // Κλείσιμο αριστερά
+  endShape(CLOSE);
+}
+
+function checkWaterCollision(player) {
+  if (player.x >= secretRoomStartX + 200 && player.y + player.height >= height - PLATFORM_HEIGHT) {
+      console.log("Ο παίκτης έπεσε στο νερό!");
+      // isGameOver = true; // Ορισμός της κατάστασης "game over"
+      gameState = "gameover";
+  }
+}
 
 
 function initializeGame() {
@@ -153,7 +187,9 @@ if (npcActivated) {
 }
 
   Platform.drawPlatforms(platforms);
-  
+  Platform.drawPlatforms(platforms); // Σχεδίαση πλατφορμών
+  drawWater(); // Σχεδίαση νερού
+  checkWaterCollision(player); // Έλεγχος σύγκρουσης με το νερό
     // Έλεγχος αν ο παίκτης βγήκε εκτός ορίων
   if (player.x > PLATFORM_WIDTH) {
     checkExit(false); // Έξοδος από δεξιά

@@ -22,14 +22,20 @@ class Platform {
           platforms.push(new Platform(x, y, PLATFORM_WIDTH));
       }
       for (let i = 0; i < numPlatforms; i++) {
-        let x = i * PLATFORM_WIDTH + 2500; // Ξεκινάμε από το x = 200 για να αφήσουμε κενό
+        let x = 2500; // Ξεκινάμε από το x = 200 για να αφήσουμε κενό
         let y = height - PLATFORM_HEIGHT - 300; // Κανονική θέση Y της πλατφόρμας
-    
-        platforms.push(new Platform(x, y, PLATFORM_WIDTH));
+        platforms.push(new Platform(x, y, 9400));
     }
+      // Adding obstacles after secretRoomStartX
+      for (let x = secretRoomStartX; x < PLATFORM_WIDTH; x += 200) {
+        let y = height - PLATFORM_HEIGHT - Math.floor(Math.random() * 200); // Στρογγυλοποίηση σε ακέραιο
+        let obstacleWidth = Math.random() * 50 + 50; // Τυχαίο πλάτος για τα εμπόδια
+        platforms.push(new Platform(x, y, obstacleWidth)); // Δημιουργία πλατφόρμας
+      }
+
   
       // Προσθήκη επιπλέον πλατφορμών σε διαφορετικά ύψη
-      platforms.push(new Platform(2200, height - 161, 120));
+      platforms.push(new Platform(2200, height - 160, 120));
       
       return platforms;
   }

@@ -1155,8 +1155,10 @@ function checkCosmicDoorInteraction(player) {
         player.y = height - PLATFORM_HEIGHT - player.height;
         currentLevel ++;
         updateLevelTracker();
+
         resetNPCs(); // Επαναφορά NPCs στην αρχική κατάσταση
         setupRoom();
+        
         // Απελευθέρωση του flag μετά τη μετάβαση
         setTimeout(() => {
           isTransitioning = false; // Επαναφορά του flag
