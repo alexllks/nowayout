@@ -24,6 +24,7 @@ var isGameOver;
 let RIGHT_WALL_X = 7500; // Σταθερή θέση δεξιού τοίχου
 let WALL_WIDTH = 50;   // Νέο πλάτος τοίχου
 let MIDDLE_WALL_X= 4000;
+let obstacles = []; // Δήλωση πίνακα για τα εμπόδια
 
 let npcActivated = false; // Αρχικά ο NPC είναι ανενεργός
 
@@ -45,6 +46,7 @@ let secretRoomStartX = 12000; // Θέση έναρξης του secret room στ
 let secretRoomWidth = 10000;  // Πλάτος του secret room
 let NEW_WALL_X = 11900; // Θέση του νέου τοίχου στον άξονα X
 let NEW_WALL_X2 = 22000; // Θέση του νέου τοίχου στον άξονα X
+
 
 
 function preload() {
@@ -73,6 +75,7 @@ function setup() {
   bufferCanvas = createGraphics(settings.canvasWidth, settings.canvasHeight); // Δημιουργία buffer canvas
 
   player = new Player();
+  
 
   initializeLevelTracker();
   setupRoom();
@@ -134,7 +137,8 @@ function drawWater() {
 function checkWaterCollision(player) {
   if (player.x >= secretRoomStartX + 200 && player.y + player.height >= height - PLATFORM_HEIGHT) {
       console.log("Ο παίκτης έπεσε στο νερό!");
-      // isGameOver = true; // Ορισμός της κατάστασης "game over"
+      // isGameOver = true; // Ορισμός της κατάστασης "game over
+    
       gameState = "gameover";
   }
 }
@@ -188,8 +192,18 @@ if (npcActivated) {
 
   Platform.drawPlatforms(platforms);
   Platform.drawPlatforms(platforms); // Σχεδίαση πλατφορμών
+  for (let obstacle of obstacles) {
+    if (typeof obstacle.update === "function") {
+        obstacle.update(); // Ενημέρωση αν έχει λογική κίνησης
+    }
+    obstacle.show(); // Σχεδίαση εμποδίου
+}
+
   drawWater(); // Σχεδίαση νερού
   checkWaterCollision(player); // Έλεγχος σύγκρουσης με το νερό
+
+
+
     // Έλεγχος αν ο παίκτης βγήκε εκτός ορίων
   if (player.x > PLATFORM_WIDTH) {
     checkExit(false); // Έξοδος από δεξιά

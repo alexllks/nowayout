@@ -1158,6 +1158,7 @@ function checkCosmicDoorInteraction(player) {
 
         resetNPCs(); // Επαναφορά NPCs στην αρχική κατάσταση
         setupRoom();
+        isChasing = false; // Επαναφορά του flag
         
         // Απελευθέρωση του flag μετά τη μετάβαση
         setTimeout(() => {

@@ -4,9 +4,9 @@ class Player {
     this.y = height - PLATFORM_HEIGHT - 60;
     this.width = 40;
     this.height = 0;
-    this.speed = 20;
+    this.speed = 15;
     this.velocityY = 0;
-    this.gravity = 1;
+    this.gravity = 0.5;
 
     // Καταστάσεις του παίκτη
     this.isLeft = false;

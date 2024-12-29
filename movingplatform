@@ -1,0 +1,19 @@
+class MovingPlatform extends Platform {
+    constructor(x, y, width, speed) {
+        super(x, y, width);
+        this.speed = speed;
+        this.direction = 1; // 1 = right, -1 = left
+    }
+
+    update() {
+        this.x += this.speed * this.direction;
+        if (this.x < secretRoomStartX || this.x > NEW_WALL_X2) {
+            this.direction *= -1; // Reverse direction
+        }
+    }
+
+    show() {
+        fill(150, 75, 0); // Brown color
+        rect(this.x, this.y, this.width, this.height);
+    }
+}
