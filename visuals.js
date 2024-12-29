@@ -923,7 +923,7 @@ function checkDoorInteraction(player) {
 
       if (keyIsDown(70) && !isTransitioning) { // Πατά το "F"
           isTransitioning = true;
-          gameState =="secretRoom"; // Μετάβαση στο secret room
+
           enterSecretRoom();
           //isTransitioning = false;
       }
@@ -1155,6 +1155,8 @@ function checkCosmicDoorInteraction(player) {
         player.y = height - PLATFORM_HEIGHT - player.height;
         currentLevel ++;
         updateLevelTracker();
+        resetNPCs(); // Επαναφορά NPCs στην αρχική κατάσταση
+        setupRoom();
         // Απελευθέρωση του flag μετά τη μετάβαση
         setTimeout(() => {
           isTransitioning = false; // Επαναφορά του flag

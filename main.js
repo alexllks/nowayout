@@ -102,24 +102,13 @@ function draw() {
   } else if (gameState === "gameover") {
      playGameAfterLost();
   }
-  else if (gameState === "secretRoom") {
-    playSecretRoom(); // Νέα κατάσταση
-  }
 }
 
 
 
 function initializeGame() {
-
   isGameOver = false;
-  score = 0;
-
-  // when gameOver, update the current level
-  // currentLevel = 1;
-  // updateLevelTracker();
 }
-
-
 
 function playGame() {
   // Εξασφαλίζουμε ότι η κάμερα ακολουθεί τον παίκτη
@@ -149,16 +138,13 @@ function playGame() {
   drawSignBoard3(1590, height - PLATFORM_HEIGHT - 210);
   drawCosmicDoor(secretRoomStartX + secretRoomWidth - 215, height - 200);
 
-  
-
-
   if (
     !npcActivated &&
     player.x + player.width / 2 > 1590 - 50 &&
-    player.x - player.width / 2 < 1590+ 50
-) {
+    player.x - player.width / 2 < 1590+ 50)
+ {
     npcActivated = true; // Ενεργοποίηση του NPC
-}
+ }
 
 // Ενημέρωση και σχεδίαση NPCs
 if (npcActivated) {
@@ -166,18 +152,15 @@ if (npcActivated) {
     drawNPCs();
 }
 
-  
-
   Platform.drawPlatforms(platforms);
   
-
     // Έλεγχος αν ο παίκτης βγήκε εκτός ορίων
   if (player.x > PLATFORM_WIDTH) {
     checkExit(false); // Έξοδος από δεξιά
   } else if (player.x < 0) {
     checkExit(true); // Έξοδος από αριστερά
   } 
-checkCosmicDoorInteraction(player);
+ checkCosmicDoorInteraction(player);
  checkDoorInteraction(player); // Έλεγχος για άνοιγμα πόρτας
 
  
@@ -210,32 +193,9 @@ checkCosmicDoorInteraction(player);
   gameState = "complete";
   currentLevel = 0;
  }
-
 }
 
 
-function playBattle() {
-  player.x = 2550; // Νέα θέση μετά τον τοίχο
-  text("Battle Mode! Defeat the enemy!", width / 2, 50);
-  player.y = height - PLATFORM_HEIGHT - player.height;
-  
-  console.log(`Player X: ${player.x}, Camera X: ${player.y}`);
-
-  // Σχεδίαση εχθρού
-  fill(200, 0, 0);
-  ellipse(width / 2, height / 2, 100); // Εχθρός ως κύκλος
-
-  // Προσωρινός έλεγχος: Παίκτης νικάει πατώντας Space
-  if (keyIsDown(32)) { // Space key
-      gameState = "playing"; // Επιστροφή στο επίπεδο
-      isTransitioning = false;
-      player.x = 200; // Επαναφορά παίκτη
-      player.y = height - PLATFORM_HEIGHT - player.height; // Τοποθέτηση στην αρχή επόμενου επιπέδου
-      currentLevel++; // Ενημέρωση επιπέδου
-      updateLevelTracker(); // Αναβάθμιση λίστας επιπέδων
-  }
-}
-  
 function enterSecretRoom() {
   
   // Μεταφορά του παίκτη στη νέα θέση
@@ -246,28 +206,6 @@ function enterSecretRoom() {
     isTransitioning = false; // Επαναφορά του flag
 }, 500); // Χρονική καθυστέρηση για να ολοκληρωθεί η μετάβαση
 }
-
-function playSecretRoom() {
-  // Σχεδίαση νέου περιβάλλοντος
-  background(50, 50, 100); // Σκούρο φόντο
-  fill(255);
-  textSize(32);
-  text("Welcome to the Secret Room!", secretRoomStartX + 50, 50);
-
-  // Δημιουργία νέων αντικειμένων ή περιβάλλοντος
-  rect(secretRoomStartX + 200, height - 100, 100, 50); // Πλατφόρμα στο δωμάτιο
-  // Μπορείτε να προσθέσετε περισσότερα στοιχεία ή NPCs εδώ
-
-  // Επιστροφή στο αρχικό επίπεδο
-  if (keyIsDown(66)) { // Πατά το "B" για επιστροφή
-      player.x = 100; // Επαναφορά αρχικής θέσης
-      player.y = height - PLATFORM_HEIGHT - player.height;
-      gameState = "playing";
-  }
-}
-
-
-
 
 
 function checkWallCollision() {
@@ -288,12 +226,6 @@ function checkWallCollision() {
 if (player.x + player.width > NEW_WALL_X2) {
   player.x = NEW_WALL_X2 - player.width; // Σταματάει στον δεξιό τοίχο
 }
-
-
-//    // Επιστροφή στο κύριο επίπεδο αν φτάσει το τέλος
-//    if (player.x >= secretRoomStartX + secretRoomWidth - 20) {
-//     returnToMainTrack(); // Κλήση της συνάρτησης επιστροφής
-// }
 
 }
 
@@ -393,9 +325,12 @@ function showMessage(newMessage) {
   messageTime = millis();
 }
 
-function initializeObstacles() {
-  obstacleSprites = new Group();
-}
+
+
+
+// function initializeObstacles() {
+//   obstacleSprites = new Group();
+// }
 
 
 
@@ -423,35 +358,6 @@ function updateLevelTracker() {
           levelsList[i].classList.remove('completed'); // Επαναφορά
       }
   }
-}
-
-
-
-
-
-
-
-function initializeNPCs() {
-    npcs.push(new NPC(5000,540)); // Δημιουργία ενός NPC
-}
-
-function updateNPCs(platforms) {
-    for (let npc of npcs) {
-        npc.update(platforms);
-    }
-}
-
-function drawNPCs() {
-    for (let npc of npcs) {
-        npc.show();
-    }
-}
-
-
-function resetNPCs() {
-  npcs = []; // Καθαρίζει τη λίστα NPCs
-  initializeNPCs(); // Επαναρχικοποίηση των NPCs
-  npcActivated = false; // Επαναφορά της κατάστασης ενεργοποίησης
 }
 
 
