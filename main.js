@@ -41,12 +41,19 @@ let backgroundHorrorMusic;
 let footstepSound;
 let stairStepSound;
 let npcFootstepSound;
-
+let tvSound;
 let secretRoomStartX = 12000; // Θέση έναρξης του secret room στον άξονα X
 let secretRoomWidth = 10000;  // Πλάτος του secret room
 let NEW_WALL_X = 11900; // Θέση του νέου τοίχου στον άξονα X
 let NEW_WALL_X2 = 22000; // Θέση του νέου τοίχου στον άξονα X
 
+let audioStarted = false; // Έναρξη ήχου
+
+let tvSoundActive = false;  // Σημαία για την ενεργοποίηση ήχου
+
+
+let rainSoundActive = false; // Σημαία για την κατάσταση του ήχου βροχής
+let npcFootstepSoundActive = false; // Σημαία για την κατάσταση του ήχου NPC
 
 
 function preload() {
@@ -71,29 +78,49 @@ function preload() {
 
 function setup() {
   createCanvas(1224, 576);
-  horrorbackgroundMusic();
   bufferCanvas = createGraphics(settings.canvasWidth, settings.canvasHeight); // Δημιουργία buffer canvas
 
   player = new Player();
-  
-
   initializeLevelTracker();
   setupRoom();
   initializeNPCs(); // Δημιουργία NPCs
-  //createGhosts(1);
-  //setRandomAnomaly(); // Επιλογή τυχαίου παραθύρου για ανωμαλία
   platforms = Platform.createPlatforms();
-  // Άλλος κώδικας για το παιχνίδι σου
-  
-  // Ρύθμιση του ήχου για περπάτημα
-  footstepSound.setVolume(0); // Αρχικά μηδενική ένταση
-  footstepSound.loop(); 
 
-  // Ρύθμιση του ήχου των σκαλιών
-  stairStepSound.setVolume(0); // Αρχικά μηδενική ένταση
-  stairStepSound.loop();
-
+  // Προτροπή στον χρήστη να κάνει κλικ για τον ήχο
+  textSize(20);
+  fill(255);
+  textAlign(CENTER);
+  text("Click to start audio and music", width / 2, height / 2);
 }
+
+function mousePressed() {
+  if (!audioStarted) {
+    userStartAudio(); // Ξεκινά το AudioContext
+    
+    audioStarted = true;
+    console.log("Audio started and sounds initialized");
+  }
+
+  //  // Ξεκινά η μουσική τρόμου
+  //  horrorbackgroundMusic();
+
+  if(!backgroundHorrorMusic.isPlaying()){
+  
+      backgroundHorrorMusic.setVolume(0.2);
+      backgroundHorrorMusic.loop();
+    console.log("Backgound music is playing");
+      // Ξεκινά η μουσική τρόμου
+  
+
+    
+  }
+
+  }
+ 
+ 
+
+  
+
 
 function draw() {
  
@@ -119,28 +146,30 @@ function drawWater() {
 
   // Χρώμα και διαφάνεια νερού
   fill(0, 0, 255, 180);
-  rect(secretRoomStartX + 200, height - PLATFORM_HEIGHT, PLATFORM_WIDTH - secretRoomStartX, PLATFORM_HEIGHT);
+  rect(secretRoomStartX + 200, height - PLATFORM_HEIGHT, secretRoomWidth-500, PLATFORM_HEIGHT);
 
   // Σχεδίαση κυμάτων στην επιφάνεια
   fill(135, 206, 250, 100); // Ανοιχτό μπλε για κύματα
   noStroke();
   beginShape();
-  for (let x = secretRoomStartX+200; x <= PLATFORM_WIDTH; x += 10) {
+  for (let x = secretRoomStartX+200; x <= secretRoomStartX+secretRoomWidth-300; x += 10) {
       let y = height - PLATFORM_HEIGHT + Math.sin((x + frameCount * waveSpeed) * waveFrequency) * waveHeight;
       vertex(x, y);
   }
-  vertex(PLATFORM_WIDTH, height - PLATFORM_HEIGHT); // Κλείσιμο δεξιά
+  vertex(secretRoomWidth-500, height - PLATFORM_HEIGHT); // Κλείσιμο δεξιά
   vertex(secretRoomStartX+200, height - PLATFORM_HEIGHT); // Κλείσιμο αριστερά
   endShape(CLOSE);
 }
 
 function checkWaterCollision(player) {
   if (player.x >= secretRoomStartX + 200 && player.y + player.height >= height - PLATFORM_HEIGHT) {
+    if(player.x<=secretRoomStartX+secretRoomWidth-300){
       console.log("Ο παίκτης έπεσε στο νερό!");
       // isGameOver = true; // Ορισμός της κατάστασης "game over
     
       gameState = "gameover";
   }
+}
 }
 
 
@@ -149,11 +178,12 @@ function initializeGame() {
 }
 
 function playGame() {
+  
   // Εξασφαλίζουμε ότι η κάμερα ακολουθεί τον παίκτη
   let cameraX = constrain(player.x - width / 2, 0, PLATFORM_WIDTH - width + 100);
   translate(-cameraX, 0);
   // Σχεδίαση 2D στοιχείων
-  background(240, 230, 140);
+  //background(240, 230, 140);
 
   drawWall();
  drawStairs(); // Σχεδίαση σκάλας
@@ -170,9 +200,9 @@ function playGame() {
   drawWindow();
   drawBookshelfs();
   drawScaryObjects();
-  drawSignBoard1(270, height - PLATFORM_HEIGHT - 210); // Νέες συντεταγμένες
+  drawSignBoard1(875, height - PLATFORM_HEIGHT - 210); // Νέες συντεταγμένες
   drawSignBoard1(5450, height - PLATFORM_HEIGHT - 210); // Νέες συντεταγμένες
-  drawSignBoard2(875, height - PLATFORM_HEIGHT - 210); // Θέση 2ης πινακίδας
+  drawSignBoard2(270, height - PLATFORM_HEIGHT - 210); // Θέση 2ης πινακίδας
   drawSignBoard3(1590, height - PLATFORM_HEIGHT - 210);
   drawCosmicDoor(secretRoomStartX + secretRoomWidth - 215, height - 200);
 
@@ -190,6 +220,12 @@ if (npcActivated) {
     drawNPCs();
 }
 
+
+updateBats(bats); // Ενημέρωση των νυχτερίδων
+drawBats(bats); // Σχεδίαση των νυχτερίδων
+
+
+updatePlatforms(platforms); // Ενημέρωση των πλατφορμών
   Platform.drawPlatforms(platforms);
   Platform.drawPlatforms(platforms); // Σχεδίαση πλατφορμών
   for (let obstacle of obstacles) {
@@ -286,20 +322,46 @@ function returnToMainTrack() {
   showMessage("You have returned to the main track!");
 }
 
+let showInstructions = false;
+
 function displayMenu() {
   background(30);
   textAlign(CENTER, CENTER);
   fill(255);
-  textSize(32);
-  text("Welcome to the Game", width / 2, height / 2 - 20);
-  textSize(20);
-  text("Press ENTER to Play", width / 2, height / 2 + 20);
-  if (keyIsDown(ENTER)) {
+
+  if (showInstructions) {
+    // Εμφάνιση Οδηγιών
+    textSize(28);
+    text("How to Play", width / 2, height / 2 - 100);
+    textSize(20);
+    text("Use the arrow keys to move.", width / 2, height / 2 - 40);
+    text("Press UP or SPACE to jump.", width / 2, height / 2);
+    textSize(16);
+    text("Press BACKSPACE to return", width / 2, height / 2 + 100);
+
+    if (keyIsDown(BACKSPACE)) {
+      showInstructions = false; // Επιστροφή στο κύριο μενού
+    }
+  } else {
+    // Κύριο Μενού
+    textSize(32);
+    text("Welcome to the Game", width / 2, height / 2 - 20);
+    textSize(20);
+    text("Press ENTER to Play", width / 2, height / 2 + 20);
+    text("Press 'I' for Instructions", width / 2, height / 2 + 60);
+
+    if (keyIsDown(ENTER)) {
       gameState = "playing";
       initializeGame();
       setupRoom();
+    }
+
+    if (keyIsDown(73)) { // 'I' key
+      showInstructions = true;
+    }
   }
 }
+
 
 function displayGz() {
   background(30);

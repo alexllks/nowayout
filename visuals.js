@@ -123,8 +123,7 @@ function drawScaryObjects() {
     } else if (obj.type === 'curtain') {
         drawCurtain(obj.x, obj.y, playerX, playerY);
         // drawCurtainRod(obj.x, obj.y - 10, 200); // Σχεδίαση κονταριού (πλάτος 200)
-      } else if (obj.type === 'door') {
-          drawDoor3(obj.x, obj.y);
+
       } else if (obj.type === 'candle') {
           drawCandle(obj.x, obj.y);
       } else if (obj.type === 'brokenImage') {
@@ -461,17 +460,6 @@ function drawCurtain(x, y, playerX, playerY) {
 
 
 
-
-
-
-function drawDoor3(x, y) {
-  fill(80, 40, 20); // Καφέ ξύλινη πόρτα
-  rect(x, y, 50, 100); // Σώμα πόρτας
-
-  fill(0); // Μαύρη σκιά
-  ellipse(x + 25, y + 60, 20, 40); // Σκιά
-}
-
 function drawCandle(x, y) {
   fill(255); // Κερί
   rect(x - 5, y-20, 10, 40);
@@ -548,14 +536,14 @@ let scale = 0.5;
 
 
 
-function horrorbackgroundMusic(){
-  if ( backgroundHorrorMusic.isLoaded()) {
-    backgroundHorrorMusic.setVolume(0.2);
-    backgroundHorrorMusic.loop();
-} else {
-    console.log('Music is still loading...');
-}
-  }
+// function horrorbackgroundMusic(){
+//   if ( backgroundHorrorMusic.isLoaded()) {
+//     backgroundHorrorMusic.setVolume(0.2);
+//     backgroundHorrorMusic.loop();
+// } else {
+//     console.log('Music is still loading...');
+// }
+//   }
 
 
 
@@ -1169,6 +1157,7 @@ function checkCosmicDoorInteraction(player) {
       showDoorCosmicMessage = false;
   }
 }
+
 
 
 function drawNoSmokingSign() {

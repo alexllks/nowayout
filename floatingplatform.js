@@ -5,6 +5,7 @@ class FloatingPlatform extends Platform {
         this.yEnd = yEnd;
         this.speed = speed;
         this.direction = 1; // 1 = up, -1 = down
+        this.height=20;
     }
 
     update() {
@@ -18,4 +19,20 @@ class FloatingPlatform extends Platform {
         fill(100, 150, 255); // Blue color
         rect(this.x, this.y, this.width, this.height);
     }
+}
+
+
+function updatePlatforms(platforms) {
+    for (let platform of platforms) {
+        if (platform instanceof FloatingPlatform) {
+            platform.update();
+        }
+    }
+}
+
+function drawPlatforms(platforms) {
+    for (let platform of platforms) {
+        platform.show();
+    }
+
 }

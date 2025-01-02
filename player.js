@@ -6,7 +6,7 @@ class Player {
     this.height = 0;
     this.speed = 15;
     this.velocityY = 0;
-    this.gravity = 0.5;
+    this.gravity = 0.4;
 
     // Καταστάσεις του παίκτη
     this.isLeft = false;
@@ -148,6 +148,9 @@ class Player {
         this.velocityY = -15; // Ταχύτητα προς τα πάνω
         this.canJump = false;
     }
+
+        // Εμφάνιση συντεταγμένων στην κονσόλα
+        console.log(`Player coordinates: x=${this.x}, y=${this.y}`);
 }
 
   show() {

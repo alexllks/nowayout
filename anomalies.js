@@ -166,7 +166,7 @@ for (let ghost of ghosts) {
     arc(ghost.x, ghost.y, ghost.size / 3, ghost.size / 6, 0, PI);
 
     // Chase logic
-    if (player.x > 2000 ) { // Start chasing if player is past x=100
+    if (player.x > 2000  && player.x < 5000) { // Start chasing if player is past x=100
         let dx = player.x - ghost.x;
         let dy = player.y - ghost.y;
         let distance = Math.sqrt(dx * dx + dy * dy);

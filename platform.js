@@ -3,7 +3,7 @@ class Platform {
       this.x = x;
       this.y = y;
       this.width = width;
-      this.height = 20; // Ύψος πλατφόρμας
+      this.height = 50; // Ύψος πλατφόρμας
     }
   
     show() {
@@ -25,57 +25,89 @@ class Platform {
         let x = 2500; // Ξεκινάμε από το x = 200 για να αφήσουμε κενό
         let y = height - PLATFORM_HEIGHT - 300; // Κανονική θέση Y της πλατφόρμας
         platforms.push(new Platform(x, y, 9400));
-    }
-      // Adding obstacles after secretRoomStartX
-      for (let x = secretRoomStartX; x < PLATFORM_WIDTH; x += 200) {
-        let y = height - PLATFORM_HEIGHT - Math.floor(Math.random() * 200); // Στρογγυλοποίηση σε ακέραιο
-        let obstacleWidth = Math.random() * 50 + 50; // Τυχαίο πλάτος για τα εμπόδια
-        platforms.push(new Platform(x, y, obstacleWidth)); // Δημιουργία πλατφόρμας
       }
 
+
       // Adding obstacles between secretRoomStartX and newWALLX2
-for (let x = secretRoomStartX + 200; x < NEW_WALL_X2; x += Math.floor(Math.random() * 300 + 100)) {
-  let y = height - PLATFORM_HEIGHT - Math.floor(Math.random() * 250 + 50); // Random height
-  let obstacleWidth = Math.random() * 70 + 30; // Random width
-  platforms.push(new Platform(x, y, obstacleWidth)); // Create platform
+      
 
-  // Optionally add a "stacked" effect
-  if (Math.random() > 0.5) {
-      platforms.push(new Platform(x + Math.random() * 50, y - 50, obstacleWidth / 2));
-  }
-}
-// Moving obstacles
-for (let x = secretRoomStartX + 200; x < NEW_WALL_X2; x += 400) {
-  let y = height - PLATFORM_HEIGHT - Math.floor(Math.random() * 200 + 50);
-  let obstacleWidth = Math.random() * 70 + 30;
-  let speed = Math.random() * 2 + 1; // Random speed
-  platforms.push(new MovingPlatform(x, y, obstacleWidth, speed)); // Moving platform
-}
-// Rotating blades
-for (let x = secretRoomStartX + 300; x < NEW_WALL_X2; x += 600) {
-  let y = height - PLATFORM_HEIGHT - Math.floor(Math.random() * 150 + 100);
-  obstacles.push(new RotatingBlade(x, y, 40)); // Add rotating blade
-}
-// Floating platforms
-for (let x = secretRoomStartX + 250; x < NEW_WALL_X2; x += 500) {
-  let yStart = height - PLATFORM_HEIGHT - Math.floor(Math.random() * 150 + 100);
-  let yEnd = yStart - 100; // Floating range
-  platforms.push(new FloatingPlatform(x, yStart, yEnd, 60, 2)); // Floating platform
-}
+      
+      // Συγκεκριμένες θέσεις πλατφορμών
+      const specificPlatformPositions = [
+        { x: secretRoomStartX + 200, y: height - PLATFORM_HEIGHT - 100, width: 300 },
+        { x: secretRoomStartX + 700, y: height - PLATFORM_HEIGHT - 150, width: 200 },
+        { x: secretRoomStartX + 1200, y: height - PLATFORM_HEIGHT - 200, width: 250 },
+        // Πρόσθεσε κι άλλες πλατφόρμες αν χρειάζεται
+      ];
+
+      // Δημιουργία πλατφορμών
+      for (let pos of specificPlatformPositions) {
+        platforms.push(new Platform(pos.x, pos.y, pos.width));
+      }
 
 
-      // Προσθήκη επιπλέον πλατφορμών σε διαφορετικά ύψη
+
+
+
+
+      // Συγκεκριμένες θέσεις περιστρεφόμενων λεπίδων
+      const specificBladePositions = [
+        { x: secretRoomStartX + 300, y: height - PLATFORM_HEIGHT - 120, radius: 40 },
+        { x: secretRoomStartX + 1000, y: height - PLATFORM_HEIGHT - 200, radius: 50 },
+        { x: secretRoomStartX + 1700, y: height - PLATFORM_HEIGHT - 150, radius: 60 },
+        // Πρόσθεσε κι άλλες περιστρεφόμενες λεπίδες αν χρειάζεται
+      ];
+
+      // Δημιουργία περιστρεφόμενων λεπίδων
+      for (let blade of specificBladePositions) {
+        obstacles.push(new RotatingBlade(blade.x, blade.y, blade.radius));
+      }
+
+
+
+
+      // // Reduce floating platforms
+      const floatingPlatformPositions = [
+        { x: secretRoomStartX + 50, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300 },
+        { x: secretRoomStartX + 700, yStart: height - PLATFORM_HEIGHT - 200, yEnd: height - PLATFORM_HEIGHT - 400 },
+        { x: secretRoomStartX + 1100, yStart: height - PLATFORM_HEIGHT - 250, yEnd: height - PLATFORM_HEIGHT - 450 },
+        // Πρόσθεσε κι άλλες πλατφόρμες όπως χρειάζεται
+      ];
+
+      // Δημιουργία των πλατφορμών
+      for (let pos of floatingPlatformPositions) {
+        platforms.push(new FloatingPlatform(pos.x, pos.yStart, pos.yEnd, 60, 2));
+      }
+
+      
+
+        // Συγκεκριμένες θέσεις και χαρακτηριστικά για τις νυχτερίδες
+        const specificBatPositions = [
+          { x: secretRoomStartX + 300, y: 150, range: 100, speed: 2 },
+          { x: secretRoomStartX + 600, y: 200, range: 150, speed: 1.5 },
+          { x: secretRoomStartX + 900, y: 250, range: 200, speed: 2.5 },
+          { x: secretRoomStartX + 1200, y: 180, range: 120, speed: 1.8 },
+          { x: secretRoomStartX + 1500, y: 300, range: 180, speed: 2.2 },
+          // Πρόσθεσε κι άλλες νυχτερίδες αν χρειάζεται
+        ];
+
+        // Δημιουργία νυχτερίδων
+        for (let bat of specificBatPositions) {
+          bats.push(new Bat(bat.x, bat.y, bat.range, bat.speed));
+        }
+
+
+      // Προσθήκη επιπλέον πλατφορμών(πλατφορμα μικρη στην αρχη) σε διαφορετικά ύψη
       platforms.push(new Platform(2200, height - 160, 120));
       
       return platforms;
-  }
-  
-  
+    }
   
     static drawPlatforms(platforms) {
       for (let platform of platforms) {
         platform.show();
       }
     }
+
   }
   
