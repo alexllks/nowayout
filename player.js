@@ -6,7 +6,7 @@ class Player {
     this.height = 0;
     this.speed = 15;
     this.velocityY = 0;
-    this.gravity = 0.4;
+    this.gravity = 0.7;
 
     // Καταστάσεις του παίκτη
     this.isLeft = false;

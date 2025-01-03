@@ -34,9 +34,12 @@ class Platform {
       
       // Συγκεκριμένες θέσεις πλατφορμών
       const specificPlatformPositions = [
-        { x: secretRoomStartX + 200, y: height - PLATFORM_HEIGHT - 100, width: 300 },
-        { x: secretRoomStartX + 700, y: height - PLATFORM_HEIGHT - 150, width: 200 },
-        { x: secretRoomStartX + 1200, y: height - PLATFORM_HEIGHT - 200, width: 250 },
+        { x: secretRoomStartX - 20 , y: height - PLATFORM_HEIGHT - 100, width: 100, height: 10000 },
+        { x: secretRoomStartX + 100, y: height - PLATFORM_HEIGHT - 200, width: 150, height: 100 },
+        { x: secretRoomStartX + 200, y: height - PLATFORM_HEIGHT - 200, width: 250, height: 100 },
+        { x: secretRoomStartX + 400, y: height - PLATFORM_HEIGHT - 400, width: 200 },
+        { x: secretRoomStartX + 150, y: height - PLATFORM_HEIGHT - 300, width: 100 },
+        { x: secretRoomStartX + 1500, y: height - PLATFORM_HEIGHT - 300, width: 100 },
         // Πρόσθεσε κι άλλες πλατφόρμες αν χρειάζεται
       ];
 
@@ -46,15 +49,11 @@ class Platform {
       }
 
 
-
-
-
-
       // Συγκεκριμένες θέσεις περιστρεφόμενων λεπίδων
       const specificBladePositions = [
-        { x: secretRoomStartX + 300, y: height - PLATFORM_HEIGHT - 120, radius: 40 },
-        { x: secretRoomStartX + 1000, y: height - PLATFORM_HEIGHT - 200, radius: 50 },
-        { x: secretRoomStartX + 1700, y: height - PLATFORM_HEIGHT - 150, radius: 60 },
+        // { x: secretRoomStartX + 300, y: height - PLATFORM_HEIGHT - 120, radius: 40 },
+        // { x: secretRoomStartX + 1000, y: height - PLATFORM_HEIGHT - 200, radius: 50 },
+        // { x: secretRoomStartX + 1700, y: height - PLATFORM_HEIGHT - 150, radius: 60 },
         // Πρόσθεσε κι άλλες περιστρεφόμενες λεπίδες αν χρειάζεται
       ];
 
@@ -68,9 +67,9 @@ class Platform {
 
       // // Reduce floating platforms
       const floatingPlatformPositions = [
-        { x: secretRoomStartX + 50, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300 },
-        { x: secretRoomStartX + 700, yStart: height - PLATFORM_HEIGHT - 200, yEnd: height - PLATFORM_HEIGHT - 400 },
-        { x: secretRoomStartX + 1100, yStart: height - PLATFORM_HEIGHT - 250, yEnd: height - PLATFORM_HEIGHT - 450 },
+        { x: secretRoomStartX + 1400, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300 },
+        //{ x: secretRoomStartX + 700, yStart: height - PLATFORM_HEIGHT - 200, yEnd: height - PLATFORM_HEIGHT - 400 },
+        //{ x: secretRoomStartX + 1100, yStart: height - PLATFORM_HEIGHT - 250, yEnd: height - PLATFORM_HEIGHT - 450 },
         // Πρόσθεσε κι άλλες πλατφόρμες όπως χρειάζεται
       ];
 
@@ -79,15 +78,28 @@ class Platform {
         platforms.push(new FloatingPlatform(pos.x, pos.yStart, pos.yEnd, 60, 2));
       }
 
+
+            // // Reduce floating platforms
+            const horizontalPlatformPositions = [
+              { x: secretRoomStartX + 400, yStart: height - PLATFORM_HEIGHT - 500, yEnd: height - PLATFORM_HEIGHT -500 },
+              //{ x: secretRoomStartX + 700, yStart: height - PLATFORM_HEIGHT - 200, yEnd: height - PLATFORM_HEIGHT - 400 },
+              //{ x: secretRoomStartX + 1100, yStart: height - PLATFORM_HEIGHT - 250, yEnd: height - PLATFORM_HEIGHT - 450 },
+              // Πρόσθεσε κι άλλες πλατφόρμες όπως χρειάζεται
+            ];
+      
+            // Δημιουργία των πλατφορμών
+            for (let pos of horizontalPlatformPositions) {
+              platforms.push(new HorizontalPlatform(secretRoomStartX+ 500, secretRoomStartX+ 1000, 500, 200,3));
+            }
       
 
         // Συγκεκριμένες θέσεις και χαρακτηριστικά για τις νυχτερίδες
         const specificBatPositions = [
-          { x: secretRoomStartX + 300, y: 150, range: 100, speed: 2 },
-          { x: secretRoomStartX + 600, y: 200, range: 150, speed: 1.5 },
-          { x: secretRoomStartX + 900, y: 250, range: 200, speed: 2.5 },
-          { x: secretRoomStartX + 1200, y: 180, range: 120, speed: 1.8 },
-          { x: secretRoomStartX + 1500, y: 300, range: 180, speed: 2.2 },
+          // { x: secretRoomStartX + 300, y: 150, range: 100, speed: 2 },
+          // { x: secretRoomStartX + 600, y: 200, range: 150, speed: 1.5 },
+          // { x: secretRoomStartX + 900, y: 250, range: 200, speed: 2.5 },
+          // { x: secretRoomStartX + 1200, y: 180, range: 120, speed: 1.8 },
+          // { x: secretRoomStartX + 1500, y: 300, range: 180, speed: 2.2 },
           // Πρόσθεσε κι άλλες νυχτερίδες αν χρειάζεται
         ];
 

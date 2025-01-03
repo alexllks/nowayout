@@ -56,6 +56,8 @@ let rainSoundActive = false; // Σημαία για την κατάσταση τ
 let npcFootstepSoundActive = false; // Σημαία για την κατάσταση του ήχου NPC
 
 
+let debugMode = true;
+
 function preload() {
   soundFormats('mp3', 'ogg','wav'); // Ορισμός μορφών για συμβατότητα
   //playerImage = loadImage("assets/images/evil.png"); // Βεβαιώσου ότι το αρχείο υπάρχει
@@ -76,13 +78,37 @@ function preload() {
   bloodyHandprintImg = loadImage('assets/images/bloodyHandprint.png'); // Βεβαιώσου ότι το αρχείο είναι στη σωστή διαδρομή
 }
 
+// function setup() {
+//   createCanvas(1224, 576);
+//   bufferCanvas = createGraphics(settings.canvasWidth, settings.canvasHeight); // Δημιουργία buffer canvas
+
+//   player = new Player();
+//   initializeLevelTracker();
+//   setupRoom();
+//   initializeNPCs(); // Δημιουργία NPCs
+//   platforms = Platform.createPlatforms();
+
+//   // Προτροπή στον χρήστη να κάνει κλικ για τον ήχο
+//   textSize(20);
+//   fill(255);
+//   textAlign(CENTER);
+//   text("Click to start audio and music", width / 2, height / 2);
+// }
+
 function setup() {
   createCanvas(1224, 576);
   bufferCanvas = createGraphics(settings.canvasWidth, settings.canvasHeight); // Δημιουργία buffer canvas
 
   player = new Player();
   initializeLevelTracker();
-  setupRoom();
+  
+  // Ενεργοποίηση Debug Mode
+  if (debugMode) {
+    enterSecretRoom(); // Τοποθέτηση του παίκτη στο secret room
+  } else {
+    setupRoom();
+  }
+
   initializeNPCs(); // Δημιουργία NPCs
   platforms = Platform.createPlatforms();
 
@@ -92,6 +118,7 @@ function setup() {
   textAlign(CENTER);
   text("Click to start audio and music", width / 2, height / 2);
 }
+
 
 function mousePressed() {
   if (!audioStarted) {
@@ -183,7 +210,7 @@ function playGame() {
   let cameraX = constrain(player.x - width / 2, 0, PLATFORM_WIDTH - width + 100);
   translate(-cameraX, 0);
   // Σχεδίαση 2D στοιχείων
-  //background(240, 230, 140);
+  background(240, 230, 140);
 
   drawWall();
  drawStairs(); // Σχεδίαση σκάλας
@@ -285,8 +312,8 @@ updatePlatforms(platforms); // Ενημέρωση των πλατφορμών
 function enterSecretRoom() {
   
   // Μεταφορά του παίκτη στη νέα θέση
-  player.x = secretRoomStartX + 100; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο
-  player.y = height - PLATFORM_HEIGHT - player.height;
+  player.x = secretRoomStartX; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο
+  player.y = 240;
   // Απελευθέρωση του flag μετά τη μετάβαση
   setTimeout(() => {
     isTransitioning = false; // Επαναφορά του flag
