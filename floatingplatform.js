@@ -17,7 +17,7 @@ class FloatingPlatform extends Platform {
 
     show() {
         fill(100, 150, 255); // Blue color
-        rect(this.x, this.y, this.width, this.height);
+        rect(this.x, this.y, this.width*2, this.height);
     }
 }
 

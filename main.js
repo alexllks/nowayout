@@ -24,6 +24,7 @@ var isGameOver;
 let RIGHT_WALL_X = 7500; // Σταθερή θέση δεξιού τοίχου
 let WALL_WIDTH = 50;   // Νέο πλάτος τοίχου
 let MIDDLE_WALL_X= 4000;
+
 let obstacles = []; // Δήλωση πίνακα για τα εμπόδια
 
 let npcActivated = false; // Αρχικά ο NPC είναι ανενεργός
@@ -45,6 +46,7 @@ let tvSound;
 let secretRoomStartX = 12000; // Θέση έναρξης του secret room στον άξονα X
 let secretRoomWidth = 10000;  // Πλάτος του secret room
 let NEW_WALL_X = 11900; // Θέση του νέου τοίχου στον άξονα X
+//let FIRST_WALL_SECRET=13900;
 let NEW_WALL_X2 = 22000; // Θέση του νέου τοίχου στον άξονα X
 
 let audioStarted = false; // Έναρξη ήχου
@@ -168,23 +170,23 @@ function draw() {
 function drawWater() {
   // Βασικές ρυθμίσεις για το νερό
   let waveHeight = 20; // Ύψος κυμάτων
-  let waveFrequency = 0.03; // Συχνότητα κυμάτων
+  let waveFrequency = 0.02; // Συχνότητα κυμάτων
   let waveSpeed = 2; // Ταχύτητα κυμάτων
 
   // Χρώμα και διαφάνεια νερού
   fill(0, 0, 255, 180);
-  rect(secretRoomStartX + 200, height - PLATFORM_HEIGHT, secretRoomWidth-500, PLATFORM_HEIGHT);
+  rect(secretRoomStartX-51 , height-50 - PLATFORM_HEIGHT, secretRoomWidth-410, PLATFORM_HEIGHT+50);
 
   // Σχεδίαση κυμάτων στην επιφάνεια
   fill(135, 206, 250, 100); // Ανοιχτό μπλε για κύματα
   noStroke();
   beginShape();
-  for (let x = secretRoomStartX+200; x <= secretRoomStartX+secretRoomWidth-300; x += 10) {
-      let y = height - PLATFORM_HEIGHT + Math.sin((x + frameCount * waveSpeed) * waveFrequency) * waveHeight;
+  for (let x = secretRoomStartX; x <= secretRoomStartX+51+secretRoomWidth-500; x += 100) {
+      let y = height - PLATFORM_HEIGHT-50+ Math.sin((x + frameCount * waveSpeed) * waveFrequency) * waveHeight;
       vertex(x, y);
   }
-  vertex(secretRoomWidth-500, height - PLATFORM_HEIGHT); // Κλείσιμο δεξιά
-  vertex(secretRoomStartX+200, height - PLATFORM_HEIGHT); // Κλείσιμο αριστερά
+  vertex(secretRoomStartX + 51 +secretRoomWidth-500, height - PLATFORM_HEIGHT-50); // Κλείσιμο δεξιά
+  vertex(secretRoomStartX-51, height - PLATFORM_HEIGHT-50); // Κλείσιμο αριστερά
   endShape(CLOSE);
 }
 
@@ -252,9 +254,12 @@ updateBats(bats); // Ενημέρωση των νυχτερίδων
 drawBats(bats); // Σχεδίαση των νυχτερίδων
 
 
-updatePlatforms(platforms); // Ενημέρωση των πλατφορμών
+updatePlatforms(platforms); 
   Platform.drawPlatforms(platforms);
-  Platform.drawPlatforms(platforms); // Σχεδίαση πλατφορμών
+ 
+  Platform.drawPlatforms(platforms); // Σχεδίαση πλατφορμών//
+  
+
   for (let obstacle of obstacles) {
     if (typeof obstacle.update === "function") {
         obstacle.update(); // Ενημέρωση αν έχει λογική κίνησης
@@ -339,6 +344,11 @@ function checkWallCollision() {
 if (player.x + player.width > NEW_WALL_X2) {
   player.x = NEW_WALL_X2 - player.width; // Σταματάει στον δεξιό τοίχο
 }
+
+// // Έλεγχος για τον Πρωτο τοίχο μέσα στο secret room
+// if (player.x + player.width > FIRST_WALL_SECRET) {
+//   player.x = FIRST_WALL_SECRET - player.width; // Σταματάει στον δεξιό τοίχο
+// }
 
 }
 

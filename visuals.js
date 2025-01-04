@@ -998,12 +998,17 @@ function drawWalls() {
  // Ρεαλιστική πόρτα με πόμολο αριστερά
  drawElegantDoor(MIDDLE_WALL_X-55 , height / 2 +160);
 
-   // Νέος τοίχος
+   // Αρχικό τοίχος secretRoom
    fill(60, 60, 60);
    rect(NEW_WALL_X, 0,WALL_WIDTH, height);
 
+  //  //Πρώτο Τοιχος secreRoom
+  //  fill(60,60,60);
+  //  rect(FIRST_WALL_SECRET, height/2, 20, height / 2 + 165); // Πάνω μέρος
+   //rect(FIRST_WALL_SECRET, (height / 2 )-300, 20, height / 2 -200); // Κάτω μέρος
 
 
+//Τελικος τοιχος secreRoom
    fill(60, 60, 60);
    rect(NEW_WALL_X2, 0,WALL_WIDTH, height);
 

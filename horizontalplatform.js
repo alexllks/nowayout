@@ -5,6 +5,7 @@ class HorizontalPlatform extends Platform {
         this.xEnd = xEnd;
         this.speed = speed;
         this.direction = 1; // 1 = right, -1 = left
+        this.height=20;
     }
 
     update() {
