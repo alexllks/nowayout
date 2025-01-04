@@ -114,6 +114,9 @@ function setup() {
   initializeNPCs(); // Δημιουργία NPCs
   platforms = Platform.createPlatforms();
 
+
+ 
+
   // Προτροπή στον χρήστη να κάνει κλικ για τον ήχο
   textSize(20);
   fill(255);
@@ -234,6 +237,18 @@ function playGame() {
   drawSignBoard2(270, height - PLATFORM_HEIGHT - 210); // Θέση 2ης πινακίδας
   drawSignBoard3(1590, height - PLATFORM_HEIGHT - 210);
   drawCosmicDoor(secretRoomStartX + secretRoomWidth - 215, height - 200);
+  drawSpikes();
+
+  // Έλεγχος σύγκρουσης με καρφιά
+  if (checkSpikeCollision(player)) {
+      console.log("Ο παίκτης χτύπησε σε καρφιά!");
+      gameState = "gameover"; // Ορισμός της κατάστασης σε "gameover"
+      isGameOver = true;
+      //resetPlayerPosition(); // Επιστροφή παίκτη στην αρχή
+  }
+
+
+
 
   if (
     !npcActivated &&
@@ -249,14 +264,13 @@ if (npcActivated) {
     drawNPCs();
 }
 
-
 updateBats(bats); // Ενημέρωση των νυχτερίδων
 drawBats(bats); // Σχεδίαση των νυχτερίδων
 
 
 updatePlatforms(platforms); 
   Platform.drawPlatforms(platforms);
- 
+
   Platform.drawPlatforms(platforms); // Σχεδίαση πλατφορμών//
   
 
@@ -312,6 +326,14 @@ updatePlatforms(platforms);
   currentLevel = 0;
  }
 }
+
+
+let spikes = []; // Πίνακας για τα καρφιά
+
+
+
+
+
 
 
 function enterSecretRoom() {

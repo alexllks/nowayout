@@ -6,7 +6,7 @@ class Player {
     this.height = 0;
     this.speed = 10;
     this.velocityY = 0;
-    this.gravity = 0.1;
+    this.gravity = 0.6;
 
     // Καταστάσεις του παίκτη
     this.isLeft = false;
@@ -36,10 +36,7 @@ class Player {
         this.x -= this.speed;
         
 
-//    // Έλεγχος σύγκρουσης με τον νέο τοίχο (από δεξιά)
-//    if (this.x <= NEW_WALL_X + 50 && this.x + this.width / 2 > NEW_WALL_X) {
-//     this.x = NEW_WALL_X + 50; // Σταματάει δεξιά από τον τοίχο
-// }
+
 
         footstepSound.setVolume(0.3); // Ένταση βημάτων
 
@@ -91,24 +88,46 @@ class Player {
         footstepSound.setVolume(0); // Σίγαση όταν σταματά
     }
 
-  
+    
+
 
     // Έλεγχος για σύγκρουση με πλατφόρμες
     
     for (let platform of platforms) {
-      if (
+      
+      if (platform instanceof FloatingPlatform){
+        if (
           this.x + this.width  > platform.x &&
-          this.x - this.width-10  < platform.x + platform.width &&
+          this.x - this.width  < platform.x + platform.width &&
           this.y + this.height >= platform.y &&
           this.y + this.height <= platform.y + Math.abs(this.velocityY + 5)
-      ) {
+      ){
+       
           onPlatform = true;
           this.y = platform.y - this.height;
           this.velocityY = 0;
           this.canJump = true;
           this.isFalling = false;
-          
+
       }
+    }
+    else{
+
+      if (
+          this.x + this.width  > platform.x+35 &&
+          this.x - this.width  < platform.x + platform.width-35 &&
+          this.y + this.height >= platform.y &&
+          this.y + this.height <= platform.y + Math.abs(this.velocityY + 5)
+      ) {
+        
+          onPlatform = true;
+          this.y = platform.y - this.height;
+          this.velocityY = 0;
+          this.canJump = true;
+          this.isFalling = false;
+
+      }
+    }
   // Έλεγχος από τα αριστερά
     if (
         this.x + this.width > platform.x &&
@@ -129,62 +148,7 @@ class Player {
     this.x = platform.x + platform.width+10; // Σταθεροποίηση δεξιά της πλατφόρμας
   }
 
- 
-      //  if (
-      //   this.x + this.width > platform.x &&
-      //   this.x <= platform.x &&
-      //   this.y + this.height > platform.y &&
-      //   this.y < platform.y + platform.height
-      // ) {
-        
-      //   this.x = platform.x - this.width+25; // Σταθεροποίηση αριστερά της πλατφόρμας
-      // }
-
-      // // Έλεγχος από τα δεξιά
-      // if (
-      //   this.x < platform.x + platform.width &&
-      //   this.x + this.width >= platform.x + platform.width &&
-      //   this.y + this.height > platform.y &&
-      //   this.y < platform.y + platform.height
-      // ) {
-      //   this.x = platform.x + platform.width+10; // Σταθεροποίηση δεξιά της πλατφόρμας
-      // }
-
-    //   // Έλεγχος από κάτω
-    //   if (
-    //     this.x + this.width > platform.x &&
-    //     this.x < platform.x + platform.width &&
-    //     this.y >= platform.y + platform.height &&
-    //     this.y <= platform.y + platform.height + Math.abs(this.velocityY)
-    //   ) {
-    //     this.y = platform.y + platform.height; // Σταθεροποίηση κάτω από την πλατφόρμα
-    //     this.velocityY = 0;
-    //   }
-      }
-
- // Έλεγχος σύγκρουσης με floating platforms
-  // for (let floatingPlatform of floatingPlatforms) {
-  //   if (
-  //     this.x + this.width > floatingPlatform.x &&
-  //     this.x < floatingPlatform.x + floatingPlatform.width &&
-  //     this.y + this.height >= floatingPlatform.y &&
-  //     this.y + this.height <= floatingPlatform.y + Math.abs(this.velocityY)
-  //   ) {
-  //     onPlatform = true;
-  //     this.y = floatingPlatform.y - this.height;
-  //     this.velocityY = 0;
-  //     this.isFalling = false;
-  //     this.canJump = true;
-  //     break;
-  //   }
-  // }
-
-  
-
-  
-    
-
-
+  }
 
     for (let stair of stairs) {
         for (let i = 0; i < stair.steps; i++) {
@@ -230,7 +194,7 @@ class Player {
     }
 
         // Εμφάνιση συντεταγμένων στην κονσόλα
-        console.log(`Player coordinates: x=${this.x}, y=${this.y}`);
+        //console.log(`Player coordinates: x=${this.x}, y=${this.y}`);
 }
 
   show() {

@@ -12,7 +12,17 @@ class Platform {
       console.assert(this.y % 1 === 0, 'Η θέση y της πλατφόρμας δεν είναι ακέραια:', this.y);
 
     }
+
+
     static createPlatforms() {
+      const platforms = [];
+      platforms.push(...Platform.createStaticPlatforms());
+      platforms.push(...FloatingPlatform.createFloatingPlatforms());
+      platforms.push(...HorizontalPlatform.createHorizontalPlatforms());
+      return platforms;
+  }
+  
+    static createStaticPlatforms() {
       let platforms = [];
       let numPlatforms = Math.ceil(width / PLATFORM_WIDTH); // Υπολογισμός πλήθους πλατφορμών
   
@@ -33,12 +43,14 @@ class Platform {
       // Συγκεκριμένες θέσεις πλατφορμών
       const specificPlatformPositions = [
         { x: secretRoomStartX - 20 , y: height - PLATFORM_HEIGHT - 100, width: 100,height:20 },
-        { x: secretRoomStartX + 100, y: height - PLATFORM_HEIGHT - 200, width: 150 ,height:20},
-        { x: secretRoomStartX + 200, y: height - PLATFORM_HEIGHT - 200, width: 250,height:20},
+        //{ x: secretRoomStartX + 50, y: height - PLATFORM_HEIGHT - 200, width: 150 ,height:20},
+        { x: secretRoomStartX + 200, y: height - PLATFORM_HEIGHT - 200, width: 100,height:20},
+        { x: secretRoomStartX + 150, y: height - PLATFORM_HEIGHT - 300, width: 50,height:20 },
         { x: secretRoomStartX + 400, y: height - PLATFORM_HEIGHT - 400, width: 200,height:20 },
-        { x: secretRoomStartX + 150, y: height - PLATFORM_HEIGHT - 300, width: 100,height:20 },
+    
         { x: secretRoomStartX + 1500, y: height - PLATFORM_HEIGHT - 300, width: 100,height:20 },
-        { x: secretRoomStartX + 3000, y: height - PLATFORM_HEIGHT - 300, width: 1000,height:1000 },
+        { x: secretRoomStartX + 3000, y: height - PLATFORM_HEIGHT - 300, width: 500,height:1000 },
+        { x: secretRoomStartX + 3550, y: height - PLATFORM_HEIGHT - 300, width: 500,height:1000 },
 
 
 
@@ -59,6 +71,7 @@ class Platform {
         platforms.push(new Platform(pos.x, pos.y, pos.width,pos.height));
       }
 
+      
 
       // Συγκεκριμένες θέσεις περιστρεφόμενων λεπίδων
       const specificBladePositions = [
@@ -76,36 +89,36 @@ class Platform {
 
 
 
-      // // Reduce floating platforms
-      const floatingPlatformPositions = [
-        { x: 600, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300 },
-        { x: secretRoomStartX + 1400, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300 },
-        { x: secretRoomStartX + 1800, yStart: height - PLATFORM_HEIGHT - 130, yEnd: height - PLATFORM_HEIGHT - 300 },
-        //{ x: secretRoomStartX + 700, yStart: height - PLATFORM_HEIGHT - 200, yEnd: height - PLATFORM_HEIGHT - 400 },
-        //{ x: secretRoomStartX + 1100, yStart: height - PLATFORM_HEIGHT - 250, yEnd: height - PLATFORM_HEIGHT - 450 },
-        // Πρόσθεσε κι άλλες πλατφόρμες όπως χρειάζεται
-      ];
+      // // // Reduce floating platforms
+      // const floatingPlatformPositions = [
+      //   { x: 600, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300 },
+      //   { x: secretRoomStartX + 1400, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300 },
+      //   { x: secretRoomStartX + 1800, yStart: height - PLATFORM_HEIGHT - 130, yEnd: height - PLATFORM_HEIGHT - 300 },
+      //   //{ x: secretRoomStartX + 700, yStart: height - PLATFORM_HEIGHT - 200, yEnd: height - PLATFORM_HEIGHT - 400 },
+      //   //{ x: secretRoomStartX + 1100, yStart: height - PLATFORM_HEIGHT - 250, yEnd: height - PLATFORM_HEIGHT - 450 },
+      //   // Πρόσθεσε κι άλλες πλατφόρμες όπως χρειάζεται
+      // ];
 
-      // Δημιουργία των πλατφορμών
-      for (let pos of floatingPlatformPositions) {
-        platforms.push(new FloatingPlatform(pos.x, pos.yStart, pos.yEnd, 50, 2));
-      }
+      // // Δημιουργία των πλατφορμών
+      // for (let pos of floatingPlatformPositions) {
+      //   platforms.push(new FloatingPlatform(pos.x, pos.yStart, pos.yEnd, 50, 2));
+      // }
 
 
-            // // Reduce floating platforms
-            const horizontalPlatformPositions = [
-              { xStart: secretRoomStartX + 500, xEnd: secretRoomStartX + 900, y:500, width:200, speed:3 },
-              { xStart: secretRoomStartX + 2300, xEnd:secretRoomStartX + 2800, y:300, width:200, speed:3 }
-              //{ x: secretRoomStartX + 700, yStart: height - PLATFORM_HEIGHT - 200, yEnd: height - PLATFORM_HEIGHT - 400 },
-              //{ x: secretRoomStartX + 1100, yStart: height - PLATFORM_HEIGHT - 250, yEnd: height - PLATFORM_HEIGHT - 450 },
-              // Πρόσθεσε κι άλλες πλατφόρμες όπως χρειάζεται
-            ];
+            // // // Reduce floating platforms
+            // const horizontalPlatformPositions = [
+            //   { xStart: secretRoomStartX + 500, xEnd: secretRoomStartX + 900, y:500, width:200, speed:3 },
+            //   { xStart: secretRoomStartX + 2300, xEnd:secretRoomStartX + 2800, y:300, width:200, speed:3 }
+            //   //{ x: secretRoomStartX + 700, yStart: height - PLATFORM_HEIGHT - 200, yEnd: height - PLATFORM_HEIGHT - 400 },
+            //   //{ x: secretRoomStartX + 1100, yStart: height - PLATFORM_HEIGHT - 250, yEnd: height - PLATFORM_HEIGHT - 450 },
+            //   // Πρόσθεσε κι άλλες πλατφόρμες όπως χρειάζεται
+            // ];
       
-            // Δημιουργία των πλατφορμών
-            for (let pos of horizontalPlatformPositions) {
-              platforms.push(new HorizontalPlatform(pos.xStart, pos.xEnd,pos.y, pos.width,pos.speed));
-             // xStart, xEnd, y, width, speed
-            }
+            // // Δημιουργία των πλατφορμών
+            // for (let pos of horizontalPlatformPositions) {
+            //   platforms.push(new HorizontalPlatform(pos.xStart, pos.xEnd,pos.y, pos.width,pos.speed));
+            //  // xStart, xEnd, y, width, speed
+            // }
       
 
         // Συγκεκριμένες θέσεις και χαρακτηριστικά για τις νυχτερίδες

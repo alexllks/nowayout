@@ -19,6 +19,27 @@ class FloatingPlatform extends Platform {
         fill(100, 150, 255); // Blue color
         rect(this.x, this.y, this.width*2, this.height);
     }
+
+    static createFloatingPlatforms() {
+        const platforms = [];
+
+            // // Reduce floating platforms
+      const floatingPlatformPositions = [
+        { x: 600, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300 },
+        { x: secretRoomStartX + 1400, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300 },
+        { x: secretRoomStartX + 1800, yStart: height - PLATFORM_HEIGHT - 130, yEnd: height - PLATFORM_HEIGHT - 300 },
+        //{ x: secretRoomStartX + 700, yStart: height - PLATFORM_HEIGHT - 200, yEnd: height - PLATFORM_HEIGHT - 400 },
+        //{ x: secretRoomStartX + 1100, yStart: height - PLATFORM_HEIGHT - 250, yEnd: height - PLATFORM_HEIGHT - 450 },
+        // Πρόσθεσε κι άλλες πλατφόρμες όπως χρειάζεται
+      ];
+
+      // Δημιουργία των πλατφορμών
+      for (let pos of floatingPlatformPositions) {
+        platforms.push(new FloatingPlatform(pos.x, pos.yStart, pos.yEnd, 50, 2));
+      }
+
+      return platforms;
+    }
 }
 
 

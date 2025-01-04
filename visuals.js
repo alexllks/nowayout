@@ -79,7 +79,19 @@ let scaryObjects = [
 
 ];
 
+let Spikes = [
+  { x: 15565, y: 256, width: 200, height: 20 },
+  { x: 15245, y: 256, width: 200, height: 20 }
+];
 
+
+
+
+// function resetPlayerPosition() {
+//   player.x = 100; // Αρχική θέση X
+//   player.y = height - PLATFORM_HEIGHT - player.height; // Αρχική θέση Y
+//   player.velocityY = 0; // Επαναφορά ταχύτητας
+// }
 
 
 function drawScaryObjects() {
@@ -183,6 +195,39 @@ function drawScaryObjects() {
     ellipse(x + 50 * scale, y - 80 * scale, 10 * scale, 10 * scale);
 }
 
+
+
+function drawSpikes() {
+  for (let spike of Spikes) {
+      drawSpikeRow(spike.x, spike.y, spike.width, spike.height);
+  }
+}
+
+function drawSpikeRow(x, y, width, height) {
+  fill(150);
+  noStroke();
+  for (let i = 0; i < width; i += 10) {
+      triangle(
+          x + i, y,                 // Αριστερή κορυφή
+          x + i + 5, y - height,    // Κορυφή τριγώνου
+          x + i + 10, y             // Δεξιά κορυφή
+      );
+  }
+}
+
+function checkSpikeCollision(player) {
+  for (let spike of Spikes) {
+      if (
+          player.x + player.width > spike.x &&
+          player.x < spike.x + spike.width &&
+          player.y + player.height >= spike.y &&
+          player.y < spike.y + spike.height
+      ) {
+          return true; // Επιστροφή αν υπάρχει σύγκρουση
+      }
+  }
+  return false;
+}
 
   function drawRealisticSofa(x, y) {
     const scale =0.4; // Κλίμακα για το μέγεθος
