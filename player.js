@@ -4,7 +4,7 @@ class Player {
     this.y = height - PLATFORM_HEIGHT - 60;
     this.width = 40;
     this.height = 0;
-    this.speed = 10;
+    this.speed = 30;
     this.velocityY = 0;
     this.gravity = 0.6;
 
@@ -18,6 +18,19 @@ class Player {
   }
 
   update() {
+
+    if (noclipMode) {
+      // Ελεύθερη κίνηση χωρίς φυσική
+      if (keyIsDown(LEFT_ARROW)) this.x -= this.speed;
+      if (keyIsDown(RIGHT_ARROW)) this.x += this.speed;
+      if (keyIsDown(UP_ARROW)) this.y -= this.speed;
+      if (keyIsDown(DOWN_ARROW)) this.y += this.speed;
+
+      // Απενεργοποιούμε τη φυσική και επιστρέφουμε
+      return;
+  } else {
+
+    
     let stepTimer = 0; // Μετρητής για τα καρέ μεταξύ των βημάτων
   // Έλεγχος αν βρίσκεται σε πλατφόρμα ή σκάλα
   let onPlatform = false;
@@ -190,7 +203,7 @@ class Player {
         this.velocityY = -15; // Ταχύτητα προς τα πάνω
         this.canJump = false;
 
-        
+    }
     }
 
         // Εμφάνιση συντεταγμένων στην κονσόλα

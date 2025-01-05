@@ -49,19 +49,68 @@ class Platform {
         { x: secretRoomStartX + 400, y: height - PLATFORM_HEIGHT - 400, width: 200,height:20 },
     
         { x: secretRoomStartX + 1500, y: height - PLATFORM_HEIGHT - 300, width: 100,height:20 },
+        
+        { x: 14100, y: height - 1000, width: 50,height:600 }, // upper wall before horizontal
+        { x: 14075, y:  height - 160, width: 100,height:200 }, //big platform before horizontal
+        { x: secretRoomStartX + 2250, y: height - PLATFORM_HEIGHT - 150, width: 150,height:40 }, //platform before  horizontal 
+
         { x: secretRoomStartX + 3000, y: height - PLATFORM_HEIGHT - 300, width: 500,height:1000 },
-        { x: secretRoomStartX + 3550, y: height - PLATFORM_HEIGHT - 300, width: 500,height:1000 },
+
+        { x: secretRoomStartX + 3650, y: height - PLATFORM_HEIGHT - 300, width: 500,height:1000 },
+        { x: secretRoomStartX + 4100, y: height - PLATFORM_HEIGHT - 300, width: 600,height:50 }, //brigde
+        { x: secretRoomStartX + 4700, y: height - PLATFORM_HEIGHT - 300, width: 300,height:1000 },
+
+        { x: secretRoomStartX + 5200, y: height - PLATFORM_HEIGHT - 200, width: 80,height:30 },
+        { x: secretRoomStartX + 5400, y: height - PLATFORM_HEIGHT - 300, width: 80,height:30 },
+        { x: secretRoomStartX + 5600, y: height - PLATFORM_HEIGHT - 350, width: 80,height:30 },
+
+        { x: secretRoomStartX + 5800, y: height - PLATFORM_HEIGHT - 350, width: 300,height:30 }, //up small
+        { x: secretRoomStartX + 5750, y: height - PLATFORM_HEIGHT - 250, width: 400,height:30 }, //down big
+
+        { x: secretRoomStartX + 6250, y: height - PLATFORM_HEIGHT - 420, width: 80,height:270 }, //big wall
+        { x: secretRoomStartX + 6250, y: height - PLATFORM_HEIGHT - 72, width: 100,height:100 }, //down
+
+
+        { x: secretRoomStartX + 6700, y: height - PLATFORM_HEIGHT - 400, width:80 ,height:50 }, //platform after 3rd floating
+
+
+        { x: secretRoomStartX + 6900, y: height - PLATFORM_HEIGHT - 400, width: 40,height:500 }, // kolones 
+        { x: secretRoomStartX + 7050, y: height - PLATFORM_HEIGHT - 400, width: 40,height:500 }, // kolones
+        { x: secretRoomStartX + 7200, y: height - PLATFORM_HEIGHT - 400, width: 40,height:500 }, // kolones
+        { x: secretRoomStartX + 7350, y: height - PLATFORM_HEIGHT - 400, width: 40,height:500 }, // kolones
+        { x: secretRoomStartX + 7500, y: height - PLATFORM_HEIGHT - 400, width: 40,height:500 }, // kolones
+        { x: secretRoomStartX + 7650, y: height - PLATFORM_HEIGHT - 400, width: 40,height:500 }, // kolones
+        { x: secretRoomStartX + 7800, y: height - PLATFORM_HEIGHT - 400, width: 40,height:500 }, // kolones
+        { x: secretRoomStartX + 7950, y: height - PLATFORM_HEIGHT - 400, width: 40,height:500 }, // kolones
+
+
+        { x: secretRoomStartX + 8100, y: height - PLATFORM_HEIGHT - 200, width: 40,height:300 }, // kolones
+        { x: secretRoomStartX + 8250, y: height - PLATFORM_HEIGHT - 200, width: 40,height:300 }, // kolones
+        { x: secretRoomStartX + 8400, y: height - PLATFORM_HEIGHT - 200, width: 40,height:300 }, // kolones
+
+        { x: secretRoomStartX + 8600, y: height - PLATFORM_HEIGHT - 300, width: 100,height:50 },
+
+        
 
 
 
 
 
-        { x: 2200, y: height - 160, width: 120,height:50 },
-        { x: 21542, y: height - 160, width: 100,height:200 },
-        { x: 14100, y:  height - 160, width: 100,height:200 },
-        { x: 14100, y: height - 160, width: 50,height:400 },
-        { x: 14100, y: height - 1000, width: 50,height:600 },
-        { x: secretRoomStartX + 2200, y: height - PLATFORM_HEIGHT - 150, width: 150,height:40 },
+
+
+
+
+
+
+
+
+        { x: 2200, y: height - 160, width: 120,height:50 }, // platform at stairs
+  
+
+        //{ x: 14100, y: height - 160, width: 50,height:400 },
+
+        { x: 21542, y: height - 160, width: 100,height:200 }, // wall before door
+
   
         // Πρόσθεσε κι άλλες πλατφόρμες αν χρειάζεται
       ];
@@ -89,42 +138,11 @@ class Platform {
 
 
 
-      // // // Reduce floating platforms
-      // const floatingPlatformPositions = [
-      //   { x: 600, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300 },
-      //   { x: secretRoomStartX + 1400, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300 },
-      //   { x: secretRoomStartX + 1800, yStart: height - PLATFORM_HEIGHT - 130, yEnd: height - PLATFORM_HEIGHT - 300 },
-      //   //{ x: secretRoomStartX + 700, yStart: height - PLATFORM_HEIGHT - 200, yEnd: height - PLATFORM_HEIGHT - 400 },
-      //   //{ x: secretRoomStartX + 1100, yStart: height - PLATFORM_HEIGHT - 250, yEnd: height - PLATFORM_HEIGHT - 450 },
-      //   // Πρόσθεσε κι άλλες πλατφόρμες όπως χρειάζεται
-      // ];
-
-      // // Δημιουργία των πλατφορμών
-      // for (let pos of floatingPlatformPositions) {
-      //   platforms.push(new FloatingPlatform(pos.x, pos.yStart, pos.yEnd, 50, 2));
-      // }
-
-
-            // // // Reduce floating platforms
-            // const horizontalPlatformPositions = [
-            //   { xStart: secretRoomStartX + 500, xEnd: secretRoomStartX + 900, y:500, width:200, speed:3 },
-            //   { xStart: secretRoomStartX + 2300, xEnd:secretRoomStartX + 2800, y:300, width:200, speed:3 }
-            //   //{ x: secretRoomStartX + 700, yStart: height - PLATFORM_HEIGHT - 200, yEnd: height - PLATFORM_HEIGHT - 400 },
-            //   //{ x: secretRoomStartX + 1100, yStart: height - PLATFORM_HEIGHT - 250, yEnd: height - PLATFORM_HEIGHT - 450 },
-            //   // Πρόσθεσε κι άλλες πλατφόρμες όπως χρειάζεται
-            // ];
-      
-            // // Δημιουργία των πλατφορμών
-            // for (let pos of horizontalPlatformPositions) {
-            //   platforms.push(new HorizontalPlatform(pos.xStart, pos.xEnd,pos.y, pos.width,pos.speed));
-            //  // xStart, xEnd, y, width, speed
-            // }
-      
 
         // Συγκεκριμένες θέσεις και χαρακτηριστικά για τις νυχτερίδες
         const specificBatPositions = [
-          { x: secretRoomStartX + 1700, y: 150, range: 100, speed: 2 },
-          // { x: secretRoomStartX + 600, y: 200, range: 150, speed: 1.5 },
+          { x: secretRoomStartX + 1700, y: 150, range: 100, speed: 2 }, //1st bat
+           { x: secretRoomStartX + 6400, y: 200, range: 250, speed: 1.2 }, //2nd bat
           // { x: secretRoomStartX + 900, y: 250, range: 200, speed: 2.5 },
           // { x: secretRoomStartX + 1200, y: 180, range: 120, speed: 1.8 },
           // { x: secretRoomStartX + 1500, y: 300, range: 180, speed: 2.2 },

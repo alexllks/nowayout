@@ -8,22 +8,30 @@ let windowPositions = [
   
   { x: 140, y: 350 },  // Παράθυρο 2
   
-  { x: 2665, y: 97 }, // Παράθυρο 1
+  { x: 2780, y: 97 }, // Παράθυρο 1
   { x: 3263, y: 90 },  // Παράθυρο 2
   { x: 3739, y: 90 }, // Παράθυρο 3
-  { x: 5300, y: 350} //  Παράθυρο 4
+  //ALLAGI
+  { x: 9500, y: 350} //  Παράθυρο 4
+  //ALLAGI
 ];
 
+//ALLAGI
 let sofaPositions = [
-  {x:5350, y:555}
+  {x:9550, y:555}
 ];
-
+//ALLAGI
 
 let doors = [
-  { type: 'roomDoor', x: 2430, y: 417, roomNumber: 101 },
-  { type: 'roomDoor', x: 2770, y: 417, roomNumber: 102 },
-  { type: 'roomDoor', x: 4230, y: 417, roomNumber: 103 },
-  { type: 'roomDoor', x: 4950, y: 417, roomNumber: 104 },
+  { type: 'roomDoor', x: 3030, y: 417, roomNumber: 101 },
+  { type: 'roomDoor', x: 3865, y: 417, roomNumber: 102 },
+  { type: 'roomDoor', x: 6270, y: 417, roomNumber: 103 },
+  { type: 'roomDoor', x: 8430, y: 417, roomNumber: 104 },
+  
+  { type: 'roomDoor', x: 2550, y: 115, roomNumber: 110 },
+ 
+  { type: 'roomDoor', x: 3040, y: 115, roomNumber: 111 },
+  
  // { type: 'lockedDoor', x: 430, y: 435 }
 ];
 
@@ -46,6 +54,67 @@ let stairs = [
   { x: 1990, y: 540, steps: 7, stepWidth: 30, stepHeight: 21 },
   { x: 2289, y: 395, steps: 7, stepWidth: 30, stepHeight: 23 }
 ];
+let ReceptionDesk = [
+  { x: 2570, y: 500 } // Θέση της ρεσεψιόν
+];
+
+function drawReceptionDesk() {
+  for (let item of ReceptionDesk) {
+    drawReceptionDeskStructure(item.x, item.y);
+  }
+}
+
+function drawReceptionDeskStructure(x, y) {
+  let scale = 0.6;
+
+  // Βασικό σώμα γραφείου
+  fill(245, 222, 179); // Μπεζ χρώμα
+  rect(x, y, 300 * scale, 100 * scale, 10); // Κυρίως σώμα
+
+  // Διακοσμητικές γραμμές για μαρμάρινη υφή
+  stroke(210, 180, 140);
+  strokeWeight(1);
+  line(x + 20 * scale, y + 20 * scale, x + 280 * scale, y + 40 * scale);
+  line(x + 50 * scale, y + 60 * scale, x + 270 * scale, y + 80 * scale);
+  noStroke();
+
+  // Πινακίδα "RECEPTION"
+  fill(255, 223, 0); // Χρυσό χρώμα
+  rect(x + 120 * scale, y + 60 * scale, 60 * scale, 20 * scale, 5);
+  fill(0);
+  textSize(14);
+  textAlign(CENTER, CENTER);
+  text("RECEPTION", x + 150 * scale, y + 70 * scale);
+
+  // Επάνω μέρος του γραφείου
+  fill(139, 69, 19); // Καφέ χρώμα
+  rect(x, y - 20 * scale, 300 * scale, 20 * scale, 5);
+
+  // Οθόνη υπολογιστή
+  fill(20, 20, 120);
+  rect(x + 155 * scale, y - 60 * scale, 50 * scale, 40 * scale, 5); // Μεγαλύτερη οθόνη
+  
+  rect(x + 175 * scale, y - 20 * scale, 10 * scale, 5 * scale); // Βάση
+  fill(255, 255, 255, 80);
+  quad(
+    x + 15 * scale, y + 15 * scale,
+    x + 45 * scale, y + 15 * scale,
+    x + 35 * scale, y + 30 * scale,
+    x + 15 * scale, y + 30 * scale
+  );
+
+
+
+
+
+
+  // Κουδούνι
+  fill(255, 215, 0); // Ανοιχτό χρυσό χρώμα για κουδούνι
+  ellipse(x + 100 * scale, y - 30 * scale, 20 * scale, 20 * scale); // Σώμα κουδουνιού
+  fill(255, 240, 180);
+  ellipse(x + 100 * scale, y - 35 * scale, 10 * scale, 10 * scale); // Κορυφή κουδουνιού
+}
+
 
 
 let scaryObjects = [
@@ -69,14 +138,17 @@ let scaryObjects = [
   { type: 'bloodyHandprint', x: 2700, y: 450 },
     { type: 'bloodyHandprint', x: 2550, y: 450 },
 
-   
-    { type: 'g_painting', x: 4350, y: 415, width: 150, height: 200 },
-    { type: 'house_painting', x: 4595, y: 415, width: 150, height: 200 },
-    { type: 'painting', x: 4835, y: 415, width: 150, height: 200 },
+   //ALLAGI
+    { type: 'g_painting', x: 6755, y: 415, width: 150, height: 200 },
+    { type: 'house_painting', x: 7355, y: 415, width: 150, height: 200 },
+    //ALLAGI
+    { type: 'painting', x: 7960, y: 415, width: 150, height: 200 },
     { type: 'desk', x: 4500, y: 200 },
    // { type: 'sofa2', x: 700, y:500},
-    { type: 'ElegantChair', x: 4100, y:520}
-
+    { type: 'ElegantChair', x: 4100, y:520},
+    // {type:'ReceptionDesk', x: 4500, y: 500 }, // Κεντρικό γραφείο
+    // {type:'ReceptionDesk', x: 4480, y: 460 }, // Κουδούνι ρεσεψιόν
+    // {type:'ReceptionDesk', x: 4600, y: 450 }, // Λάμπα
 ];
 
 let Spikes = [
@@ -148,7 +220,9 @@ function drawScaryObjects() {
       drawCurtainRod(obj.x,obj.y,obj.width);
       } else if (obj.type === 'desk') {
       drawDesk(obj.x, obj.y);
-      } 
+      } else if( obj.type ==='ReceptionDesk'){
+        drawReceptionItem(obj.x,obj.y);
+      }
   }
   }
   function drawElegantChair(x, y) {
@@ -1035,11 +1109,15 @@ function drawWalls() {
   drawRealisticDoor(5, height - 170); // Αριστερή πόρτα
   drawRealisticDoor(RIGHT_WALL_X + 5, height - 170); // Δεξιά πόρτα
 
-  // Μεσαίος τοίχος με χαμηλότερο κενό
   fill(60, 60, 60);
-  rect(MIDDLE_WALL_X, 0, 20, height / 2 + 165); // Πάνω μέρος
-  rect(MIDDLE_WALL_X, height / 2 + 275, 20, height / 2 - 275); // Κάτω μέρος
 
+  rect(FIRST_WALL, 0, 20, height);
+ // Ρεαλιστική πόρτα με πόμολο αριστερά
+ drawRealisticDoor(FIRST_WALL , height / 2 +120);
+ drawRealisticDoor(FIRST_WALL , height / 4-40);
+
+
+  
  // Ρεαλιστική πόρτα με πόμολο αριστερά
  drawElegantDoor(MIDDLE_WALL_X-55 , height / 2 +160);
 
@@ -1047,6 +1125,8 @@ function drawWalls() {
    fill(60, 60, 60);
    rect(NEW_WALL_X, 0,WALL_WIDTH, height);
 
+
+   
   //  //Πρώτο Τοιχος secreRoom
   //  fill(60,60,60);
   //  rect(FIRST_WALL_SECRET, height/2, 20, height / 2 + 165); // Πάνω μέρος

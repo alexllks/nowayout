@@ -21,10 +21,15 @@ let playerImage;
 var gameState = "menu"; // Αρχικό μενού
 let currentLevel = 1;
 var isGameOver;
-let RIGHT_WALL_X = 7500; // Σταθερή θέση δεξιού τοίχου
-let WALL_WIDTH = 50;   // Νέο πλάτος τοίχου
-let MIDDLE_WALL_X= 4000;
 
+//GRAMMI 26 ALLAGI
+let RIGHT_WALL_X = 9370; // Σταθερή θέση δεξιού τοίχου
+//---------------------------------------------------------------
+
+let WALL_WIDTH = 50;   // Νέο πλάτος τοίχου
+
+let MIDDLE_WALL_X= 7240;
+let FIRST_WALL = 4675;
 let obstacles = []; // Δήλωση πίνακα για τα εμπόδια
 
 let npcActivated = false; // Αρχικά ο NPC είναι ανενεργός
@@ -58,7 +63,8 @@ let rainSoundActive = false; // Σημαία για την κατάσταση τ
 let npcFootstepSoundActive = false; // Σημαία για την κατάσταση του ήχου NPC
 
 
-let debugMode = true;
+let debugMode = false;
+let noclipMode = false; // Για το debug mode
 
 function preload() {
   soundFormats('mp3', 'ogg','wav'); // Ορισμός μορφών για συμβατότητα
@@ -233,11 +239,12 @@ function playGame() {
   drawBookshelfs();
   drawScaryObjects();
   drawSignBoard1(875, height - PLATFORM_HEIGHT - 210); // Νέες συντεταγμένες
-  drawSignBoard1(5450, height - PLATFORM_HEIGHT - 210); // Νέες συντεταγμένες
+  drawSignBoard1(9760, height - PLATFORM_HEIGHT - 210); // Νέες συντεταγμένες
   drawSignBoard2(270, height - PLATFORM_HEIGHT - 210); // Θέση 2ης πινακίδας
   drawSignBoard3(1590, height - PLATFORM_HEIGHT - 210);
   drawCosmicDoor(secretRoomStartX + secretRoomWidth - 215, height - 200);
   drawSpikes();
+  drawReceptionDesk();
 
   // Έλεγχος σύγκρουσης με καρφιά
   if (checkSpikeCollision(player)) {
@@ -332,7 +339,12 @@ let spikes = []; // Πίνακας για τα καρφιά
 
 
 
-
+function keyPressed() {
+  if (key === 'n' || key === 'N') {
+      noclipMode = !noclipMode; // Εναλλαγή noclip mode
+      console.log("Noclip Mode: " + (noclipMode ? "Activated" : "Deactivated"));
+  }
+}
 
 
 
