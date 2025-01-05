@@ -27,7 +27,7 @@ function drawFloodingWater(startX, startY, isAnomaly) {
 
 function setupRoom() {
   // Λίστα ανωμαλιών με βάρη
-  const anomalies = ["sofa", "fridge", "kitchen", "table","mirror", "doll", "TV", "Bookshelf","radio", "ghost", "ghost", "ghost" ];
+  const anomalies = ["sofa", "fridge", "kitchen", "table","mirror", "doll", "TV", "Bookshelf","radio", "ghost","none","none" ];
   // Το "ghost" εμφανίζεται περισσότερες φορές για να έχει μεγαλύτερη πιθανότητα
 
 
@@ -48,18 +48,18 @@ function setupRoom() {
       { x: 3790, y: height - 100, type: 'mirror', isAnomaly: false },
       { x: 3470, y: height - 355, type: 'doll', isAnomaly: false, speed: 2, direction: 1},
       { x: 190, y: height - 20, type: 'sofa', isAnomaly: false },
-      { x: 4150, y: height - 320, type: 'fridge', isAnomaly: false },
-      { x: 4260, y: height - 350, type: 'kitchen', isAnomaly: false },
-      { x: 3520, y: height - 365, type: 'table', isAnomaly:false},
-      { x: 3530, y: height - 410, type: 'TV', isAnomaly:false},
+      { x: 5340, y: height - 320, type: 'fridge', isAnomaly: false },
+      { x: 4980, y: height - 350, type: 'kitchen', isAnomaly: false },
+      { x: 5610, y: height - 81, type: 'table', isAnomaly:false},
+      { x: 5555, y: height - 410, type: 'TV', isAnomaly:false},
       { x: 3150, y: height -140, type: 'Bookshelf', isAnomaly:false},
       
 
      // { x: 800, y: height - 30, type: 'cart', isAnomaly: false },
-     { x: 3500, y: height - 81, type: 'table', isAnomaly: false },
+     { x: 5545, y: height - 365, type: 'table', isAnomaly: false },
      // { x: 1220, y: height - 30, type: 'lamp', isAnomaly: false },
-      { x: 3500, y: height - 330, type: 'chair', isAnomaly: false },
-      { x: 3625, y: height - 330, type: 'chair', isAnomaly: false },
+      { x: 5530, y: height - 330, type: 'chair', isAnomaly: false },
+      { x: 5650, y: height - 330, type: 'chair', isAnomaly: false },
       { x: 2620, y: height - 200, type: 'Painting', isAnomaly: false },
       { x: 2650, y: height - 20, type: 'sofa2', isAnomaly: false },
       { x: 2910, y: height - 20, type: 'fridge2', isAnomaly: false },

@@ -30,6 +30,7 @@ let WALL_WIDTH = 50;   // Νέο πλάτος τοίχου
 
 let MIDDLE_WALL_X= 7240;
 let FIRST_WALL = 4675;
+let SECOND_WALL = 5890;
 let obstacles = []; // Δήλωση πίνακα για τα εμπόδια
 
 let npcActivated = false; // Αρχικά ο NPC είναι ανενεργός
@@ -229,7 +230,11 @@ function playGame() {
   drawWallLights();
   drawGhosts();
   drawObjects();
-  drawDoor();
+
+
+  //drawDoor();
+  drawCosmicDoor(1800,420);
+  
   drawWalls();
   checkWallCollision();
   drawNoSmokingSign(); // Σχεδίαση σήματος "No Smoking"

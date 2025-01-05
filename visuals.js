@@ -152,7 +152,7 @@ let scaryObjects = [
 ];
 
 let Spikes = [
-  { x: 15565, y: 256, width: 200, height: 20 },
+  { x: 15750, y: 256, width: 200, height: 20 },
   { x: 15245, y: 256, width: 200, height: 20 }
 ];
 
@@ -960,7 +960,7 @@ function displayScore(score) {
 
     // Κατακόρυφες ξύλινες σανίδες
     fill(50, 30, 20); // Σκούρο καφέ
-    for (let x = 0; x < PLATFORM_WIDTH; x += 120) {
+    for (let x = 0; x < secretRoomStartX; x += 120) {
         rect(x, 0, 20, height); // Σανίδες κάθε 120 pixels
     }
 
@@ -1115,6 +1115,15 @@ function drawWalls() {
  // Ρεαλιστική πόρτα με πόμολο αριστερά
  drawRealisticDoor(FIRST_WALL , height / 2 +120);
  drawRealisticDoor(FIRST_WALL , height / 4-40);
+
+
+ fill(60, 60, 60);
+
+ rect(SECOND_WALL, 0, 20, height);
+// Ρεαλιστική πόρτα με πόμολο αριστερά
+drawRealisticDoor(SECOND_WALL , height / 2 +120);
+drawRealisticDoor(SECOND_WALL , height / 4-40);
+
 
 
   
