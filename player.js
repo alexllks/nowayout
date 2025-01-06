@@ -1,6 +1,6 @@
 class Player {
   constructor() {
-    this.x = 100;
+    this.x = 730;
     this.y = height - PLATFORM_HEIGHT - 60;
     this.width = 40;
     this.height = 0;
@@ -207,7 +207,7 @@ class Player {
     }
 
         // Εμφάνιση συντεταγμένων στην κονσόλα
-        //console.log(`Player coordinates: x=${this.x}, y=${this.y}`);
+        console.log(`Player coordinates: x=${this.x}, y=${this.y}`);
 }
 
   show() {

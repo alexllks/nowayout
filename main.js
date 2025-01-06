@@ -21,7 +21,6 @@ let playerImage;
 var gameState = "menu"; // Αρχικό μενού
 let currentLevel = 1;
 var isGameOver;
-
 //GRAMMI 26 ALLAGI
 let RIGHT_WALL_X = 9370; // Σταθερή θέση δεξιού τοίχου
 //---------------------------------------------------------------
@@ -31,6 +30,7 @@ let WALL_WIDTH = 50;   // Νέο πλάτος τοίχου
 let MIDDLE_WALL_X= 7240;
 let FIRST_WALL = 4675;
 let SECOND_WALL = 5890;
+let THIRD_WALL = 2540;
 let obstacles = []; // Δήλωση πίνακα για τα εμπόδια
 
 let npcActivated = false; // Αρχικά ο NPC είναι ανενεργός
@@ -40,6 +40,8 @@ let lights = []; // Φωτισμός
 var lightToggleTime = 0; // Χρόνος για αναβόσβημα
 
 let enemy;
+let showCosmicDoor1 = false;
+
 let battleStartTime;
 
 let npcs = []; // Λίστα NPCs
@@ -54,6 +56,7 @@ let secretRoomWidth = 10000;  // Πλάτος του secret room
 let NEW_WALL_X = 11900; // Θέση του νέου τοίχου στον άξονα X
 //let FIRST_WALL_SECRET=13900;
 let NEW_WALL_X2 = 22000; // Θέση του νέου τοίχου στον άξονα X
+
 
 let audioStarted = false; // Έναρξη ήχου
 
@@ -70,6 +73,9 @@ let noclipMode = false; // Για το debug mode
 function preload() {
   soundManager = new SoundManager();
   soundManager.load('rain', 'assets/sounds/rain.wav');
+  soundManager.load('bats', 'assets/sounds/bats.wav');
+  soundManager.load('cosmicdoor', 'assets/sounds/cosmicdoor.wav');
+  soundManager.load('waters', 'assets/sounds/waters.mp3');
 
   
   soundFormats('mp3', 'ogg','wav'); // Ορισμός μορφών για συμβατότητα
@@ -126,8 +132,13 @@ function setup() {
   platforms = Platform.createPlatforms();
 
 
- 
 
+
+
+  // Πιθανότητα εμφάνισης της πόρτας
+  showCosmicDoor1 = random() < 0.3;
+ // Debug: Εκτύπωση της τιμής της `showCosmicDoor1`
+ console.log("Show Cosmic Door 1:", showCosmicDoor1);
   // Προτροπή στον χρήστη να κάνει κλικ για τον ήχο
   textSize(20);
   fill(255);
@@ -206,7 +217,7 @@ function drawWater() {
 
 function checkWaterCollision(player) {
   if (player.x >= secretRoomStartX + 200 && player.y + player.height >= height - PLATFORM_HEIGHT) {
-    if(player.x<=secretRoomStartX+secretRoomWidth-300){
+    if(player.x<=secretRoomStartX+secretRoomWidth-400){
       console.log("Ο παίκτης έπεσε στο νερό!");
       // isGameOver = true; // Ορισμός της κατάστασης "game over
     
@@ -237,8 +248,16 @@ function playGame() {
 
 
   //drawDoor();
-  drawCosmicDoor(1800,420);
-  
+   // Σχεδίαση της πρώτης Cosmic Door
+   if (showCosmicDoor1) {
+     // Debug: Εκτύπωση της τιμής της `showCosmicDoor1`
+     console.log("Show Cosmic Door 1:", showCosmicDoor1);
+    drawCosmicDoor(3400, 370);
+} else {
+  console.log("Cosmic Door 1 not shown.");
+}
+checkCosmicDoorSound(player,showCosmicDoor1);
+ 
   drawWalls();
   checkWallCollision();
   drawNoSmokingSign(); // Σχεδίαση σήματος "No Smoking"
@@ -252,6 +271,7 @@ function playGame() {
   drawSignBoard2(270, height - PLATFORM_HEIGHT - 210); // Θέση 2ης πινακίδας
   drawSignBoard3(1590, height - PLATFORM_HEIGHT - 210);
   drawCosmicDoor(secretRoomStartX + secretRoomWidth - 215, height - 200);
+ // checkCosmicSecretDoorSound(player);
   drawSpikes();
   drawReceptionDesk();
 
@@ -309,7 +329,7 @@ updatePlatforms(platforms);
     checkExit(true); // Έξοδος από αριστερά
   } 
  checkCosmicDoorInteraction(player);
- checkDoorInteraction(player); // Έλεγχος για άνοιγμα πόρτας
+ checkDoorInteraction(player,showCosmicDoor1); // Έλεγχος για άνοιγμα πόρτας
 
  
  // Εμφάνιση μηνύματος αν ο παίκτης είναι κοντά στην πόρτα
@@ -373,9 +393,15 @@ function keyPressed() {
 function enterSecretRoom() {
   //soundManager.stopAllSounds(); // Σταματάει όλους τους ήχους
   stopAllSounds();
+  soundManager.play('bats', true, 0.5); // Έναρξη του ήχου νυχτερίδων
+  soundManager.play('waters', true, 0.8); // Ένταση στο 80%
+
+  
+
   // Μεταφορά του παίκτη στη νέα θέση
   player.x = secretRoomStartX; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο
   player.y = 240;
+  
   // Απελευθέρωση του flag μετά τη μετάβαση
   setTimeout(() => {
     isTransitioning = false; // Επαναφορά του flag
@@ -513,7 +539,7 @@ function checkExit(isBackExit) {
           gameState = "gameover";
       } else {
           setupRoom(); // Επαναφορά σκηνής για το νέο επίπεδο
-          player.x = 100; // Επαναφορά παίκτη
+          player.x = 730; // Επαναφορά παίκτη
           player.y = height - PLATFORM_HEIGHT - player.height;
         
       }
@@ -556,6 +582,7 @@ function initializeLevelTracker() {
 }
 
 function updateLevelTracker() {
+  showCosmicDoor1 = random() < 0.3; // ανανέωση τιμής σε κάθε γύρο
   const levelsList = document.getElementById('levels-list').children;
   for (let i = 0; i < levelsList.length; i++) {
       if (i + 1 < currentLevel) {

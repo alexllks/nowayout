@@ -47,7 +47,7 @@ function setupRoom() {
 
       { x: 3790, y: height - 100, type: 'mirror', isAnomaly: false },
       { x: 3470, y: height - 355, type: 'doll', isAnomaly: false, speed: 2, direction: 1},
-      { x: 190, y: height - 20, type: 'sofa', isAnomaly: false },
+      { x: 2650, y: height - 20, type: 'sofa', isAnomaly: false },
       { x: 5340, y: height - 320, type: 'fridge', isAnomaly: false },
       { x: 4980, y: height - 350, type: 'kitchen', isAnomaly: false },
       { x: 5610, y: height - 81, type: 'table', isAnomaly:false},
@@ -60,7 +60,7 @@ function setupRoom() {
      // { x: 1220, y: height - 30, type: 'lamp', isAnomaly: false },
       { x: 5530, y: height - 330, type: 'chair', isAnomaly: false },
       { x: 5650, y: height - 330, type: 'chair', isAnomaly: false },
-      { x: 2620, y: height - 200, type: 'Painting', isAnomaly: false },
+      { x: 2845, y: height - 200, type: 'Painting', isAnomaly: false },
       { x: 2650, y: height - 20, type: 'sofa2', isAnomaly: false },
       { x: 2910, y: height - 20, type: 'fridge2', isAnomaly: false },
       { x: 2650, y: height - 20, type: 'sofa2', isAnomaly: false },
@@ -658,13 +658,15 @@ function drawBookshelf(x, y, isAnomaly) {
 
   function drawSofa(x, y, isAnomaly) {
     if (isAnomaly) {
+     
         fill(255, 0, 0); // Κόκκινο χρώμα για ανωμαλία
-        rect(x - 30, y - 25, 60, 30); // Μεγαλύτερο σώμα για ανωμαλία
+        rect(x - 30, y - 25, 120, 80); // Μεγαλύτερο σώμα για ανωμαλία
+        rect(x - 25, y - 30, 110, 70); // Πλάτη του καναπέ
     } else {
         fill(139, 69, 19); // Καφέ χρώμα για το σώμα
-        rect(x - 30, y - 20, 60, 20); // Σώμα του καναπέ
+        rect(x - 30, y - 25, 120, 80); // Σώμα του καναπέ
         fill(165, 42, 42); // Κόκκινο για το επάνω μέρος
-        rect(x - 25, y - 30, 50, 10); // Πλάτη του καναπέ
+        rect(x - 25, y - 30, 110, 70); // Πλάτη του καναπέ
     }
   }
   

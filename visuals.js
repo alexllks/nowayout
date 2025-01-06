@@ -27,6 +27,7 @@ let doors = [
   { type: 'roomDoor', x: 3865, y: 417, roomNumber: 102 },
   { type: 'roomDoor', x: 6270, y: 417, roomNumber: 103 },
   { type: 'roomDoor', x: 8430, y: 417, roomNumber: 104 },
+  { type: 'roomDoor', x: 6105, y: 417, roomNumber: 105 },
   
   { type: 'roomDoor', x: 2550, y: 115, roomNumber: 110 },
  
@@ -55,7 +56,7 @@ let stairs = [
   { x: 2289, y: 395, steps: 7, stepWidth: 30, stepHeight: 23 }
 ];
 let ReceptionDesk = [
-  { x: 2570, y: 500 } // Θέση της ρεσεψιόν
+  { x: 2810, y: 500 } // Θέση της ρεσεψιόν
 ];
 
 function drawReceptionDesk() {
@@ -126,7 +127,7 @@ let scaryObjects = [
   { type: 'candle', x: 3580, y: 515 },
   { type: 'candle', x: 3510, y: 515 },
   //{ type: 'bloodyDoll', x: 950, y: 400 },
-  { type: 'clockss', x: 5300, y: 650 ,hour:12,minute:0},
+  { type: 'clockss', x: 5762, y: 650 ,hour:12,minute:0},
   { type: 'curtainRods', x: 105, y: 329 ,width:172},
 
 
@@ -139,7 +140,7 @@ let scaryObjects = [
     { type: 'bloodyHandprint', x: 2550, y: 450 },
 
    //ALLAGI
-    { type: 'g_painting', x: 6755, y: 415, width: 150, height: 200 },
+    { type: 'g_painting', x: 6725, y: 415, width: 150, height: 200 },
     { type: 'house_painting', x: 7355, y: 415, width: 150, height: 200 },
     //ALLAGI
     { type: 'painting', x: 7960, y: 415, width: 150, height: 200 },
@@ -857,6 +858,7 @@ function loadVisuals(level) {
 
 let isRainPlaying = false; // Σημαία για να παρακολουθεί αν ο ήχος βροχής παίζει
 let allowRainSound = true; // Ελέγχει αν ο ήχος της βροχής μπορεί να παίξει
+let allowWaterSound = true;
 
 function drawWindow() {
   const windowWidth = 100; // Πλάτος παραθύρου
@@ -1027,7 +1029,8 @@ function drawLamps() {
 
 
 let isTransitioning = false; // Αρχικά η πόρτα δεν βρίσκεται σε μετάβαση
-function checkDoorInteraction(player) {
+function checkDoorInteraction(player,showCosmicDoor1) {
+  if (showCosmicDoor1) {
   if (
       player.x + player.width > doorX &&
       player.x < doorX + doorWidth &&
@@ -1042,7 +1045,8 @@ function checkDoorInteraction(player) {
           enterSecretRoom();
           //isTransitioning = false;
       }
-  } else {
+  }else{ showDoorMessage = false;} 
+}else {
       showDoorMessage = false;
   }
 }
@@ -1085,7 +1089,7 @@ function drawLight(x, y) {
 let doorCosmicX = 4000;
 let doorCosmicY = 420;
 
-let doorX = 1800; // Θέση της κύριας πόρτας στον άξονα X
+let doorX = 3420; // Θέση της κύριας πόρτας στον άξονα X
 let doorY = 420; // Θέση της πόρτας στον άξονα Y
 let doorWidth = 70; // Πλάτος της πόρτας
 let doorHeight = 150; // Ύψος της πόρτας
@@ -1132,7 +1136,11 @@ function drawWalls() {
 drawRealisticDoor(SECOND_WALL , height / 2 +120);
 drawRealisticDoor(SECOND_WALL , height / 4-40);
 
-
+fill(60, 60, 60);
+rect(THIRD_WALL, 0, 20, height);
+// Ρεαλιστική πόρτα με πόμολο αριστερά
+drawRealisticDoor(THIRD_WALL , height / 2 +120);
+drawRealisticDoor(THIRD_WALL , height / 4-40);
 
   
  // Ρεαλιστική πόρτα με πόμολο αριστερά
@@ -1231,8 +1239,7 @@ function drawCosmicDoor(x, y) {
       );
   }
 
-
-
+ 
   // Σώμα της πόρτας
   fill(10, 10, 40); // Σκούρο μπλε για την πόρτα
   rect(x + 15, y, 70 * scale, 150 * scale, 5); // Κυρίως σώμα
@@ -1267,13 +1274,105 @@ function drawCosmicDoor(x, y) {
   rect(x + 110, y + 70, 8, 4); // Δεξιό χερούλι
 }
 
+function checkCosmicDoorSound(player,showCosmicDoor1) {
+  let doorX = 3470; // Θέση της πόρτας
+  let range = 200; // Εύρος γύρω από την πόρτα
+  let doorX2 = 28320; // Θέση της πόρτας
+ 
+  // Έλεγχος αν ο παίκτης βρίσκεται εντός του εύρους
+  if (player.x >= doorX - range && player.x <= doorX + range) {
+    if (showCosmicDoor1) {
+      // Ξεκίνα τον ήχο αν δεν παίζει ήδη
+      if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
+          soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
+      }
+    }
+  }else if (player.x >= doorX+20000 - range && player.x <= doorX+20000 + range) {
+     // Ξεκίνα τον ήχο αν δεν παίζει ήδη
+     if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
+      soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
+  }
+}else {
+      // Σταμάτησε τον ήχο αν ο παίκτης είναι εκτός εύρους
+      soundManager.stop('cosmicdoor');
+  }
+
+
+}
+  
+  // // Έλεγχος αν ο παίκτης βρίσκεται εντός του εύρους
+  //   if (player.x >= doorX2 - range && player.x <= doorX2 + range) {
+  //       // Ξεκίνα τον ήχο αν δεν παίζει ήδη
+  //       if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
+  //           soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
+  //       }
+  //   } else {
+  //       // Σταμάτησε τον ήχο αν ο παίκτης είναι εκτός εύρους
+  //       soundManager.stop('cosmicdoor');
+  //   }
+
+  
+
+  
+
+
+  // function checkCosmicSecretDoorSound(player) {
+  //   let doorX = 28320; // Θέση της πόρτας
+  //   let range = 200; // Εύρος γύρω από την πόρτα
+  
+  
+  //   // Έλεγχος αν ο παίκτης βρίσκεται εντός του εύρους
+  //   if (player.x >= doorX - range && player.x <= doorX + range) {
+  //       // Ξεκίνα τον ήχο αν δεν παίζει ήδη
+  //       if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
+  //           soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
+  //       }
+  //   } else {
+  //       // Σταμάτησε τον ήχο αν ο παίκτης είναι εκτός εύρους
+  //       soundManager.stop('cosmicdoor');
+  //   }
+  // }  
+  
+//   // Έλεγχος αν ο παίκτης βρίσκεται εντός του εύρους
+//   if (player.x >= doorX2 - range && player.x <= doorX2 + range) {
+//     // Ξεκίνα τον ήχο αν δεν παίζει ήδη
+//     if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
+//         soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
+//     }
+// } else {
+//     // Σταμάτησε τον ήχο αν ο παίκτης είναι εκτός εύρους
+//     soundManager.stop('cosmicdoor');
+// }
+
+
+function updateCosmicDoorSound(player, cosmicDoorX, cosmicDoorY) {
+  let doorCenterX = cosmicDoorX + 70 / 2; 
+  let doorCenterY = cosmicDoorY + 150 / 2; 
+
+  let distance = dist(player.x, player.y, doorCenterX, doorCenterY);
+  let maxDistance = 600;
+
+  let volume = map(distance, 0, maxDistance, 1.0, 0.0);
+  volume = constrain(volume, 0.0, 1.0);
+
+  soundManager.setVolume('cosmicdoor', volume);
+
+  if (volume > 0 && !soundManager.sounds['cosmicdoor'].isPlaying()) {
+      soundManager.play('cosmicdoor', true, volume);
+  }
+
+  if (volume === 0) {
+      soundManager.stop('cosmicdoor');
+  }
+}
 
 //secretRoomStartX + secretRoomWidth - 215, height - 200
 
 
 let isTransitioningCosmic = false;
 let showDoorCosmicMessage = false;
-function checkCosmicDoorInteraction(player) {
+function 
+checkCosmicDoorInteraction(player) {
   if (
       player.x + player.width > secretRoomStartX &&
       player.x >= secretRoomStartX + secretRoomWidth - 185 &&
@@ -1302,13 +1401,18 @@ function checkCosmicDoorInteraction(player) {
 }
 
 function exitSecretRoom() {
+        soundManager.stop('bats'); // Διακοπή του ήχου νυχτερίδων
+        soundManager.stop('waters');
+     
+ 
         // Μεταφορά του παίκτη στη νέα θέση
-        player.x =100; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο
+        player.x =730; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο
         player.y = height - PLATFORM_HEIGHT - player.height;
         currentLevel ++;
         updateLevelTracker();
         allowRainSound = true; // Επαναφορά του ήχου της βροχής
 }
+
 
 
 function drawNoSmokingSign() {
