@@ -68,6 +68,10 @@ let debugMode = false;
 let noclipMode = false; // Για το debug mode
 
 function preload() {
+  soundManager = new SoundManager();
+  soundManager.load('rain', 'assets/sounds/rain.wav');
+
+  
   soundFormats('mp3', 'ogg','wav'); // Ορισμός μορφών για συμβατότητα
   //playerImage = loadImage("assets/images/evil.png"); // Βεβαιώσου ότι το αρχείο υπάρχει
   doorSound = loadSound ("assets/sounds/scary-background.mp3")
@@ -80,7 +84,7 @@ function preload() {
   footstepSound = loadSound('assets/sounds/footsteps.wav');//Φορτωση ηχου 
   npcFootstepSound = loadSound('assets/sounds/npc_footsteps.wav');//Φορτωση ηχου 
   stairStepSound = loadSound('assets/sounds/stair_footsteps.wav');
-  rainSound = loadSound('assets/sounds/rain.wav'); // Ήχος βροχής
+  //rainSound = loadSound('assets/sounds/rain.wav'); // Ήχος βροχής
   paintingImg = loadImage('assets/images/haunting_painting.jpg'); // Βεβαιώσου ότι η διαδρομή είναι σωστή
   graveyardImg = loadImage('assets/images/graveyard_painting.jpg');
   houseImg = loadImage('assets/images/house_painting.jpg'); 
@@ -351,10 +355,24 @@ function keyPressed() {
   }
 }
 
+// function stopAllSounds() {
+//   const allSounds = [backgroundHorrorMusic, tvSound, npcFootstepSound, rainSound];
+
+//   for (const sound of allSounds) {
+//     if (sound && sound.isLoaded() && sound.isPlaying()) {
+//       console.log(`Stopping sound: ${sound}`);
+//       sound.stop();
+//     } else if (!sound.isPlaying()) {
+//       console.log(`Sound is not playing: ${sound}`);
+//     }
+//   }
+// }
 
 
+ 
 function enterSecretRoom() {
-  
+  //soundManager.stopAllSounds(); // Σταματάει όλους τους ήχους
+  stopAllSounds();
   // Μεταφορά του παίκτη στη νέα θέση
   player.x = secretRoomStartX; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο
   player.y = 240;

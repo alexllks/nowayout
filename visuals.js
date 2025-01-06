@@ -856,11 +856,15 @@ function loadVisuals(level) {
 
 
 let isRainPlaying = false; // Σημαία για να παρακολουθεί αν ο ήχος βροχής παίζει
+let allowRainSound = true; // Ελέγχει αν ο ήχος της βροχής μπορεί να παίξει
 
 function drawWindow() {
   const windowWidth = 100; // Πλάτος παραθύρου
   const windowHeight = 150; // Ύψος παραθύρου
   let closestDistance = Infinity; // Αρχικά μεγάλη απόσταση
+  const windowX = 300; // X-συντεταγμένη παραθύρου
+  const windowY = 200; // Y-συντεταγμένη παραθύρου
+  const maxDistance = 500; // Μέγιστη απόσταση για πλήρη ένταση
 
   for (let pos of windowPositions) {
     // Σχέδιο πλαισίου παραθύρου
@@ -888,19 +892,23 @@ function drawWindow() {
     }
   }
 
-  // Υπολογισμός έντασης
-  let volume = map(closestDistance, 0, 500, 1, 0.1); // Απόσταση 0 -> ένταση 1, Απόσταση 500 -> ένταση 0.1
-  volume = constrain(volume, 0.1, 1); // Περιορισμός έντασης μεταξύ 0.1 και 1
-
-  // Ρύθμιση έντασης ήχου
-  rainSound.setVolume(volume);
-
-  // Έναρξη ήχου αν δεν παίζει
-  if (!rainSound.isPlaying()) {
-    rainSound.loop();
+    // Έλεγχος αν ο ήχος της βροχής επιτρέπεται
+    if (allowRainSound) {
+      if (!soundManager.sounds['rain'].isPlaying()) {
+          soundManager.play('rain', true, 0.5); // Παίζει τον ήχο αν δεν παίζει ήδη
+      }
+  } else {
+      // Σταματά τον ήχο αν παίζει
+      if (soundManager.sounds['rain']?.isPlaying()) {
+          soundManager.stop('rain');
+      }
   }
 }
 
+function stopAllSounds() {
+  allowRainSound = false; // Απαγορεύει τον ήχο της βροχής
+  soundManager.stopAllSounds(); // Σταματά όλους τους ήχους
+}
 
 
 
@@ -1276,12 +1284,8 @@ function checkCosmicDoorInteraction(player) {
 
       if (keyIsDown(70) && !isTransitioningCosmic) { // Πατά το "F"
         isTransitioningCosmic = true;
-        gameState =="playing"; // Μετάβαση στο secret room
-        // Μεταφορά του παίκτη στη νέα θέση
-        player.x =100; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο
-        player.y = height - PLATFORM_HEIGHT - player.height;
-        currentLevel ++;
-        updateLevelTracker();
+        gameState =="playing"; 
+        exitSecretRoom(); // Μετάβαση στο επόμενο δωμάτιο
 
         resetNPCs(); // Επαναφορά NPCs στην αρχική κατάσταση
         setupRoom();
@@ -1297,6 +1301,14 @@ function checkCosmicDoorInteraction(player) {
   }
 }
 
+function exitSecretRoom() {
+        // Μεταφορά του παίκτη στη νέα θέση
+        player.x =100; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο
+        player.y = height - PLATFORM_HEIGHT - player.height;
+        currentLevel ++;
+        updateLevelTracker();
+        allowRainSound = true; // Επαναφορά του ήχου της βροχής
+}
 
 
 function drawNoSmokingSign() {
