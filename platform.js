@@ -31,6 +31,15 @@ class Platform {
           let y = height - PLATFORM_HEIGHT; // Θέση y (π.χ., στο έδαφος)
           platforms.push(new Platform(x, y, PLATFORM_WIDTH,50));
       }
+           //   // Σχεδίαση ταβανιού και δαπέδου
+           for (let i = 0; i < numPlatforms; i++) {
+            let x = i *PLATFORM_WIDTH; // Θέση x κάθε πλατφόρμας
+            let y = CEILING_HEIGHT - 30 - PLATFORM_HEIGHT; // Θέση y για την οροφή
+            platforms.push(new Platform(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT+30));
+        }
+
+
+        
       for (let i = 0; i < numPlatforms; i++) {
         let x = 2500; // Ξεκινάμε από το x = 200 για να αφήσουμε κενό
         let y = height - PLATFORM_HEIGHT - 300; // Κανονική θέση Y της πλατφόρμας

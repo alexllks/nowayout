@@ -56,7 +56,7 @@ let stairs = [
   { x: 2289, y: 395, steps: 7, stepWidth: 30, stepHeight: 23 }
 ];
 let ReceptionDesk = [
-  { x: 2810, y: 500 } // Θέση της ρεσεψιόν
+  { x: 2810, y: 510 } // Θέση της ρεσεψιόν
 ];
 
 function drawReceptionDesk() {
@@ -65,8 +65,13 @@ function drawReceptionDesk() {
   }
 }
 
+
+
 function drawReceptionDeskStructure(x, y) {
-  let scale = 0.6;
+  let scale = 0.5;
+
+  // Σχεδίαση NPC πίσω από το γραφείο
+ // drawNpc(x + 130 * scale, y-1/2  * scale); // Τοποθέτηση NPC στο σωστό σημείο
 
   // Βασικό σώμα γραφείου
   fill(245, 222, 179); // Μπεζ χρώμα
@@ -94,27 +99,23 @@ function drawReceptionDeskStructure(x, y) {
   // Οθόνη υπολογιστή
   fill(20, 20, 120);
   rect(x + 155 * scale, y - 60 * scale, 50 * scale, 40 * scale, 5); // Μεγαλύτερη οθόνη
-  
+
   rect(x + 175 * scale, y - 20 * scale, 10 * scale, 5 * scale); // Βάση
   fill(255, 255, 255, 80);
   quad(
-    x + 15 * scale, y + 15 * scale,
-    x + 45 * scale, y + 15 * scale,
-    x + 35 * scale, y + 30 * scale,
-    x + 15 * scale, y + 30 * scale
+      x + 15 * scale, y + 15 * scale,
+      x + 45 * scale, y + 15 * scale,
+      x + 35 * scale, y + 30 * scale,
+      x + 15 * scale, y + 30 * scale
   );
-
-
-
-
-
 
   // Κουδούνι
   fill(255, 215, 0); // Ανοιχτό χρυσό χρώμα για κουδούνι
-  ellipse(x + 100 * scale, y - 30 * scale, 20 * scale, 20 * scale); // Σώμα κουδουνιού
+  ellipse(x + 80 * scale, y - 30 * scale, 20 * scale, 20 * scale); // Σώμα κουδουνιού
   fill(255, 240, 180);
-  ellipse(x + 100 * scale, y - 35 * scale, 10 * scale, 10 * scale); // Κορυφή κουδουνιού
+  ellipse(x + 80 * scale, y - 35 * scale, 10 * scale, 10 * scale); // Κορυφή κουδουνιού
 }
+
 
 
 
@@ -1009,15 +1010,15 @@ function drawLamps() {
 
 
 
-  function drawTopBorder() {
+  // function drawTopBorder() {
 
 
-    // Σχεδίαση ταβανιού και δαπέδου
-    fill(100);
-    rect(0, height - PLATFORM_HEIGHT, PLATFORM_WIDTH, PLATFORM_HEIGHT);
-    rect(0, CEILING_HEIGHT-50, PLATFORM_WIDTH, PLATFORM_HEIGHT);
+  //   // Σχεδίαση ταβανιού και δαπέδου
+  //   fill(100);
+  //   rect(0, height - PLATFORM_HEIGHT, PLATFORM_WIDTH, PLATFORM_HEIGHT);
+  //   rect(0, CEILING_HEIGHT-50, PLATFORM_WIDTH, PLATFORM_HEIGHT);
 
-  }
+  // }
   
   
   function drawWallLights() {
@@ -1287,7 +1288,7 @@ function checkCosmicDoorSound(player,showCosmicDoor1) {
           soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
       }
     }
-  }else if (player.x >= doorX+20000 - range && player.x <= doorX+20000 + range) {
+  }else if (player.x >= doorX+18370 - range && player.x <= doorX+18370 + range) {
      // Ξεκίνα τον ήχο αν δεν παίζει ήδη
      if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
       soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
@@ -1392,7 +1393,7 @@ checkCosmicDoorInteraction(player) {
         
         // Απελευθέρωση του flag μετά τη μετάβαση
         setTimeout(() => {
-          isTransitioning = false; // Επαναφορά του flag
+          isTransitioningCosmic = false; // Επαναφορά του flag
       }, 500); // Χρονική καθυστέρηση για να ολοκληρωθεί η μετάβαση
       }
   } else {
@@ -1403,7 +1404,7 @@ checkCosmicDoorInteraction(player) {
 function exitSecretRoom() {
         soundManager.stop('bats'); // Διακοπή του ήχου νυχτερίδων
         soundManager.stop('waters');
-     
+        soundManager.stopAllSounds();
  
         // Μεταφορά του παίκτη στη νέα θέση
         player.x =730; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο

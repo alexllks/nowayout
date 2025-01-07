@@ -27,7 +27,7 @@ function drawFloodingWater(startX, startY, isAnomaly) {
 
 function setupRoom() {
   // Λίστα ανωμαλιών με βάρη
-  const anomalies = ["sofa", "fridge", "kitchen", "table","mirror", "doll", "TV", "Bookshelf","radio", "ghost","none","none" ];
+  const anomalies = ["sofa", "fridge", "kitchen", "table","mirror", "doll", "TV", "Bookshelf","radio", "ghost","npc","none","none" ];
   // Το "ghost" εμφανίζεται περισσότερες φορές για να έχει μεγαλύτερη πιθανότητα
 
 
@@ -39,7 +39,7 @@ function setupRoom() {
 
     hasAnomaly = true; // Υποδεικνύει ότι υπάρχει ανωμαλία
     objects = [
-     
+      { x: 2870, y: height - 55, type: 'npc', isAnomaly: false },
       { x: 4600, y: height - 100, type: 'radio', isAnomaly: false },
       { x: 4500, y: height - 412, type: 'radio', isAnomaly: false },
 
@@ -197,6 +197,7 @@ for (let ghost of ghosts) {
   }
   function drawObjects() {
     for (let obj of objects) {
+      if (obj.type === 'npc') drawNpc(obj.x, obj.y, obj.isAnomaly);
         if (obj.type === 'door') drawDoor2(obj.x, obj.y, obj.isMoving);
         if (obj.type === 'mirror') drawMirror(obj.x, obj.y, obj.isAnomaly);
      
@@ -222,6 +223,56 @@ for (let ghost of ghosts) {
     }
   }
 
+  
+function drawNpc(x, y, isAnomaly) {
+  if(isAnomaly){
+    return ;
+  }
+
+  const scale = 1.0; // Κλίμακα μεγέθους
+  noStroke();
+
+  // Κεφάλι με λεπτομέρεια
+  fill(200, 100, 100); // Σκούρο κόκκινο για το κεφάλι
+  ellipse(x, y - 50 * scale, 22 * scale, 22 * scale); // Κεφάλι
+
+  // Καπέλο με σκίαση
+  fill(100, 0, 0); // Σκούρο κόκκινο καπέλο
+  arc(x, y - 55 * scale, 26 * scale, 15 * scale, PI, TWO_PI); // Πάνω μέρος καπέλου
+  fill(80, 0, 0); // Πιο σκούρα απόχρωση για σκίαση
+  arc(x, y - 55 * scale, 26 * scale, 10 * scale, PI, TWO_PI); // Εσωτερική σκίαση
+
+  // Μάτια με σκιάσεις
+  fill(255); // Λευκά των ματιών
+  ellipse(x - 5 * scale, y - 52 * scale, 5 * scale, 3 * scale); // Αριστερό μάτι
+  ellipse(x + 5 * scale, y - 52 * scale, 5 * scale, 3 * scale); // Δεξί μάτι
+
+  fill(0); // Κόρες
+  ellipse(x - 5 * scale, y - 52 * scale, 2 * scale, 2 * scale); // Αριστερή κόρη
+  ellipse(x + 5 * scale, y - 52 * scale, 2 * scale, 2 * scale); // Δεξιά κόρη
+
+  // Στόμα με ρεαλιστική έκφραση
+  fill(255, 100, 100); // Χείλη
+  arc(x, y - 46 * scale, 10 * scale, 4 * scale, 0, PI); // Στόμα
+
+  // Σώμα με υφή
+  fill(150, 30, 30); // Σκούρο κόκκινο για το σώμα
+  rect(x - 10 * scale, y - 42 * scale, 20 * scale, 40 * scale); // Σώμα
+  rect(x - 8 * scale, y - 40 * scale, 16 * scale, 36 * scale); // Εσωτερική σκίαση
+
+  // Χέρια
+  fill(150, 30, 30); // Ίδιο χρώμα με το σώμα
+  rect(x - 15 * scale, y - 42 * scale, 5 * scale, 20 * scale); // Αριστερό χέρι
+  rect(x + 10 * scale, y - 42 * scale, 5 * scale, 20 * scale); // Δεξί χέρι
+
+  // Πόδια με μπότες
+  fill(100, 20, 20); // Σκούρο κόκκινο για τα πόδια
+  rect(x - 8 * scale, y - 5 * scale, 6 * scale, 15 * scale); // Αριστερό πόδι
+  rect(x + 2 * scale, y - 5 * scale, 6 * scale, 15 * scale); // Δεξί πόδι
+  fill(50); // Μαύρες μπότες
+  rect(x - 8 * scale, y + 10 * scale, 6 * scale, 5 * scale); // Μπότες αριστερό πόδι
+  rect(x + 2 * scale, y + 10 * scale, 6 * scale, 5 * scale); // Μπότες δεξί πόδι
+}
   function drawRadio(x, y, type = "normal") {
     const scale = 0.3; // Κλίμακα μεγέθους για να προσαρμόσεις το μέγεθος
     if (type === "normal") {

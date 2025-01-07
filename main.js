@@ -114,6 +114,9 @@ function preload() {
 //   text("Click to start audio and music", width / 2, height / 2);
 // }
 
+
+// Adding elevator instance
+let elevator;
 function setup() {
   createCanvas(1224, 576);
   bufferCanvas = createGraphics(settings.canvasWidth, settings.canvasHeight); // Δημιουργία buffer canvas
@@ -128,15 +131,15 @@ function setup() {
     setupRoom();
   }
 
-  initializeNPCs(); // Δημιουργία NPCs
+  
   platforms = Platform.createPlatforms();
-
+  elevator = new Elevator(500, 400, 100, 100, 20, 2); // Example elevator
 
 
 
 
   // Πιθανότητα εμφάνισης της πόρτας
-  showCosmicDoor1 = random() < 0.3;
+  showCosmicDoor1 = random() < 0.9;
  // Debug: Εκτύπωση της τιμής της `showCosmicDoor1`
  console.log("Show Cosmic Door 1:", showCosmicDoor1);
   // Προτροπή στον χρήστη να κάνει κλικ για τον ήχο
@@ -186,6 +189,30 @@ function draw() {
       playGame();
   } else if (gameState === "gameover") {
      playGameAfterLost();
+  }else if (gameState === "lost"){
+    displayLost();
+  }
+}
+function displayLost() {
+  background(0);
+
+  // Εμφάνιση μηνύματος θανάτου
+  fill(255, 0, 0); // Κόκκινο χρώμα
+  textAlign(CENTER, CENTER);
+  textSize(32);
+  text("Game Over", width / 2, height / 2 - 50);
+
+  // Εμφάνιση προτροπής για επιστροφή στο μενού
+  textSize(16);
+  fill(255); // Λευκό χρώμα
+  text("Press M to return to the menu", width / 2, height / 2);
+
+  // Έλεγχος αν ο χρήστης πατάει το πλήκτρο 'M'
+  if (keyIsDown(77)) { // 77 είναι ο κωδικός για το πλήκτρο 'M'
+      currentLevel = 1; // Επαναφορά επιπέδων
+      updateLevelTracker(); // Ενημέρωση του tracker
+      gameState = "menu"; // Επιστροφή στο μενού
+      initializeGame(); // Επαναφορά του παιχνιδιού
   }
 }
 
@@ -220,15 +247,38 @@ function checkWaterCollision(player) {
     if(player.x<=secretRoomStartX+secretRoomWidth-400){
       console.log("Ο παίκτης έπεσε στο νερό!");
       // isGameOver = true; // Ορισμός της κατάστασης "game over
+      soundManager.stop('bats'); // Διακοπή του ήχου νυχτερίδων
+      soundManager.stop('waters');
+      soundManager.stopAllSounds();
+      allowRainSound = true; // Επαναφορά του ήχου της βροχής
     
-      gameState = "gameover";
+        // isGameOver = true; // Ενεργοποίηση του flag για game over
+      isDying();
   }
 }
 }
 
+function isDying(){
+
+       // Ξεκινά το animation θανάτου
+       player.isDying = true;
+
+       // Μετατροπή σε κατάσταση "lost" μετά από 3 δευτερόλεπτα
+       setTimeout(() => {
+           gameState = "lost"; // Ορισμός της κατάστασης σε lost
+       }, 1000);
+}
+
+
 
 function initializeGame() {
   isGameOver = false;
+  player.isDying = false;
+  player.x = 100; // Θέση εκκίνησης του παίκτη
+  player.y = height - PLATFORM_HEIGHT - player.height;
+  player.velocityY = 0;
+ 
+ // gameState = "menu"; // Επιστροφή στο μενού
 }
 
 function playGame() {
@@ -241,7 +291,7 @@ function playGame() {
 
   drawWall();
  drawStairs(); // Σχεδίαση σκάλας
-  drawTopBorder();
+  //drawTopBorder();
   drawWallLights();
   drawGhosts();
   drawObjects();
@@ -274,31 +324,28 @@ checkCosmicDoorSound(player,showCosmicDoor1);
  // checkCosmicSecretDoorSound(player);
   drawSpikes();
   drawReceptionDesk();
+   // Σχεδίαση NPC σε σταθερό σημείο
+   //drawNpc(2820, 550); // Ο NPC θα εμφανιστεί στη θέση (200, 300)
 
   // Έλεγχος σύγκρουσης με καρφιά
   if (checkSpikeCollision(player)) {
       console.log("Ο παίκτης χτύπησε σε καρφιά!");
-      gameState = "gameover"; // Ορισμός της κατάστασης σε "gameover"
-      isGameOver = true;
+     // gameState = "gameover"; // Ορισμός της κατάστασης σε "gameover"
+      soundManager.stop('bats'); // Διακοπή του ήχου νυχτερίδων
+        soundManager.stop('waters');
+        soundManager.stopAllSounds();
+        allowRainSound = true; // Επαναφορά του ήχου της βροχής
+    
+     isDying();
+      // isGameOver = true;
       //resetPlayerPosition(); // Επιστροφή παίκτη στην αρχή
   }
 
 
 
 
-  if (
-    !npcActivated &&
-    player.x + player.width / 2 > 1590 - 50 &&
-    player.x - player.width / 2 < 1590+ 50)
- {
-    npcActivated = true; // Ενεργοποίηση του NPC
- }
+  
 
-// Ενημέρωση και σχεδίαση NPCs
-if (npcActivated) {
-    updateNPCs(platforms, player.x, player.y);
-    drawNPCs();
-}
 
 updateBats(bats); // Ενημέρωση των νυχτερίδων
 drawBats(bats); // Σχεδίαση των νυχτερίδων
@@ -350,6 +397,26 @@ updatePlatforms(platforms);
     textAlign(CENTER);
     text("Press F to pass this door", player.x - 500 + width / 2, height - 100);
   }
+
+    // Update and draw the elevator
+    elevator.update();
+    elevator.show();
+
+     // Simplified collision logic for the elevator
+     if (
+      player.x + player.width > elevator.x &&
+      player.x < elevator.x + elevator.width &&
+      player.y + player.height >= elevator.y &&
+      player.y + player.height <= elevator.y + elevator.height
+  ) {
+      player.y = elevator.y - player.height; // Place player on top of the elevator
+      player.velocityY = 0; // Stop any downward motion
+  } else {
+      player.velocityY += 0.5; // Apply gravity if not on the elevator
+      player.y += player.velocityY;
+  }
+
+
   
  // Ενημέρωση θέσης και φυσικής του παίκτη
  player.update();
@@ -373,6 +440,15 @@ function keyPressed() {
       noclipMode = !noclipMode; // Εναλλαγή noclip mode
       console.log("Noclip Mode: " + (noclipMode ? "Activated" : "Deactivated"));
   }
+
+      // Activate elevator with UP or DOWN arrow keys
+      if (keyCode === UP_ARROW) {
+        elevator.activate(-1); // Move up
+    } else if (keyCode === DOWN_ARROW) {
+        elevator.activate(1); // Move down
+    }
+
+
 }
 
 // function stopAllSounds() {
@@ -393,6 +469,7 @@ function keyPressed() {
 function enterSecretRoom() {
   //soundManager.stopAllSounds(); // Σταματάει όλους τους ήχους
   stopAllSounds();
+  soundManager.stopAllSounds();
   soundManager.play('bats', true, 0.5); // Έναρξη του ήχου νυχτερίδων
   soundManager.play('waters', true, 0.8); // Ένταση στο 80%
 
@@ -547,7 +624,7 @@ function checkExit(isBackExit) {
       showMessage("Game Over!");
       gameState = "gameover";
   }
-  resetNPCs(); // Επαναφορά NPCs στην αρχική κατάσταση
+  
   
 }
 
@@ -582,7 +659,7 @@ function initializeLevelTracker() {
 }
 
 function updateLevelTracker() {
-  showCosmicDoor1 = random() < 0.3; // ανανέωση τιμής σε κάθε γύρο
+  showCosmicDoor1 = random() < 0.9; // ανανέωση τιμής σε κάθε γύρο
   const levelsList = document.getElementById('levels-list').children;
   for (let i = 0; i < levelsList.length; i++) {
       if (i + 1 < currentLevel) {

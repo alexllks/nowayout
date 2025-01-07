@@ -4,7 +4,7 @@ class Player {
     this.y = height - PLATFORM_HEIGHT - 60;
     this.width = 40;
     this.height = 0;
-    this.speed = 20;
+    this.speed = 30;
     this.velocityY = 0;
     this.gravity = 0.6;
 
@@ -14,6 +14,9 @@ class Player {
     this.isFalling = false;
     this.isPlummeting = false;
     this.isJumping = false; // Προστέθηκε για να διαχειρίζεται το άλμα
+    this.isDying = false; // Νέα ιδιότητα για το animation θανάτου
+        this.rotation = 0; // Περιστροφή κατά την πτώση
+        
     
   }
 
@@ -29,6 +32,17 @@ class Player {
       // Απενεργοποιούμε τη φυσική και επιστρέφουμε
       return;
   } else {
+
+    if (this.isDying) {
+      // Animation θανάτου (π.χ. περιστροφή και πτώση)
+      this.rotation += 0.1; // Περιστροφή
+      this.y += 5; // Γρήγορη πτώση
+      return; // Σταματά η υπόλοιπη ενημέρωση
+  }
+
+
+
+
 
     
     let stepTimer = 0; // Μετρητής για τα καρέ μεταξύ των βημάτων
@@ -161,6 +175,25 @@ class Player {
     this.x = platform.x + platform.width+10; // Σταθεροποίηση δεξιά της πλατφόρμας
   }
 
+
+  if (
+    this.x + this.width > platform.x &&
+    this.x < platform.x + platform.width &&
+    this.y + this.height > platform.y &&
+    this.y < platform.y + platform.height
+) {
+    // Έλεγχος αν είναι το ταβάνι
+    if (platform.y === CEILING_HEIGHT - 30 - PLATFORM_HEIGHT) {
+        this.y = platform.y + platform.height; // Σταθεροποίηση κάτω από το ταβάνι
+        this.velocityY = 0; // Επαναφορά ταχύτητας
+    } else {
+        // Κανονικός έλεγχος πλατφόρμας
+        this.y = platform.y - this.height; // Σταθεροποίηση πάνω στην πλατφόρμα
+        this.velocityY = 0;
+        this.canJump = true;
+    }
+    break; // Σταματάμε μόλις βρεθεί collision
+}
   }
 
     for (let stair of stairs) {
@@ -212,6 +245,16 @@ class Player {
 
   show() {
     drawGameChar(this.x, this.y, this.isLeft, this.isRight, this.isFalling, this.isPlummeting);
+     if (this.isDying) {
+            // Σχεδίαση με περιστροφή
+            push();
+            translate(this.x + this.width / 2, this.y + this.height / 2);
+            rotate(this.rotation);
+            fill(255, 0, 0); // Χρώμα θανάτου
+            rect(-this.width / 2, -this.height / 2, this.width, this.height);
+            pop();
+            return;
+        }
   }
 }
 
