@@ -23,23 +23,33 @@ let sofaPositions = [
 //ALLAGI
 
 let doors = [
-  { type: 'roomDoor', x: 3030, y: 417, roomNumber: 101 },
-  { type: 'roomDoor', x: 3865, y: 417, roomNumber: 102 },
+  { type: 'roomDoor', x: 5790, y: 417, roomNumber: 101 },
+  { type: 'roomDoor', x: 6030, y: 417, roomNumber: 102 },
   { type: 'roomDoor', x: 6270, y: 417, roomNumber: 103 },
-  { type: 'roomDoor', x: 8430, y: 417, roomNumber: 104 },
-  
-  { type: 'roomDoor', x: 2550, y: 115, roomNumber: 110 },
+  { type: 'roomDoor', x: 6510, y: 417, roomNumber: 104 },
+  { type: 'roomDoor', x: 6750, y: 417, roomNumber: 105 },
+  { type: 'roomDoor', x: 6150, y: 115, roomNumber: 106 },
  
-  { type: 'roomDoor', x: 3040, y: 115, roomNumber: 111 },
+  { type: 'roomDoor', x: 6390, y: 115, roomNumber: 107 },
+
+  { type: 'roomDoor', x: 6630, y: 115, roomNumber: 108 },
+
+  { type: 'roomDoor', x: 6870, y: 115, roomNumber: 109 },
+  { type: 'roomDoor', x: 7110, y: 115, roomNumber: 110 },
+  { type: 'roomDoor', x: 7350, y: 115, roomNumber: 111 },
+  { type: 'roomDoor', x: 7590, y: 115, roomNumber: 112 },
+  { type: 'roomDoor', x: 7830, y: 115, roomNumber: 113 },
+  { type: 'roomDoor', x: 8070, y: 115, roomNumber: 114 },
+  
+  
+  { type: 'roomDoor', x: 2670, y: 115, roomNumber: 101 },
+  { type: 'roomDoor', x: 3030, y: 115, roomNumber: 102 },
   
  // { type: 'lockedDoor', x: 430, y: 435 }
 ];
 
 
-// let curtainRods = [
-//   { x: 300, y: 90, width: 200 }, // Κοντάρι για την πρώτη κουρτίνα
-//   { x: 800, y: 90, width: 200 }  // Κοντάρι για τη δεύτερη κουρτίνα
-// ];
+
 
 
 let Bookshelfs= [
@@ -55,7 +65,7 @@ let stairs = [
   { x: 2289, y: 395, steps: 7, stepWidth: 30, stepHeight: 23 }
 ];
 let ReceptionDesk = [
-  { x: 2570, y: 500 } // Θέση της ρεσεψιόν
+  { x: 2810, y: 510 } // Θέση της ρεσεψιόν
 ];
 
 function drawReceptionDesk() {
@@ -64,8 +74,13 @@ function drawReceptionDesk() {
   }
 }
 
+
+
 function drawReceptionDeskStructure(x, y) {
-  let scale = 0.6;
+  let scale = 0.5;
+
+  // Σχεδίαση NPC πίσω από το γραφείο
+ // drawNpc(x + 130 * scale, y-1/2  * scale); // Τοποθέτηση NPC στο σωστό σημείο
 
   // Βασικό σώμα γραφείου
   fill(245, 222, 179); // Μπεζ χρώμα
@@ -93,32 +108,27 @@ function drawReceptionDeskStructure(x, y) {
   // Οθόνη υπολογιστή
   fill(20, 20, 120);
   rect(x + 155 * scale, y - 60 * scale, 50 * scale, 40 * scale, 5); // Μεγαλύτερη οθόνη
-  
+
   rect(x + 175 * scale, y - 20 * scale, 10 * scale, 5 * scale); // Βάση
   fill(255, 255, 255, 80);
   quad(
-    x + 15 * scale, y + 15 * scale,
-    x + 45 * scale, y + 15 * scale,
-    x + 35 * scale, y + 30 * scale,
-    x + 15 * scale, y + 30 * scale
+      x + 15 * scale, y + 15 * scale,
+      x + 45 * scale, y + 15 * scale,
+      x + 35 * scale, y + 30 * scale,
+      x + 15 * scale, y + 30 * scale
   );
-
-
-
-
-
 
   // Κουδούνι
   fill(255, 215, 0); // Ανοιχτό χρυσό χρώμα για κουδούνι
-  ellipse(x + 100 * scale, y - 30 * scale, 20 * scale, 20 * scale); // Σώμα κουδουνιού
+  ellipse(x + 80 * scale, y - 30 * scale, 20 * scale, 20 * scale); // Σώμα κουδουνιού
   fill(255, 240, 180);
-  ellipse(x + 100 * scale, y - 35 * scale, 10 * scale, 10 * scale); // Κορυφή κουδουνιού
+  ellipse(x + 80 * scale, y - 35 * scale, 10 * scale, 10 * scale); // Κορυφή κουδουνιού
 }
 
 
 
+
 let scaryObjects = [
-  { type: 'curtain', x: 100, y: 330 },
   { type: 'door', x: 400, y: 100 },
   { type: 'candle', x: 3850, y: 535 },
   { type: 'candle', x: 3730, y: 535 },
@@ -126,8 +136,8 @@ let scaryObjects = [
   { type: 'candle', x: 3580, y: 515 },
   { type: 'candle', x: 3510, y: 515 },
   //{ type: 'bloodyDoll', x: 950, y: 400 },
-  { type: 'clockss', x: 5300, y: 650 ,hour:12,minute:0},
-  { type: 'curtainRods', x: 105, y: 329 ,width:172},
+  { type: 'clockss', x: 5762, y: 650 ,hour:12,minute:0},
+
 
 
   // { type: 'book', x: 800, y: 400 },
@@ -139,7 +149,7 @@ let scaryObjects = [
     { type: 'bloodyHandprint', x: 2550, y: 450 },
 
    //ALLAGI
-    { type: 'g_painting', x: 6755, y: 415, width: 150, height: 200 },
+    { type: 'g_painting', x: 6725, y: 415, width: 150, height: 200 },
     { type: 'house_painting', x: 7355, y: 415, width: 150, height: 200 },
     //ALLAGI
     { type: 'painting', x: 7960, y: 415, width: 150, height: 200 },
@@ -157,13 +167,6 @@ let Spikes = [
 ];
 
 
-
-
-// function resetPlayerPosition() {
-//   player.x = 100; // Αρχική θέση X
-//   player.y = height - PLATFORM_HEIGHT - player.height; // Αρχική θέση Y
-//   player.velocityY = 0; // Επαναφορά ταχύτητας
-// }
 
 
 function drawScaryObjects() {
@@ -204,11 +207,7 @@ function drawScaryObjects() {
         drawHangingRope(obj.x, obj.y);
     } else if (obj.type === 'bed') {
         drawBed(obj.x, obj.y);
-    } else if (obj.type === 'curtain') {
-        drawCurtain(obj.x, obj.y, playerX, playerY);
-        // drawCurtainRod(obj.x, obj.y - 10, 200); // Σχεδίαση κονταριού (πλάτος 200)
-
-      } else if (obj.type === 'candle') {
+    } else if (obj.type === 'candle') {
           drawCandle(obj.x, obj.y);
       } else if (obj.type === 'brokenImage') {
           drawBrokenImage(obj.x, obj.y);
@@ -216,9 +215,7 @@ function drawScaryObjects() {
           drawBloodyDoll(obj.x, obj.y);
       } else if (obj.type === 'clockss') {
         drawWallClock(obj.x, obj.y,currentHour, currentMinute);
-      } else if (obj.type === 'curtainRods') {
-      drawCurtainRod(obj.x,obj.y,obj.width);
-      } else if (obj.type === 'desk') {
+      }  else if (obj.type === 'desk') {
       drawDesk(obj.x, obj.y);
       } else if( obj.type ==='ReceptionDesk'){
         drawReceptionItem(obj.x,obj.y);
@@ -504,77 +501,10 @@ function drawBed(x, y) {
 
 
 
-function drawCurtainRod(x, y, width) {
-  const rodHeight = 8; // Ύψος του κονταριού
-  const endDiameter = 12; // Διάμετρος των άκρων του κονταριού
-
-  // Σώμα του κονταριού
-  fill(40); // Σκούρο γκρι
-  stroke(30); // Σκιά
-  strokeWeight(2);
-  rect(x, y, width, rodHeight); // Κύριο σώμα του κονταριού
-
-  // Στρογγυλά άκρα με σκίαση
-  fill(30); // Σκούρο γκρι για τα άκρα
-  noStroke();
-  ellipse(x, y + rodHeight / 2, endDiameter, endDiameter); // Αριστερό άκρο
-  ellipse(x + width, y + rodHeight / 2, endDiameter, endDiameter); // Δεξί άκρο
-
-  // Γραμμές υφής στο κοντάρι
-  stroke(60); // Ανοιχτό γκρι
-  strokeWeight(1);
-  for (let i = x + 5; i < x + width; i += 15) {
-      line(i, y, i, y + rodHeight); // Κάθετες γραμμές
-  }
-}
 
 
 
-// function drawClocks(){
-//   for (let clock of clocks) {
-//        drawWallClock(clock.x,clock.y,clock.stoppedHour,clock.stoppedMinute,clock.reverse);
-//   }
 
-// }
-function drawCurtain(x, y, playerX, playerY) {
-  const curtainWidth = 180; // Πλάτος κουρτίνας
-  const curtainHeight = 180; // Ύψος κουρτίνας
-
-  // Βασικό σώμα της κουρτίνας με μεγαλύτερη διαφάνεια
-  fill(120, 0, 0, 20); // Σκούρο κόκκινο με πολύ χαμηλή αδιαφάνεια
-  noStroke();
-  beginShape();
-
-  for (let i = 0; i <= curtainWidth; i += 10) {
-      let offset;
-      if (dist(playerX, playerY, x + curtainWidth / 2, y + curtainHeight / 2) < 100) {
-          // Κίνηση πιο έντονη αν ο παίκτης πλησιάσει
-          offset = sin(frameCount * 0.1 + i * 0.3) * 20;
-      } else {
-          // Κανονική κίνηση
-          offset = sin(frameCount * 0.05 + i * 0.2) * 10;
-      }
-      vertex(x + i, y + offset);
-  }
-
-  vertex(x + curtainWidth, y + curtainHeight);
-  vertex(x, y + curtainHeight);
-
-  endShape(CLOSE);
-
-  // Σκίαση πτυχώσεων με ακόμα χαμηλότερη διαφάνεια
-  stroke(150, 0, 0, 10); // Σκούρο κόκκινο με σχεδόν μηδενική αδιαφάνεια
-  strokeWeight(1);
-  for (let i = x; i <= x + curtainWidth; i += 20) {
-      line(i, y, i, y + curtainHeight); // Κάθετες σκιές
-  }
-
-  // Φωτεινές πτυχώσεις με μεγαλύτερη διαφάνεια
-  stroke(200, 50, 50, 5); // Ανοιχτό κόκκινο με σχεδόν αόρατη αδιαφάνεια
-  for (let i = x + 10; i <= x + curtainWidth; i += 20) {
-      line(i, y, i, y + curtainHeight); // Εναλλασσόμενες γραμμές φωτός
-  }
-}
 
 
 
@@ -857,6 +787,7 @@ function loadVisuals(level) {
 
 let isRainPlaying = false; // Σημαία για να παρακολουθεί αν ο ήχος βροχής παίζει
 let allowRainSound = true; // Ελέγχει αν ο ήχος της βροχής μπορεί να παίξει
+let allowWaterSound = true;
 
 function drawWindow() {
   const windowWidth = 100; // Πλάτος παραθύρου
@@ -1007,15 +938,15 @@ function drawLamps() {
 
 
 
-  function drawTopBorder() {
+  // function drawTopBorder() {
 
 
-    // Σχεδίαση ταβανιού και δαπέδου
-    fill(100);
-    rect(0, height - PLATFORM_HEIGHT, PLATFORM_WIDTH, PLATFORM_HEIGHT);
-    rect(0, CEILING_HEIGHT-50, PLATFORM_WIDTH, PLATFORM_HEIGHT);
+  //   // Σχεδίαση ταβανιού και δαπέδου
+  //   fill(100);
+  //   rect(0, height - PLATFORM_HEIGHT, PLATFORM_WIDTH, PLATFORM_HEIGHT);
+  //   rect(0, CEILING_HEIGHT-50, PLATFORM_WIDTH, PLATFORM_HEIGHT);
 
-  }
+  // }
   
   
   function drawWallLights() {
@@ -1027,7 +958,8 @@ function drawLamps() {
 
 
 let isTransitioning = false; // Αρχικά η πόρτα δεν βρίσκεται σε μετάβαση
-function checkDoorInteraction(player) {
+function checkDoorInteraction(player,showCosmicDoor1) {
+  if (showCosmicDoor1) {
   if (
       player.x + player.width > doorX &&
       player.x < doorX + doorWidth &&
@@ -1042,7 +974,8 @@ function checkDoorInteraction(player) {
           enterSecretRoom();
           //isTransitioning = false;
       }
-  } else {
+  }else{ showDoorMessage = false;} 
+}else {
       showDoorMessage = false;
   }
 }
@@ -1085,7 +1018,7 @@ function drawLight(x, y) {
 let doorCosmicX = 4000;
 let doorCosmicY = 420;
 
-let doorX = 1800; // Θέση της κύριας πόρτας στον άξονα X
+let doorX = 3420; // Θέση της κύριας πόρτας στον άξονα X
 let doorY = 420; // Θέση της πόρτας στον άξονα Y
 let doorWidth = 70; // Πλάτος της πόρτας
 let doorHeight = 150; // Ύψος της πόρτας
@@ -1132,7 +1065,11 @@ function drawWalls() {
 drawRealisticDoor(SECOND_WALL , height / 2 +120);
 drawRealisticDoor(SECOND_WALL , height / 4-40);
 
-
+fill(60, 60, 60);
+rect(THIRD_WALL, 0, 20, height);
+// Ρεαλιστική πόρτα με πόμολο αριστερά
+drawRealisticDoor(THIRD_WALL , height / 2 +120);
+drawRealisticDoor(THIRD_WALL , height / 4-40);
 
   
  // Ρεαλιστική πόρτα με πόμολο αριστερά
@@ -1231,8 +1168,7 @@ function drawCosmicDoor(x, y) {
       );
   }
 
-
-
+ 
   // Σώμα της πόρτας
   fill(10, 10, 40); // Σκούρο μπλε για την πόρτα
   rect(x + 15, y, 70 * scale, 150 * scale, 5); // Κυρίως σώμα
@@ -1267,13 +1203,105 @@ function drawCosmicDoor(x, y) {
   rect(x + 110, y + 70, 8, 4); // Δεξιό χερούλι
 }
 
+function checkCosmicDoorSound(player,showCosmicDoor1) {
+  let doorX = 3470; // Θέση της πόρτας
+  let range = 200; // Εύρος γύρω από την πόρτα
+  let doorX2 = 28320; // Θέση της πόρτας
+ 
+  // Έλεγχος αν ο παίκτης βρίσκεται εντός του εύρους
+  if (player.x >= doorX - range && player.x <= doorX + range) {
+    if (showCosmicDoor1) {
+      // Ξεκίνα τον ήχο αν δεν παίζει ήδη
+      if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
+          soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
+      }
+    }
+  }else if (player.x >= doorX+18370 - range && player.x <= doorX+18370 + range) {
+     // Ξεκίνα τον ήχο αν δεν παίζει ήδη
+     if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
+      soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
+  }
+}else {
+      // Σταμάτησε τον ήχο αν ο παίκτης είναι εκτός εύρους
+      soundManager.stop('cosmicdoor');
+  }
+
+
+}
+  
+  // // Έλεγχος αν ο παίκτης βρίσκεται εντός του εύρους
+  //   if (player.x >= doorX2 - range && player.x <= doorX2 + range) {
+  //       // Ξεκίνα τον ήχο αν δεν παίζει ήδη
+  //       if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
+  //           soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
+  //       }
+  //   } else {
+  //       // Σταμάτησε τον ήχο αν ο παίκτης είναι εκτός εύρους
+  //       soundManager.stop('cosmicdoor');
+  //   }
+
+  
+
+  
+
+
+  // function checkCosmicSecretDoorSound(player) {
+  //   let doorX = 28320; // Θέση της πόρτας
+  //   let range = 200; // Εύρος γύρω από την πόρτα
+  
+  
+  //   // Έλεγχος αν ο παίκτης βρίσκεται εντός του εύρους
+  //   if (player.x >= doorX - range && player.x <= doorX + range) {
+  //       // Ξεκίνα τον ήχο αν δεν παίζει ήδη
+  //       if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
+  //           soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
+  //       }
+  //   } else {
+  //       // Σταμάτησε τον ήχο αν ο παίκτης είναι εκτός εύρους
+  //       soundManager.stop('cosmicdoor');
+  //   }
+  // }  
+  
+//   // Έλεγχος αν ο παίκτης βρίσκεται εντός του εύρους
+//   if (player.x >= doorX2 - range && player.x <= doorX2 + range) {
+//     // Ξεκίνα τον ήχο αν δεν παίζει ήδη
+//     if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
+//         soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
+//     }
+// } else {
+//     // Σταμάτησε τον ήχο αν ο παίκτης είναι εκτός εύρους
+//     soundManager.stop('cosmicdoor');
+// }
+
+
+function updateCosmicDoorSound(player, cosmicDoorX, cosmicDoorY) {
+  let doorCenterX = cosmicDoorX + 70 / 2; 
+  let doorCenterY = cosmicDoorY + 150 / 2; 
+
+  let distance = dist(player.x, player.y, doorCenterX, doorCenterY);
+  let maxDistance = 600;
+
+  let volume = map(distance, 0, maxDistance, 1.0, 0.0);
+  volume = constrain(volume, 0.0, 1.0);
+
+  soundManager.setVolume('cosmicdoor', volume);
+
+  if (volume > 0 && !soundManager.sounds['cosmicdoor'].isPlaying()) {
+      soundManager.play('cosmicdoor', true, volume);
+  }
+
+  if (volume === 0) {
+      soundManager.stop('cosmicdoor');
+  }
+}
 
 //secretRoomStartX + secretRoomWidth - 215, height - 200
 
 
 let isTransitioningCosmic = false;
 let showDoorCosmicMessage = false;
-function checkCosmicDoorInteraction(player) {
+function 
+checkCosmicDoorInteraction(player) {
   if (
       player.x + player.width > secretRoomStartX &&
       player.x >= secretRoomStartX + secretRoomWidth - 185 &&
@@ -1285,15 +1313,16 @@ function checkCosmicDoorInteraction(player) {
       if (keyIsDown(70) && !isTransitioningCosmic) { // Πατά το "F"
         isTransitioningCosmic = true;
         gameState =="playing"; 
+        
         exitSecretRoom(); // Μετάβαση στο επόμενο δωμάτιο
 
-        resetNPCs(); // Επαναφορά NPCs στην αρχική κατάσταση
+        
         setupRoom();
         isChasing = false; // Επαναφορά του flag
         
         // Απελευθέρωση του flag μετά τη μετάβαση
         setTimeout(() => {
-          isTransitioning = false; // Επαναφορά του flag
+          isTransitioningCosmic = false; // Επαναφορά του flag
       }, 500); // Χρονική καθυστέρηση για να ολοκληρωθεί η μετάβαση
       }
   } else {
@@ -1302,13 +1331,20 @@ function checkCosmicDoorInteraction(player) {
 }
 
 function exitSecretRoom() {
+        soundManager.stop('bats'); // Διακοπή του ήχου νυχτερίδων
+        soundManager.stop('waters');
+        soundManager.stopAllSounds();
+ 
         // Μεταφορά του παίκτη στη νέα θέση
-        player.x =100; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο
+        player.x =730; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο
         player.y = height - PLATFORM_HEIGHT - player.height;
         currentLevel ++;
         updateLevelTracker();
+
+        console.log(`Exited secret room. Current level: ${currentLevel}`);
         allowRainSound = true; // Επαναφορά του ήχου της βροχής
 }
+
 
 
 function drawNoSmokingSign() {
@@ -1340,6 +1376,94 @@ function drawNoSmokingSign() {
 
 
 // ************************* SIGN BOARDS ******************************* //
+function drawExitSignArrow(x, y) {
+  const signWidth = 80; // Διπλάσιο πλάτος της πινακίδας
+  const signHeight = 30; // Διπλάσιο ύψος της πινακίδας
+  const lightHeight = 10; // Διπλάσιο ύψος της πάνω λάμπας
+
+  // Πάνω φωτισμός
+  fill(200); // Ανοιχτό γκρι για τη λάμπα
+  rect(x, y - lightHeight, signWidth, lightHeight);
+
+  // Γραμμές φωτισμού
+  fill(255); // Λευκό για το φως
+  noStroke();
+  rect(x, y - lightHeight + 2, signWidth, 2);
+
+  // Πλαίσιο πινακίδας
+  fill(0, 128, 0); // Πράσινο φόντο
+  rect(x, y, signWidth, signHeight);
+
+  // Κείμενο "EXIT"
+  textSize(12); // Μεγαλύτερο μέγεθος γραμματοσειράς
+  textAlign(CENTER, CENTER);
+  fill(255); // Λευκό για το κείμενο
+  text("EXIT", x + signWidth / 2 - 6, y + signHeight / 2);
+
+  // Βέλος
+  fill(255); // Λευκό για το βέλος
+  noStroke();
+  beginShape();
+  vertex(x + signWidth - 20, y + signHeight / 2 - 8); // Αριστερή άκρη
+  vertex(x + signWidth - 4, y + signHeight / 2); // Μύτη του βέλους
+  vertex(x + signWidth - 20, y + signHeight / 2 + 8); // Δεξιά άκρη
+  vertex(x + signWidth - 24, y + signHeight / 2 + 8); // Κάτω γραμμή
+  vertex(x + signWidth - 24, y + signHeight / 2 - 8); // Επάνω γραμμή
+  endShape(CLOSE);
+}
+function drawExitSign(x, y) {
+  const signWidth = 80; // Διπλάσιο πλάτος της πινακίδας
+  const signHeight = 30; // Διπλάσιο ύψος της πινακίδας
+  const lightHeight = 10; // Διπλάσιο ύψος της πάνω λάμπας
+
+  // Πάνω φωτισμός
+  fill(200); // Ανοιχτό γκρι για τη λάμπα
+  rect(x, y - lightHeight, signWidth, lightHeight);
+
+  // Γραμμές φωτισμού
+  fill(255); // Λευκό για το φως
+  noStroke();
+  rect(x, y - lightHeight + 2, signWidth, 2);
+
+  // Πλαίσιο πινακίδας
+  fill(0, 128, 0); // Πράσινο φόντο
+  rect(x, y, signWidth, signHeight);
+
+  // Κείμενο "EXIT"
+  textSize(12); // Μεγαλύτερο μέγεθος γραμματοσειράς
+  textAlign(CENTER, CENTER);
+  fill(255); // Λευκό για το κείμενο
+  text("EXIT", x + signWidth / 2, y + signHeight / 2);
+}
+
+
+
+
+
+function drawCourageSign(x, y) {
+  const boardWidth = 150; // Πλάτος πινακίδας
+  const boardHeight = 150; // Ύψος πινακίδας
+
+  // Πλαίσιο πινακίδας
+  fill(139, 69, 19); // Καφέ για το ξύλο
+  rect(x, y, boardWidth, boardHeight, 5); // Πλαίσιο με στρογγυλεμένες γωνίες
+
+  // Εσωτερικό πινακίδας
+  fill(240, 255, 240); // Απαλό πράσινο για ενθαρρυντικό μήνυμα
+  rect(x + 5, y + 5, boardWidth - 10, boardHeight - 10, 5);
+
+  // Κείμενο
+  fill(0); // Μαύρο για το κείμενο
+  textSize(14); // Τίτλος
+  textAlign(CENTER, CENTER);
+  text("You Are Brave!", x + boardWidth / 2, y + 30);
+
+  textSize(12); // Μήνυμα
+  text("If you make it to the end,", x + boardWidth / 2, y + 65);
+  text("there is nothing to fear", x + boardWidth / 2, y + 85);
+  text("for this round.", x + boardWidth / 2, y + 105);
+}
+
 
 function drawSignBoard1(x, y) {
   const boardWidth = 300; // Μικρότερο πλάτος

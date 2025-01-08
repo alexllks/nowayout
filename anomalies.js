@@ -27,7 +27,8 @@ function drawFloodingWater(startX, startY, isAnomaly) {
 
 function setupRoom() {
   // Λίστα ανωμαλιών με βάρη
-  const anomalies = ["sofa", "fridge", "kitchen", "table","mirror", "doll", "TV", "Bookshelf","radio", "ghost","none","none" ];
+  const anomalies = ["sofa", "fridge", "kitchen", "table","mirror", "doll", "TV", "Bookshelf","radio", "ghost","npc","none","none" ];
+  //const anomalies = ["doll"];
   // Το "ghost" εμφανίζεται περισσότερες φορές για να έχει μεγαλύτερη πιθανότητα
 
 
@@ -39,7 +40,7 @@ function setupRoom() {
 
     hasAnomaly = true; // Υποδεικνύει ότι υπάρχει ανωμαλία
     objects = [
-     
+      { x: 2870, y: height - 55, type: 'npc', isAnomaly: false },
       { x: 4600, y: height - 100, type: 'radio', isAnomaly: false },
       { x: 4500, y: height - 412, type: 'radio', isAnomaly: false },
 
@@ -47,7 +48,7 @@ function setupRoom() {
 
       { x: 3790, y: height - 100, type: 'mirror', isAnomaly: false },
       { x: 3470, y: height - 355, type: 'doll', isAnomaly: false, speed: 2, direction: 1},
-      { x: 190, y: height - 20, type: 'sofa', isAnomaly: false },
+      { x: 2650, y: height - 20, type: 'sofa', isAnomaly: false },
       { x: 5340, y: height - 320, type: 'fridge', isAnomaly: false },
       { x: 4980, y: height - 350, type: 'kitchen', isAnomaly: false },
       { x: 5610, y: height - 81, type: 'table', isAnomaly:false},
@@ -60,7 +61,7 @@ function setupRoom() {
      // { x: 1220, y: height - 30, type: 'lamp', isAnomaly: false },
       { x: 5530, y: height - 330, type: 'chair', isAnomaly: false },
       { x: 5650, y: height - 330, type: 'chair', isAnomaly: false },
-      { x: 2620, y: height - 200, type: 'Painting', isAnomaly: false },
+      { x: 2845, y: height - 200, type: 'Painting', isAnomaly: false },
       { x: 2650, y: height - 20, type: 'sofa2', isAnomaly: false },
       { x: 2910, y: height - 20, type: 'fridge2', isAnomaly: false },
       { x: 2650, y: height - 20, type: 'sofa2', isAnomaly: false },
@@ -121,8 +122,8 @@ function setupRoom() {
 function createGhosts(count) {
   for (let i = 0; i < count; i++) {
       ghosts.push({
-          x: 2000,
-          y: random(100, height - 150),
+          x: 3460,
+          y: random(100, height - 1350),
           size: 50,
           speed: random(1, 3),
           direction: 1
@@ -166,7 +167,7 @@ for (let ghost of ghosts) {
     arc(ghost.x, ghost.y, ghost.size / 3, ghost.size / 6, 0, PI);
 
     // Chase logic
-    if (player.x > 2000  && player.x < 5000) { // Start chasing if player is past x=100
+    if (player.x > 3400  && player.x < 10000) { // Start chasing if player is past x=100
         let dx = player.x - ghost.x;
         let dy = player.y - ghost.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
@@ -197,6 +198,7 @@ for (let ghost of ghosts) {
   }
   function drawObjects() {
     for (let obj of objects) {
+      if (obj.type === 'npc') drawNpc(obj.x, obj.y, obj.isAnomaly);
         if (obj.type === 'door') drawDoor2(obj.x, obj.y, obj.isMoving);
         if (obj.type === 'mirror') drawMirror(obj.x, obj.y, obj.isAnomaly);
      
@@ -222,6 +224,56 @@ for (let ghost of ghosts) {
     }
   }
 
+  
+function drawNpc(x, y, isAnomaly) {
+  if(isAnomaly){
+    return ;
+  }
+
+  const scale = 1.0; // Κλίμακα μεγέθους
+  noStroke();
+
+  // Κεφάλι με λεπτομέρεια
+  fill(200, 100, 100); // Σκούρο κόκκινο για το κεφάλι
+  ellipse(x, y - 50 * scale, 22 * scale, 22 * scale); // Κεφάλι
+
+  // Καπέλο με σκίαση
+  fill(100, 0, 0); // Σκούρο κόκκινο καπέλο
+  arc(x, y - 55 * scale, 26 * scale, 15 * scale, PI, TWO_PI); // Πάνω μέρος καπέλου
+  fill(80, 0, 0); // Πιο σκούρα απόχρωση για σκίαση
+  arc(x, y - 55 * scale, 26 * scale, 10 * scale, PI, TWO_PI); // Εσωτερική σκίαση
+
+  // Μάτια με σκιάσεις
+  fill(255); // Λευκά των ματιών
+  ellipse(x - 5 * scale, y - 52 * scale, 5 * scale, 3 * scale); // Αριστερό μάτι
+  ellipse(x + 5 * scale, y - 52 * scale, 5 * scale, 3 * scale); // Δεξί μάτι
+
+  fill(0); // Κόρες
+  ellipse(x - 5 * scale, y - 52 * scale, 2 * scale, 2 * scale); // Αριστερή κόρη
+  ellipse(x + 5 * scale, y - 52 * scale, 2 * scale, 2 * scale); // Δεξιά κόρη
+
+  // Στόμα με ρεαλιστική έκφραση
+  fill(255, 100, 100); // Χείλη
+  arc(x, y - 46 * scale, 10 * scale, 4 * scale, 0, PI); // Στόμα
+
+  // Σώμα με υφή
+  fill(150, 30, 30); // Σκούρο κόκκινο για το σώμα
+  rect(x - 10 * scale, y - 42 * scale, 20 * scale, 40 * scale); // Σώμα
+  rect(x - 8 * scale, y - 40 * scale, 16 * scale, 36 * scale); // Εσωτερική σκίαση
+
+  // Χέρια
+  fill(150, 30, 30); // Ίδιο χρώμα με το σώμα
+  rect(x - 15 * scale, y - 42 * scale, 5 * scale, 20 * scale); // Αριστερό χέρι
+  rect(x + 10 * scale, y - 42 * scale, 5 * scale, 20 * scale); // Δεξί χέρι
+
+  // Πόδια με μπότες
+  fill(100, 20, 20); // Σκούρο κόκκινο για τα πόδια
+  rect(x - 8 * scale, y - 5 * scale, 6 * scale, 15 * scale); // Αριστερό πόδι
+  rect(x + 2 * scale, y - 5 * scale, 6 * scale, 15 * scale); // Δεξί πόδι
+  fill(50); // Μαύρες μπότες
+  rect(x - 8 * scale, y + 10 * scale, 6 * scale, 5 * scale); // Μπότες αριστερό πόδι
+  rect(x + 2 * scale, y + 10 * scale, 6 * scale, 5 * scale); // Μπότες δεξί πόδι
+}
   function drawRadio(x, y, type = "normal") {
     const scale = 0.3; // Κλίμακα μεγέθους για να προσαρμόσεις το μέγεθος
     if (type === "normal") {
@@ -477,7 +529,7 @@ function updateDoll(obj, player) {
       let distance = Math.sqrt(dx * dx + dy * dy);
 
       // Κίνηση της κούκλας προς τον παίκτη
-      if (distance > 1) { // Αν δεν είναι πολύ κοντά στον παίκτη
+      if (distance > 10) { // Αν δεν είναι πολύ κοντά στον παίκτη
           obj.x += (dx / distance) * obj.speed;
           obj.y += (dy / distance) * obj.speed;
       }
@@ -487,11 +539,7 @@ function updateDoll(obj, player) {
       obj.y = constrain(obj.y, 50, height - 50);
   }
 }
-// function drawDolls() {
-//   for (let doll of dolls) {
-//       drawDoll(doll.x, doll.y, doll.isAnomaly);
-//   }
-// }
+
 
 function activateDollAnomaly() {
   for (let doll of dolls) {
@@ -658,13 +706,15 @@ function drawBookshelf(x, y, isAnomaly) {
 
   function drawSofa(x, y, isAnomaly) {
     if (isAnomaly) {
+     
         fill(255, 0, 0); // Κόκκινο χρώμα για ανωμαλία
-        rect(x - 30, y - 25, 60, 30); // Μεγαλύτερο σώμα για ανωμαλία
+        rect(x - 30, y - 25, 120, 80); // Μεγαλύτερο σώμα για ανωμαλία
+        rect(x - 25, y - 30, 110, 70); // Πλάτη του καναπέ
     } else {
         fill(139, 69, 19); // Καφέ χρώμα για το σώμα
-        rect(x - 30, y - 20, 60, 20); // Σώμα του καναπέ
+        rect(x - 30, y - 25, 120, 80); // Σώμα του καναπέ
         fill(165, 42, 42); // Κόκκινο για το επάνω μέρος
-        rect(x - 25, y - 30, 50, 10); // Πλάτη του καναπέ
+        rect(x - 25, y - 30, 110, 70); // Πλάτη του καναπέ
     }
   }
   

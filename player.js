@@ -1,10 +1,10 @@
 class Player {
   constructor() {
-    this.x = 100;
+    this.x = 730;
     this.y = height - PLATFORM_HEIGHT - 60;
     this.width = 40;
     this.height = 0;
-    this.speed = 20;
+    this.speed = 7;
     this.velocityY = 0;
     this.gravity = 0.6;
 
@@ -14,6 +14,9 @@ class Player {
     this.isFalling = false;
     this.isPlummeting = false;
     this.isJumping = false; // Προστέθηκε για να διαχειρίζεται το άλμα
+    this.isDying = false; // Νέα ιδιότητα για το animation θανάτου
+        this.rotation = 0; // Περιστροφή κατά την πτώση
+        
     
   }
 
@@ -29,6 +32,17 @@ class Player {
       // Απενεργοποιούμε τη φυσική και επιστρέφουμε
       return;
   } else {
+
+    if (this.isDying) {
+      // Animation θανάτου (π.χ. περιστροφή και πτώση)
+      this.rotation += 0.1; // Περιστροφή
+      this.y += 5; // Γρήγορη πτώση
+      return; // Σταματά η υπόλοιπη ενημέρωση
+  }
+
+
+
+
 
     
     let stepTimer = 0; // Μετρητής για τα καρέ μεταξύ των βημάτων
@@ -107,23 +121,22 @@ class Player {
     // Έλεγχος για σύγκρουση με πλατφόρμες
     
     for (let platform of platforms) {
-      
-      if (platform instanceof FloatingPlatform){
-        if (
-          this.x + this.width  > platform.x &&
-          this.x - this.width  < platform.x + platform.width &&
-          this.y + this.height >= platform.y &&
-          this.y + this.height <= platform.y + Math.abs(this.velocityY + 5)
-      ){
-       
-          onPlatform = true;
-          this.y = platform.y - this.height;
-          this.velocityY = 0;
-          this.canJump = true;
-          this.isFalling = false;
+      let minContact = player.width * 0.5; // Ελάχιστο ποσοστό επαφής 50%
 
+      if (
+        player.x + player.width > platform.x + minContact && // Αριστερή άκρη
+        player.x < platform.x + platform.width - minContact && // Δεξιά άκρη
+        player.y + player.height >= platform.y && // Κάτω άκρη του παίκτη
+        player.y + player.height <= platform.y + 5 // Επαφή με την κορυφή της πλατφόρμας
+      ) {
+        onPlatform = true;
+        player.y = platform.y - player.height;
+        player.velocityY = 0;
+        player.canJump = true;
+        player.isFalling = false;
+        break;
       }
-    }
+    
     else{
 
       if (
@@ -142,25 +155,49 @@ class Player {
       }
     }
   // Έλεγχος από τα αριστερά
-    if (
-        this.x + this.width > platform.x &&
-        this.x <= platform.x &&
-        this.y + this.height > platform.y &&
-        this.y < platform.y + platform.height
-      ){
-    this.x = platform.x - this.width+25;//Σταθεροποίηση αριστερά της πλατφόρμας
-  }
+if (
+  this.x + this.width > platform.x &&
+  this.x + this.width <= platform.x + 5 && // Ανοχή για την αριστερή άκρη
+  this.y + this.height > platform.y &&
+  this.y < platform.y + platform.height &&
+  this.velocityX > 0 // Εφαρμογή μόνο αν κινείται δεξιά
+) {
+  this.x = platform.x - this.width; // Σταθεροποίηση αριστερά της πλατφόρμας
+  this.velocityX = 0;
+}
 
-  // Έλεγχος από τα δεξιά
+// Έλεγχος από τα δεξιά
+if (
+  this.x < platform.x + platform.width &&
+  this.x >= platform.x + platform.width - 5 && // Ανοχή για τη δεξιά άκρη
+  this.y + this.height > platform.y &&
+  this.y < platform.y + platform.height &&
+  this.velocityX < 0 // Εφαρμογή μόνο αν κινείται αριστερά
+) {
+  this.x = platform.x + platform.width; // Σταθεροποίηση δεξιά της πλατφόρμας
+  this.velocityX = 0;
+}
+
+
+
   if (
+    this.x + this.width > platform.x &&
     this.x < platform.x + platform.width &&
-    this.x >= platform.x + platform.width - this.speed && // Σταθερός έλεγχος επαφής
     this.y + this.height > platform.y &&
     this.y < platform.y + platform.height
-  ) {
-    this.x = platform.x + platform.width+10; // Σταθεροποίηση δεξιά της πλατφόρμας
-  }
-
+) {
+    // Έλεγχος αν είναι το ταβάνι
+    if (platform.y === CEILING_HEIGHT - 30 - PLATFORM_HEIGHT) {
+        this.y = platform.y + platform.height; // Σταθεροποίηση κάτω από το ταβάνι
+        this.velocityY = 0; // Επαναφορά ταχύτητας
+    } else {
+        // Κανονικός έλεγχος πλατφόρμας
+        this.y = platform.y - this.height; // Σταθεροποίηση πάνω στην πλατφόρμα
+        this.velocityY = 0;
+        this.canJump = true;
+    }
+    break; // Σταματάμε μόλις βρεθεί collision
+}
   }
 
     for (let stair of stairs) {
@@ -212,6 +249,16 @@ class Player {
 
   show() {
     drawGameChar(this.x, this.y, this.isLeft, this.isRight, this.isFalling, this.isPlummeting);
+     if (this.isDying) {
+            // Σχεδίαση με περιστροφή
+            push();
+            translate(this.x + this.width / 2, this.y + this.height / 2);
+            rotate(this.rotation);
+            fill(255, 0, 0); // Χρώμα θανάτου
+            rect(-this.width / 2, -this.height / 2, this.width, this.height);
+            pop();
+            return;
+        }
   }
 }
 

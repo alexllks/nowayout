@@ -16,7 +16,7 @@ class Bat {
             this.direction *= -1;
         }
     
-    
+  
         // // Debugging
         // console.log(`Νυχτερίδα X: ${this.x}, Y: ${this.y}`);
          // Έλεγχος σύγκρουσης με τον παίκτη
@@ -59,8 +59,31 @@ class Bat {
 }
 
 function updateBats(bats) {
+    let closestBat = null;
+    let closestDistance = Infinity;
+
     for (let bat of bats) {
         bat.update();
+
+        // Υπολογισμός της απόστασης από τον παίκτη
+        let distance = dist(player.x, player.y, bat.x, bat.y);
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestBat = bat;
+        }
+    }
+
+    // Ρύθμιση έντασης μόνο για την πλησιέστερη νυχτερίδα
+    if (closestBat) {
+        let maxDistance = 500; // Μέγιστη απόσταση για ήχο
+        let volume = map(closestDistance, 0, maxDistance, 1.0, 0.0);
+        volume = constrain(volume, 0.0, 1.0);
+
+        soundManager.setVolume('bats', volume);
+
+        if (!soundManager.sounds['bats'].isPlaying()) {
+            soundManager.play('bats', true, volume);
+        }
     }
 }
 
