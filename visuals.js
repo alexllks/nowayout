@@ -26,16 +26,9 @@ let doors = [
   { type: 'roomDoor', x: 5790, y: 417, roomNumber: 101 },
   { type: 'roomDoor', x: 6030, y: 417, roomNumber: 102 },
   { type: 'roomDoor', x: 6270, y: 417, roomNumber: 103 },
-<<<<<<< HEAD
   { type: 'roomDoor', x: 6510, y: 417, roomNumber: 104 },
   { type: 'roomDoor', x: 6750, y: 417, roomNumber: 105 },
   { type: 'roomDoor', x: 6150, y: 115, roomNumber: 106 },
-=======
-  { type: 'roomDoor', x: 8430, y: 417, roomNumber: 104 },
-  { type: 'roomDoor', x: 6105, y: 417, roomNumber: 105 },
-  
-  { type: 'roomDoor', x: 2550, y: 115, roomNumber: 110 },
->>>>>>> 8805d7928ea411d6f72a31041b888b0f3645511b
  
   { type: 'roomDoor', x: 6390, y: 115, roomNumber: 107 },
 
@@ -144,11 +137,7 @@ let scaryObjects = [
   { type: 'candle', x: 3510, y: 515 },
   //{ type: 'bloodyDoll', x: 950, y: 400 },
   { type: 'clockss', x: 5762, y: 650 ,hour:12,minute:0},
-<<<<<<< HEAD
 
-=======
-  { type: 'curtainRods', x: 105, y: 329 ,width:172},
->>>>>>> 8805d7928ea411d6f72a31041b888b0f3645511b
 
 
   // { type: 'book', x: 800, y: 400 },
