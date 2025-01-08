@@ -4,7 +4,11 @@ class Player {
     this.y = height - PLATFORM_HEIGHT - 60;
     this.width = 40;
     this.height = 0;
+<<<<<<< HEAD
     this.speed = 7;
+=======
+    this.speed = 30;
+>>>>>>> 8805d7928ea411d6f72a31041b888b0f3645511b
     this.velocityY = 0;
     this.gravity = 0.6;
 
@@ -185,6 +189,19 @@ if (
     this.x < platform.x + platform.width &&
     this.y + this.height > platform.y &&
     this.y < platform.y + platform.height
+<<<<<<< HEAD
+=======
+  ) {
+    this.x = platform.x + platform.width+10; // Σταθεροποίηση δεξιά της πλατφόρμας
+  }
+
+
+  if (
+    this.x + this.width > platform.x &&
+    this.x < platform.x + platform.width &&
+    this.y + this.height > platform.y &&
+    this.y < platform.y + platform.height
+>>>>>>> 8805d7928ea411d6f72a31041b888b0f3645511b
 ) {
     // Έλεγχος αν είναι το ταβάνι
     if (platform.y === CEILING_HEIGHT - 30 - PLATFORM_HEIGHT) {
@@ -244,7 +261,7 @@ if (
     }
 
         // Εμφάνιση συντεταγμένων στην κονσόλα
-        //console.log(`Player coordinates: x=${this.x}, y=${this.y}`);
+        console.log(`Player coordinates: x=${this.x}, y=${this.y}`);
 }
 
   show() {

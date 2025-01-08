@@ -115,7 +115,12 @@ function preload() {
 // }
 
 
+<<<<<<< HEAD
 
+=======
+// Adding elevator instance
+let elevator;
+>>>>>>> 8805d7928ea411d6f72a31041b888b0f3645511b
 function setup() {
   createCanvas(1224, 576);
   bufferCanvas = createGraphics(settings.canvasWidth, settings.canvasHeight); // Δημιουργία buffer canvas
@@ -132,15 +137,23 @@ function setup() {
 
   
   platforms = Platform.createPlatforms();
+  elevator = new Elevator(500, 400, 100, 100, 20, 2); // Example elevator
 
 
 
 
+<<<<<<< HEAD
 
   // Πιθανότητα εμφάνισης της πόρτας
   showCosmicDoor1 = random() < 0.9;
  // Debug: Εκτύπωση της τιμής της `showCosmicDoor1`
  //console.log("Show Cosmic Door 1:", showCosmicDoor1);
+=======
+  // Πιθανότητα εμφάνισης της πόρτας
+  showCosmicDoor1 = random() < 0.9;
+ // Debug: Εκτύπωση της τιμής της `showCosmicDoor1`
+ console.log("Show Cosmic Door 1:", showCosmicDoor1);
+>>>>>>> 8805d7928ea411d6f72a31041b888b0f3645511b
   // Προτροπή στον χρήστη να κάνει κλικ για τον ήχο
   textSize(20);
   fill(255);
@@ -208,7 +221,11 @@ function displayLost() {
 
   // Έλεγχος αν ο χρήστης πατάει το πλήκτρο 'M'
   if (keyIsDown(77)) { // 77 είναι ο κωδικός για το πλήκτρο 'M'
+<<<<<<< HEAD
       currentLevel = 0; // Επαναφορά επιπέδων
+=======
+      currentLevel = 1; // Επαναφορά επιπέδων
+>>>>>>> 8805d7928ea411d6f72a31041b888b0f3645511b
       updateLevelTracker(); // Ενημέρωση του tracker
       gameState = "menu"; // Επιστροφή στο μενού
       initializeGame(); // Επαναφορά του παιχνιδιού
@@ -273,7 +290,11 @@ function isDying(){
 function initializeGame() {
   isGameOver = false;
   player.isDying = false;
+<<<<<<< HEAD
   player.x = 730; // Θέση εκκίνησης του παίκτη
+=======
+  player.x = 100; // Θέση εκκίνησης του παίκτη
+>>>>>>> 8805d7928ea411d6f72a31041b888b0f3645511b
   player.y = height - PLATFORM_HEIGHT - player.height;
   player.velocityY = 0;
  
@@ -400,9 +421,30 @@ updatePlatforms(platforms);
     textAlign(CENTER);
     text("Press F to pass this door", player.x - 500 + width / 2, height - 100);
   }
+<<<<<<< HEAD
 
 
 
+=======
+
+    // Update and draw the elevator
+    elevator.update();
+    elevator.show();
+
+     // Simplified collision logic for the elevator
+     if (
+      player.x + player.width > elevator.x &&
+      player.x < elevator.x + elevator.width &&
+      player.y + player.height >= elevator.y &&
+      player.y + player.height <= elevator.y + elevator.height
+  ) {
+      player.y = elevator.y - player.height; // Place player on top of the elevator
+      player.velocityY = 0; // Stop any downward motion
+  } else {
+      player.velocityY += 0.5; // Apply gravity if not on the elevator
+      player.y += player.velocityY;
+  }
+>>>>>>> 8805d7928ea411d6f72a31041b888b0f3645511b
 
 
   
@@ -429,6 +471,17 @@ function keyPressed() {
       console.log("Noclip Mode: " + (noclipMode ? "Activated" : "Deactivated"));
   }
 
+<<<<<<< HEAD
+=======
+      // Activate elevator with UP or DOWN arrow keys
+      if (keyCode === UP_ARROW) {
+        elevator.activate(-1); // Move up
+    } else if (keyCode === DOWN_ARROW) {
+        elevator.activate(1); // Move down
+    }
+
+
+>>>>>>> 8805d7928ea411d6f72a31041b888b0f3645511b
 }
 
 // function stopAllSounds() {
