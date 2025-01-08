@@ -28,9 +28,10 @@ let END_WALL_X = 21642;
 let WALL_WIDTH = 50;   // Νέο πλάτος τοίχου
 
 let MIDDLE_WALL_X= 7240;
-let FIRST_WALL = 4675;
-let SECOND_WALL = 5890;
+let FIRST_WALL = 4920;
+let SECOND_WALL = 5760;
 let THIRD_WALL = 2540;
+let FORTH_WALL =3960;
 let obstacles = []; // Δήλωση πίνακα για τα εμπόδια
 
 let npcActivated = false; // Αρχικά ο NPC είναι ανενεργός
@@ -67,7 +68,7 @@ let rainSoundActive = false; // Σημαία για την κατάσταση τ
 let npcFootstepSoundActive = false; // Σημαία για την κατάσταση του ήχου NPC
 
 
-let debugMode = true;
+let debugMode = false;
 let noclipMode = false; // Για το debug mode
 
 function preload() {
@@ -308,7 +309,7 @@ checkCosmicDoorSound(player,showCosmicDoor1);
   drawWalls();
   checkWallCollision();
   drawNoSmokingSign(); // Σχεδίαση σήματος "No Smoking"
-  drawSofa2();
+  //drawSofa2();
   drawDoors();
   drawWindow();
   drawBookshelfs();
@@ -325,6 +326,7 @@ checkCosmicDoorSound(player,showCosmicDoor1);
  // checkCosmicSecretDoorSound(player);
   drawSpikes();
   drawReceptionDesk();
+  drawFireplaces();
    // Σχεδίαση NPC σε σταθερό σημείο
    //drawNpc(2820, 550); // Ο NPC θα εμφανιστεί στη θέση (200, 300)
 

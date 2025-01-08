@@ -18,7 +18,7 @@ let windowPositions = [
 
 //ALLAGI
 let sofaPositions = [
-  {x:9550, y:555}
+  {x:9580, y:555}
 ];
 //ALLAGI
 
@@ -53,9 +53,9 @@ let doors = [
 
 
 let Bookshelfs= [
-  {  x: 3040, y: 437},
-  {  x: 3270, y: 437}, 
-  {  x: 3390, y: 437},
+  {  x: 4230, y: 437},
+  {  x: 4350, y: 437}, 
+  {  x: 4590, y: 437},
 
 ]
 
@@ -67,6 +67,7 @@ let stairs = [
 let ReceptionDesk = [
   { x: 2810, y: 510 } // Θέση της ρεσεψιόν
 ];
+
 
 function drawReceptionDesk() {
   for (let item of ReceptionDesk) {
@@ -129,12 +130,14 @@ function drawReceptionDeskStructure(x, y) {
 
 
 let scaryObjects = [
+  { type: 'normal_doll', x:3485, y: 227},
+  { type: 'normal_mirror', x:3550, y: 150},
   { type: 'door', x: 400, y: 100 },
-  { type: 'candle', x: 3850, y: 535 },
-  { type: 'candle', x: 3730, y: 535 },
-  { type: 'candle', x: 3545, y: 485 },
-  { type: 'candle', x: 3580, y: 515 },
-  { type: 'candle', x: 3510, y: 515 },
+  { type: 'candle', x: 4570, y: 235 },
+  { type: 'candle', x: 4690, y: 235 },
+  { type: 'candle', x: 3545, y: 255 },
+  { type: 'candle', x: 3580, y: 255 },
+  { type: 'candle', x: 3510, y: 255 },
   //{ type: 'bloodyDoll', x: 950, y: 400 },
   { type: 'clockss', x: 5762, y: 650 ,hour:12,minute:0},
 
@@ -143,7 +146,7 @@ let scaryObjects = [
   // { type: 'book', x: 800, y: 400 },
   // //{ type: 'lantern', x: 500, y: 250 },
  //  { type: 'rope', x: 1600, y: 50 },
-  { type: 'bed', x: 4000, y: 210 },
+  { type: 'bed', x: 4120, y: 230 },
 
   { type: 'bloodyHandprint', x: 2700, y: 450 },
     { type: 'bloodyHandprint', x: 2550, y: 450 },
@@ -153,9 +156,9 @@ let scaryObjects = [
     { type: 'house_painting', x: 7355, y: 415, width: 150, height: 200 },
     //ALLAGI
     { type: 'painting', x: 7960, y: 415, width: 150, height: 200 },
-    { type: 'desk', x: 4500, y: 200 },
+    { type: 'desk', x: 5172, y: 500 },
    // { type: 'sofa2', x: 700, y:500},
-    { type: 'ElegantChair', x: 4100, y:520},
+    { type: 'ElegantChair', x: 4110, y:520},
     // {type:'ReceptionDesk', x: 4500, y: 500 }, // Κεντρικό γραφείο
     // {type:'ReceptionDesk', x: 4480, y: 460 }, // Κουδούνι ρεσεψιόν
     // {type:'ReceptionDesk', x: 4600, y: 450 }, // Λάμπα
@@ -169,6 +172,67 @@ let Spikes = [
 
 
 
+// visuals.js
+
+// Λίστα με τα τζάκια στον χώρο
+let fireplaces = [
+  { x: 4400, y: 181 },
+ // { x: 1200, y: 400 },
+];
+
+// Σ
+// Συνάρτηση για τη σχεδίαση ενός τζακιού με καμινάδα
+function drawFireplace(x, y) {
+  const scale = 0.5; // Κλίμακα μεγέθους για το τζάκι
+
+  // Καμινάδα
+  fill(139, 69, 19); // Καφέ χρώμα για την καμινάδα
+  rect(x + 80 * scale, y - 281 * scale, 40 * scale, 281 * scale); // Ψηλότερο σώμα της καμινάδας
+
+  // Βασική δομή τζακιού
+  fill(139, 69, 19); // Καφέ χρώμα για το ξύλο
+  rect(x, y, 200 * scale, 150 * scale); // Σώμα του τζακιού
+
+  // Άνοιγμα τζακιού
+  fill(0); // Μαύρο για το εσωτερικό
+  rect(x + 50 * scale, y + 50 * scale, 100 * scale, 80 * scale);
+
+  // Φλόγες μέσα στο μαύρο πλαίσιο
+  for (let i = 0; i < 5; i++) {
+      fill(255, random(100, 200), 0, random(180, 255)); // Φλόγες με δυναμική φωτεινότητα
+      beginShape();
+      vertex(x + 75 * scale + i * 10 * scale, y + 120 * scale);
+      vertex(x + 70 * scale + i * 10 * scale, y + 100 * scale - random(10, 30) * scale);
+      vertex(x + 80 * scale + i * 10 * scale, y + 120 * scale);
+      endShape(CLOSE);
+  }
+
+  // Σκιάσεις και λεπτομέρειες
+  fill(100, 50, 25);
+  rect(x, y, 200 * scale, 20 * scale); // Διακοσμητική κορυφή
+  fill(80, 40, 20);
+  rect(x + 20 * scale, y + 140 * scale, 160 * scale, 10 * scale); // Βάση
+
+  // Διακοσμητικές γραμμές
+  stroke(120, 60, 30);
+  strokeWeight(2 * scale);
+  for (let i = 0; i < 4; i++) {
+      line(x + 50 * scale + i * 40 * scale, y, x + 50 * scale + i * 40 * scale, y + 50 * scale);
+  }
+  noStroke();
+}
+
+// Συνάρτηση για τη σχεδίαση όλων των τζακιών
+function drawFireplaces() {
+  for (let fireplace of fireplaces) {
+      drawFireplace(fireplace.x, fireplace.y);
+  }
+}
+
+
+
+
+
 function drawScaryObjects() {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
@@ -178,6 +242,13 @@ function drawScaryObjects() {
 
   
     for (let obj of scaryObjects) {
+      if (obj.type === 'normal_doll') {
+        drawNormalDoll(obj.x, obj.y);
+      }
+
+      if (obj.type === 'normal_mirror') {
+        drawNormalMirror(obj.x, obj.y);
+      }
 
       if (obj.type === 'painting') {
         drawPaintingimage(obj.x, obj.y, obj.width, obj.height);
@@ -222,6 +293,70 @@ function drawScaryObjects() {
       }
   }
   }
+
+
+
+
+
+
+
+
+
+
+
+  
+function  drawNormalDoll(x,y){
+  const scale = 0.6;
+  
+    // Σώμα της κούκλας
+    fill(250, 220, 200); // Κεφάλι
+    ellipse(x, y - 50 * scale, 40 * scale, 50 * scale);
+  
+    fill(150, 50, 50); // Φόρεμα
+    rect(x - 20 * scale, y - 30 * scale, 40 * scale, 60 * scale);
+  
+    fill(250, 220, 200); // Χέρια
+    ellipse(x - 25 * scale, y - 20 * scale, 15 * scale, 15 * scale);
+    ellipse(x + 25 * scale, y - 20 * scale, 15 * scale, 15 * scale);
+  
+    fill(150, 50, 50); // Πόδια
+    rect(x - 15 * scale, y + 30 * scale, 10 * scale, 20 * scale);
+    rect(x + 5 * scale, y + 30 * scale, 10 * scale, 20 * scale);
+  
+  // Πρόσωπο
+    drawNormalDollFace(x, y - 50 * scale);
+  }
+  
+  
+  function drawNormalDollFace(x,y){
+    const scale = 0.6;
+  
+    fill(0);
+    ellipse(x - 10 * scale, y - 5 * scale, 5 * scale, 5 * scale); // Μάτια
+    ellipse(x + 10 * scale, y - 5 * scale, 5 * scale, 5 * scale);
+    noFill();
+    stroke(0);
+    arc(x, y + 10 * scale, 10 * scale, 5 * scale, 0, PI);
+    noStroke();
+    }
+
+
+  
+function drawNormalMirror(x,y){
+const width = 90;  // Πλάτος καθρέφτη
+    const height = 140; // Ύψος καθρέφτη
+
+    // Πλαίσιο καθρέφτη
+    fill(100, 50, 20); // Σκούρο ξύλο
+    rect(x - width / 2, y - height / 2, width, height);
+
+    // Επιφάνεια καθρέφτη
+    fill(50, 70, 100, 200); // Σκούρο μπλε-γκρι για το γυαλί
+    rect(x - width / 2 + 5, y - height / 2 + 5, width - 10, height - 10);
+
+
+}
+
   function drawElegantChair(x, y) {
     const scale = 0.7; // Κλίμακα για μέγεθος
 
@@ -1081,8 +1216,17 @@ drawRealisticDoor(THIRD_WALL , height / 2 +120);
 drawRealisticDoor(THIRD_WALL , height / 4-40);
 
   
+
+fill(60, 60, 60);
+
+rect(FORTH_WALL, 0, 20, height);
+// Ρεαλιστική πόρτα με πόμολο αριστερά
+drawRealisticDoor(FORTH_WALL , height / 2 +120);
+drawRealisticDoor(FORTH_WALL , height / 4-40);
+
+
  // Ρεαλιστική πόρτα με πόμολο αριστερά
- drawElegantDoor(MIDDLE_WALL_X-55 , height / 2 +160);
+ drawElegantDoor(4720 , height / 2 +150);
 
    // Αρχικό τοίχος secretRoom
    fill(60, 60, 60);
@@ -1149,13 +1293,13 @@ rect(x + 55, y , 20, 115); // Εσωτερικό της πόρτας
   fill(255, 215, 0); // Χρυσό πόμολο
   ellipse(x + 15 * scale, y + 60 * scale, 8 * scale, 8 * scale); // Τοποθέτηση αριστερά
 
-  // Διακοσμητική κορυφή
-  fill(139, 69, 19); // Πιο σκούρο καφέ για την κορυφή
-  arc(x + 30 * scale, y - 25 * scale, 50 * scale, 20 * scale, PI, TWO_PI);
+  // // Διακοσμητική κορυφή
+  // fill(139, 69, 19); // Πιο σκούρο καφέ για την κορυφή
+  // arc(x + 30 * scale, y - 25 * scale, 50 * scale, 20 * scale, PI, TWO_PI);
 
-  // Χρυσό κόσμημα στην κορυφή
-  fill(255, 223, 0); // Χρυσό
-  ellipse(x + 30 * scale, y - 25 * scale, 10 * scale, 10 * scale);
+  // // Χρυσό κόσμημα στην κορυφή
+  // fill(255, 223, 0); // Χρυσό
+  // ellipse(x + 30 * scale, y - 25 * scale, 10 * scale, 10 * scale);
 }
 
 

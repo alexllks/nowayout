@@ -41,19 +41,19 @@ function setupRoom() {
     hasAnomaly = true; // Υποδεικνύει ότι υπάρχει ανωμαλία
     objects = [
       { x: 2870, y: height - 55, type: 'npc', isAnomaly: false },
-      { x: 4600, y: height - 100, type: 'radio', isAnomaly: false },
-      { x: 4500, y: height - 412, type: 'radio', isAnomaly: false },
+      //{ x: 4600, y: height - 100, type: 'radio', isAnomaly: false },
+      { x: 5210, y: height - 110, type: 'radio', isAnomaly: false },
 
 
 
-      { x: 3790, y: height - 100, type: 'mirror', isAnomaly: false },
-      { x: 3470, y: height - 355, type: 'doll', isAnomaly: false, speed: 2, direction: 1},
+      { x: 4630, y: height - 400, type: 'mirror', isAnomaly: false },
+      { x: 3615, y: height - 347, type: 'doll', isAnomaly: false, speed: 2, direction: 1},
       { x: 2650, y: height - 20, type: 'sofa', isAnomaly: false },
       { x: 5340, y: height - 320, type: 'fridge', isAnomaly: false },
       { x: 4980, y: height - 350, type: 'kitchen', isAnomaly: false },
-      { x: 5610, y: height - 81, type: 'table', isAnomaly:false},
+      //{ x: 3510, y: height - 400, type: 'table', isAnomaly:false},
       { x: 5555, y: height - 410, type: 'TV', isAnomaly:false},
-      { x: 3150, y: height -140, type: 'Bookshelf', isAnomaly:false},
+      { x: 4470, y: height -140, type: 'Bookshelf', isAnomaly:false},
       
 
      // { x: 800, y: height - 30, type: 'cart', isAnomaly: false },

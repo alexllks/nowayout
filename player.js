@@ -4,7 +4,7 @@ class Player {
     this.y = height - PLATFORM_HEIGHT - 60;
     this.width = 40;
     this.height = 0;
-    this.speed =10;
+    this.speed =30;
     this.velocityY = 0;
     this.gravity = 0.6;
 
@@ -245,7 +245,7 @@ class Player {
     }
 
         // Εμφάνιση συντεταγμένων στην κονσόλα
-        //console.log(`Player coordinates: x=${this.x}, y=${this.y}`);
+        console.log(`Player coordinates: x=${this.x}, y=${this.y}`);
 }
 
   show() {
