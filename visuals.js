@@ -1060,6 +1060,15 @@ function drawWalls() {
 
  fill(60, 60, 60);
 
+ rect(END_WALL_X, height - 160, 1, 200);
+
+ fill(60, 60, 60);
+
+ rect(UPPER_WALL, height - 575, 30000, 40);
+
+
+ fill(60, 60, 60);
+
  rect(SECOND_WALL, 0, 20, height);
 // Ρεαλιστική πόρτα με πόμολο αριστερά
 drawRealisticDoor(SECOND_WALL , height / 2 +120);

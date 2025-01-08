@@ -16,8 +16,20 @@ class FloatingPlatform extends Platform {
     }
 
     show() {
-        fill(100, 150, 255); // Blue color
-        rect(this.x, this.y, this.width*2, this.height);
+        // Δημιουργία gradient για πιο μοντέρνα εμφάνιση
+        for (let i = 0; i < this.height; i++) {
+            let gradient = map(i, 0, this.height, 150, 255); // Απόχρωση του μπλε
+            fill(100, gradient, 255); // Gradient από σκούρο σε ανοιχτό μπλε
+            rect(this.x, this.y + i, this.width, 1); // Γραμμή για το εφέ gradient
+        }
+    
+        // Σχεδίαση πλατφόρμας
+        fill(100, 150, 255); // Κυρίως χρώμα
+        rect(this.x, this.y, this.width, this.height, 10); // Στρογγυλεμένες γωνίες
+    
+        // Σκίαση στο κάτω μέρος της πλατφόρμας για 3D εφέ
+        fill(0, 0, 0, 50); // Διαφανές μαύρο για σκιά
+        rect(this.x, this.y + this.height, this.width, 5, 5); // Λεπτή σκιά
     }
 
     static createFloatingPlatforms() {
@@ -25,10 +37,10 @@ class FloatingPlatform extends Platform {
 
             // // Reduce floating platforms
       const floatingPlatformPositions = [
-        //{ x: 600, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300 },
-        { x: secretRoomStartX + 1400, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300 },
-        { x: secretRoomStartX + 1800, yStart: height - PLATFORM_HEIGHT - 130, yEnd: height - PLATFORM_HEIGHT - 300 },
-        { x: secretRoomStartX + 6500, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 400 },
+        //{ x: 600, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300,width:100, speed:2 },
+        { x: secretRoomStartX + 1400, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300,width:100, speed:2  },
+        { x: secretRoomStartX + 1800, yStart: height - PLATFORM_HEIGHT - 130, yEnd: height - PLATFORM_HEIGHT - 300,width:100, speed:2  },
+        { x: secretRoomStartX + 6500, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 400 ,width:100, speed:2 },
         
         //{ x: secretRoomStartX + 1100, yStart: height - PLATFORM_HEIGHT - 250, yEnd: height - PLATFORM_HEIGHT - 450 },
         // Πρόσθεσε κι άλλες πλατφόρμες όπως χρειάζεται
@@ -36,7 +48,7 @@ class FloatingPlatform extends Platform {
 
       // Δημιουργία των πλατφορμών
       for (let pos of floatingPlatformPositions) {
-        platforms.push(new FloatingPlatform(pos.x, pos.yStart, pos.yEnd, 50, 2));
+        platforms.push(new FloatingPlatform(pos.x, pos.yStart, pos.yEnd, pos.width, pos.speed));
       }
 
       return platforms;

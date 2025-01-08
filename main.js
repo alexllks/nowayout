@@ -24,7 +24,7 @@ var isGameOver;
 //GRAMMI 26 ALLAGI
 let RIGHT_WALL_X = 9370; // Σταθερή θέση δεξιού τοίχου
 //---------------------------------------------------------------
-
+let END_WALL_X = 21642;
 let WALL_WIDTH = 50;   // Νέο πλάτος τοίχου
 
 let MIDDLE_WALL_X= 7240;
@@ -56,7 +56,7 @@ let secretRoomWidth = 10000;  // Πλάτος του secret room
 let NEW_WALL_X = 11900; // Θέση του νέου τοίχου στον άξονα X
 //let FIRST_WALL_SECRET=13900;
 let NEW_WALL_X2 = 22000; // Θέση του νέου τοίχου στον άξονα X
-
+let UPPER_WALL = 1;
 
 let audioStarted = false; // Έναρξη ήχου
 
@@ -126,8 +126,6 @@ function setup() {
   // Ενεργοποίηση Debug Mode
   if (debugMode) {
     enterSecretRoom(); // Τοποθέτηση του παίκτη στο secret room
-  } else {
-    setupRoom();
   }
 
   
@@ -477,9 +475,33 @@ function checkWallCollision() {
       checkExit(false);
   }
   // Έλεγχος σύγκρουσης με τον νέο τοίχο (από δεξιά)
-  if (player.x < NEW_WALL_X + 50 && player.x + player.width / 2 > NEW_WALL_X) {
+  if (player.x < NEW_WALL_X + 50 && player.x + player.width / 2 > NEW_WALL_X && player.y <= height - 160) {
     player.x = NEW_WALL_X + 50; // Σταματάει δεξιά από τον τοίχο
 }
+
+// Έλεγχος σύγκρουσης με τον τελικό τοίχο πριν απο την πόρτα (από δεξιά)
+if (
+  player.x < END_WALL_X + 50 &&
+  player.x + player.width / 2 > END_WALL_X &&
+  player.y + player.height > height - 160 && // Προσθήκη συνθήκης για τον άξονα Y
+  player.y < height - 160 + 200 // Το ύψος του τοίχου είναι 200
+) {
+  player.x = END_WALL_X + 50; // Σταματάει δεξιά από τον τοίχο
+}
+// Έλεγχος σύγκρουσης κάτω από το ταβάνι
+if (
+  player.x + player.width > UPPER_WALL && // Ο παίκτης βρίσκεται στο εύρος X του τοίχου
+  player.x < UPPER_WALL + 30000 && // Το μήκος του τοίχου
+  player.y < height - 575 + 40 && // Ο παίκτης βρίσκεται σε επαφή με το κάτω μέρος του τοίχου
+  player.y + player.height > height - 575 // Ο παίκτης προσπαθεί να περάσει κάτω από το τοίχο
+) {
+  player.y = height - 575 + 40; // Σταθεροποίηση ακριβώς πάνω από το ταβάνι
+  player.velocityY = 0; // Επαναφορά ταχύτητας
+}
+
+
+
+
 // Έλεγχος για τον δεξιό τοίχο μέσα στο secret room
 if (player.x + player.width > NEW_WALL_X2) {
   player.x = NEW_WALL_X2 - player.width; // Σταματάει στον δεξιό τοίχο

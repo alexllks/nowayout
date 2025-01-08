@@ -12,7 +12,7 @@ class Platform {
       console.assert(this.y % 1 === 0, 'Η θέση y της πλατφόρμας δεν είναι ακέραια:', this.y);
 
     }
-
+    
 
     static createPlatforms() {
       const platforms = [];
@@ -32,11 +32,11 @@ class Platform {
           platforms.push(new Platform(x, y, PLATFORM_WIDTH,50));
       }
            //   // Σχεδίαση ταβανιού και δαπέδου
-           for (let i = 0; i < numPlatforms; i++) {
-            let x = i *PLATFORM_WIDTH; // Θέση x κάθε πλατφόρμας
-            let y = CEILING_HEIGHT - 30 - PLATFORM_HEIGHT; // Θέση y για την οροφή
-            platforms.push(new Platform(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT+30));
-        }
+        //    for (let i = 0; i < numPlatforms; i++) {
+        //     let x = i *PLATFORM_WIDTH; // Θέση x κάθε πλατφόρμας
+        //     let y = CEILING_HEIGHT - 30 - PLATFORM_HEIGHT; // Θέση y για την οροφή
+        //     platforms.push(new Platform(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT+30));
+        // }
 
 
         
