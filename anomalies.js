@@ -42,13 +42,13 @@ function setupRoom() {
     objects = [
       { x: 2870, y: height - 55, type: 'npc', isAnomaly: false },
       //{ x: 4600, y: height - 100, type: 'radio', isAnomaly: false },
-      { x: 5210, y: height - 110, type: 'radio', isAnomaly: false },
+      { x: 5075, y: height - 110, type: 'radio', isAnomaly: false },
 
 
 
       { x: 4630, y: height - 400, type: 'mirror', isAnomaly: false },
-      { x: 3615, y: height - 347, type: 'doll', isAnomaly: false, speed: 2, direction: 1},
-      { x: 2650, y: height - 20, type: 'sofa', isAnomaly: false },
+      { x: 6010, y: height - 347, type: 'doll', isAnomaly: false, speed: 2, direction: 1},
+      { x: 2685, y: height - 20, type: 'sofa', isAnomaly: false },
       { x: 5340, y: height - 320, type: 'fridge', isAnomaly: false },
       { x: 4980, y: height - 350, type: 'kitchen', isAnomaly: false },
       //{ x: 3510, y: height - 400, type: 'table', isAnomaly:false},

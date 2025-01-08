@@ -40,11 +40,6 @@ class Player {
       return; // Σταματά η υπόλοιπη ενημέρωση
   }
 
-
-
-
-
-    
     let stepTimer = 0; // Μετρητής για τα καρέ μεταξύ των βημάτων
   // Έλεγχος αν βρίσκεται σε πλατφόρμα ή σκάλα
   let onPlatform = false;
@@ -154,51 +149,7 @@ class Player {
 
       }
     }
-    //   // Έλεγχος από τα αριστερά
-    // if (
-    //   this.x + this.width > platform.x &&
-    //   this.x + this.width <= platform.x + 5 && // Ανοχή για την αριστερή άκρη
-    //   this.y + this.height > platform.y &&
-    //   this.y < platform.y + platform.height &&
-    //   this.velocityX > 0 // Εφαρμογή μόνο αν κινείται δεξιά
-    // ) {
-    //   this.x = platform.x - this.width; // Σταθεροποίηση αριστερά της πλατφόρμας
-    //   this.velocityX = 0;
-    // }
 
-    // // Έλεγχος από τα δεξιά
-    // if (
-    //   this.x < platform.x + platform.width &&
-    //   this.x >= platform.x + platform.width - 5 && // Ανοχή για τη δεξιά άκρη
-    //   this.y + this.height > platform.y &&
-    //   this.y < platform.y + platform.height &&
-    //   this.velocityX < 0 // Εφαρμογή μόνο αν κινείται αριστερά
-    // ) {
-    //   this.x = platform.x + platform.width; // Σταθεροποίηση δεξιά της πλατφόρμας
-    //   this.velocityX = 0;
-    // }
-
-
-
-    //   if (
-    //     this.x + this.width > platform.x &&
-    //     this.x < platform.x + platform.width &&
-    //     this.y + this.height > platform.y &&
-    //     this.y < platform.y + platform.height
-    // ) {
-    //     // Έλεγχος αν είναι το ταβάνι
-    //     if (platform.y === CEILING_HEIGHT - 30 - PLATFORM_HEIGHT) {
-    //         this.y = platform.y + platform.height; // Σταθεροποίηση κάτω από το ταβάνι
-    //         this.velocityY = 0; // Επαναφορά ταχύτητας
-    //     } else {
-    //         // Κανονικός έλεγχος πλατφόρμας
-    //         this.y = platform.y - this.height; // Σταθεροποίηση πάνω στην πλατφόρμα
-    //         this.velocityY = 0;
-    //         this.canJump = true;
-    //     }
-    //     break; // Σταματάμε μόλις βρεθεί collision
-
-    //   }
   }
 
     for (let stair of stairs) {
@@ -240,12 +191,14 @@ class Player {
     if ((keyIsDown(UP_ARROW) || keyIsDown(87)) && this.canJump) {
         this.velocityY = -15; // Ταχύτητα προς τα πάνω
         this.canJump = false;
+        soundManager.play('jump',false,1.0);
+  
 
     }
     }
 
         // Εμφάνιση συντεταγμένων στην κονσόλα
-        console.log(`Player coordinates: x=${this.x}, y=${this.y}`);
+        //console.log(`Player coordinates: x=${this.x}, y=${this.y}`);
 }
 
   show() {
@@ -275,12 +228,4 @@ function keyReleased() {
   }
 }
 
-function checkContact(gc_x, gc_y) {
-  if (gc_x > this.x && gc_x < this.x + this.width) {
-      const collisionDepth = this.y - gc_y;
-      if (collisionDepth >= 0 && collisionDepth < this.height) {
-          return true;
-      }
-  }
-  return false;
-}
+

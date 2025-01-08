@@ -31,7 +31,8 @@ let MIDDLE_WALL_X= 7240;
 let FIRST_WALL = 4920;
 let SECOND_WALL = 5760;
 let THIRD_WALL = 2540;
-let FORTH_WALL =3960;
+let FIFTH_WALL =6480;
+let FORTH_WALL = 3960;
 let obstacles = []; // Δήλωση πίνακα για τα εμπόδια
 
 let npcActivated = false; // Αρχικά ο NPC είναι ανενεργός
@@ -68,6 +69,7 @@ let rainSoundActive = false; // Σημαία για την κατάσταση τ
 let npcFootstepSoundActive = false; // Σημαία για την κατάσταση του ήχου NPC
 
 
+
 let debugMode = false;
 let noclipMode = false; // Για το debug mode
 
@@ -77,21 +79,25 @@ function preload() {
   soundManager.load('bats', 'assets/sounds/bats.wav');
   soundManager.load('cosmicdoor', 'assets/sounds/cosmicdoor.wav');
   soundManager.load('waters', 'assets/sounds/waters.mp3');
-
-  
+  soundManager.load('jump', 'assets/sounds/jumping.wav');
+  soundManager.load('background', 'assets/sounds/horror_background.mp3');
   soundFormats('mp3', 'ogg','wav'); // Ορισμός μορφών για συμβατότητα
   //playerImage = loadImage("assets/images/evil.png"); // Βεβαιώσου ότι το αρχείο υπάρχει
   doorSound = loadSound ("assets/sounds/scary-background.mp3")
-  backgroundHorrorMusic = loadSound ("assets/sounds/horror_background.mp3", () => {
-  console.log('Music loaded!');
-}, (err) => {
-    console.error('Error loading music:', err);
-});
+
   tvSound = loadSound('assets/sounds/tv.mp3'); // Φόρτωση του ήχου
   footstepSound = loadSound('assets/sounds/footsteps.wav');//Φορτωση ηχου 
   npcFootstepSound = loadSound('assets/sounds/npc_footsteps.wav');//Φορτωση ηχου 
   stairStepSound = loadSound('assets/sounds/stair_footsteps.wav');
   //rainSound = loadSound('assets/sounds/rain.wav'); // Ήχος βροχής
+
+  mooonImg= loadImage('assets/images/hotelscary.jpg');
+  receptionImg = loadImage ( 'assets/images/imagereception.jpg');
+  castleImg = loadImage('assets/images/castle.jpg');
+  libraryImg = loadImage('assets/images/library.jpg');
+
+  moon2Img = loadImage('assets/images/moon2.jpg');
+  toRoomsImg =loadImage('assets/images/toRooms.jpg');
   paintingImg = loadImage('assets/images/haunting_painting.jpg'); // Βεβαιώσου ότι η διαδρομή είναι σωστή
   graveyardImg = loadImage('assets/images/graveyard_painting.jpg');
   houseImg = loadImage('assets/images/house_painting.jpg'); 
@@ -123,20 +129,18 @@ function setup() {
 
   player = new Player();
   initializeLevelTracker();
-  
+  platforms = Platform.createPlatforms();
   // Ενεργοποίηση Debug Mode
   if (debugMode) {
     enterSecretRoom(); // Τοποθέτηση του παίκτη στο secret room
   }
 
-  
-  platforms = Platform.createPlatforms();
+  document.getElementById('volume-slider').addEventListener('input', (event) => {
+    const newVolume = parseFloat(event.target.value); // Τρέχουσα τιμή του slider
+    soundManager.setMasterVolume(newVolume); // Ενημέρωση της master έντασης
+});
 
-
-
-
-
-  // Πιθανότητα εμφάνισης της πόρτας
+// Πιθανότητα εμφάνισης της πόρτας
   showCosmicDoor1 = random() < 0.9;
  // Debug: Εκτύπωση της τιμής της `showCosmicDoor1`
  //console.log("Show Cosmic Door 1:", showCosmicDoor1);
@@ -148,31 +152,10 @@ function setup() {
 }
 
 
-function mousePressed() {
-  if (!audioStarted) {
-    userStartAudio(); // Ξεκινά το AudioContext
-    
-    audioStarted = true;
-    console.log("Audio started and sounds initialized");
-  }
 
-  //  // Ξεκινά η μουσική τρόμου
-  //  horrorbackgroundMusic();
-
-  if(!backgroundHorrorMusic.isPlaying()){
-  
-      backgroundHorrorMusic.setVolume(0.2);
-      backgroundHorrorMusic.loop();
-    console.log("Backgound music is playing");
-      // Ξεκινά η μουσική τρόμου
-  
-
-    
-  }
-
-  }
  
  
+
 
   
 
@@ -241,7 +224,7 @@ function drawWater() {
 }
 
 function checkWaterCollision(player) {
-  if (player.x >= secretRoomStartX + 200 && player.y + player.height >= height - PLATFORM_HEIGHT) {
+  if (player.x >= secretRoomStartX && player.y + player.height >= height - PLATFORM_HEIGHT) {
     if(player.x<=secretRoomStartX+secretRoomWidth-400){
       console.log("Ο παίκτης έπεσε στο νερό!");
       // isGameOver = true; // Ορισμός της κατάστασης "game over
@@ -270,6 +253,8 @@ function isDying(){
 
 
 function initializeGame() {
+
+  soundManager.play('background', false, 0.2); // Έναρξη του ήχου νυχτερίδων
   isGameOver = false;
   player.isDying = false;
   player.x = 730; // Θέση εκκίνησης του παίκτη
@@ -299,7 +284,7 @@ function playGame() {
    // Σχεδίαση της πρώτης Cosmic Door
    if (showCosmicDoor1) {
      // Debug: Εκτύπωση της τιμής της `showCosmicDoor1`
-     console.log("Show Cosmic Door 1:", showCosmicDoor1);
+     //console.log("Show Cosmic Door 1:", showCosmicDoor1);
     drawCosmicDoor(3400, 370);
 } else {
   console.log("Cosmic Door 1 not shown.");
@@ -477,8 +462,15 @@ function checkWallCollision() {
       checkExit(false);
   }
   // Έλεγχος σύγκρουσης με τον νέο τοίχο (από δεξιά)
-  if (player.x < NEW_WALL_X + 50 && player.x + player.width / 2 > NEW_WALL_X && player.y <= height - 160) {
+  if (player.x < NEW_WALL_X + 50 && player.x + player.width / 2 > NEW_WALL_X) {
     player.x = NEW_WALL_X + 50; // Σταματάει δεξιά από τον τοίχο
+}
+
+
+
+// Έλεγχος για τον δεξιό τοίχο μέσα στο secret room
+if (player.x + player.width > NEW_WALL_X2) {
+  player.x = NEW_WALL_X2 - player.width; // Σταματάει στον δεξιό τοίχο
 }
 
 // Έλεγχος σύγκρουσης με τον τελικό τοίχο πριν απο την πόρτα (από δεξιά)
@@ -504,11 +496,6 @@ if (
 
 
 
-// Έλεγχος για τον δεξιό τοίχο μέσα στο secret room
-if (player.x + player.width > NEW_WALL_X2) {
-  player.x = NEW_WALL_X2 - player.width; // Σταματάει στον δεξιό τοίχο
-}
-
 // // Έλεγχος για τον Πρωτο τοίχο μέσα στο secret room
 // if (player.x + player.width > FIRST_WALL_SECRET) {
 //   player.x = FIRST_WALL_SECRET - player.width; // Σταματάει στον δεξιό τοίχο
@@ -526,10 +513,11 @@ function returnToMainTrack() {
 let showInstructions = false;
 
 function displayMenu() {
+  
+
   background(30);
   textAlign(CENTER, CENTER);
   fill(255);
-
   if (showInstructions) {
     // Εμφάνιση Οδηγιών
     textSize(28);
@@ -551,6 +539,7 @@ function displayMenu() {
     text("Press ENTER to Play", width / 2, height / 2 + 20);
     text("Press 'I' for Instructions", width / 2, height / 2 + 60);
 
+    
     if (keyIsDown(ENTER)) {
       gameState = "playing";
       initializeGame();

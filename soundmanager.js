@@ -1,16 +1,25 @@
 class SoundManager {
     constructor() {
         this.sounds = {};
+        this.masterVolume=1.0;
     }
 
     load(name, path) {
         this.sounds[name] = loadSound(path);
     }
 
-    play(name, loop = false, volume = 1.0) {
-        let sound = this.sounds[name];
-        if (sound && !sound.isPlaying()) {
-            sound.setVolume(volume);
+    setMasterVolume(volume) {
+        this.masterVolume = constrain(volume, 0.0, 1.0); // Περιορισμός από 0 έως 1
+        for (let name in this.sounds) {
+            this.sounds[name].setVolume(this.masterVolume); // Ενημέρωση όλων των ήχων
+        }
+    }
+
+     play(name, loop = false, volume = 1.0) {
+        const sound = this.sounds[name];
+        const adjustedVolume = volume * this.masterVolume; // Ρυθμισμένη ένταση
+        if (sound && adjustedVolume > 0) {
+            sound.setVolume(adjustedVolume);
             if (loop) sound.loop();
             else sound.play();
         }
@@ -38,6 +47,20 @@ class SoundManager {
             sound.setVolume(volume);
         }
     }
+
+
+
+    // Ρυθμίζει την ένταση όλων των ήχων σε συγκεκριμένη τιμή
+    // setVolumeForAll(value) {
+    //     let volume = Math.max(0.0, Math.min(value, 1.0)); // Περιορισμός μεταξύ 0.0 και 1.0
+    //     for (let name in this.sounds) {
+    //         let sound = this.sounds[name];
+    //         if (sound) {
+    //             sound.setVolume(volume);
+    //             console.log(`Set volume for ${name} to ${volume}`);
+    //         }
+    //     }
+    // }
 }
 
 
