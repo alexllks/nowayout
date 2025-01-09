@@ -91,6 +91,7 @@ function preload() {
   stairStepSound = loadSound('assets/sounds/stair_footsteps.wav');
   //rainSound = loadSound('assets/sounds/rain.wav'); // Ήχος βροχής
 
+  lightImg = loadImage('assets/images/light.png');
   mooonImg= loadImage('assets/images/hotelscary.jpg');
   receptionImg = loadImage ( 'assets/images/imagereception.jpg');
   castleImg = loadImage('assets/images/castle.jpg');
@@ -101,6 +102,7 @@ function preload() {
   paintingImg = loadImage('assets/images/haunting_painting.jpg'); // Βεβαιώσου ότι η διαδρομή είναι σωστή
   graveyardImg = loadImage('assets/images/graveyard_painting.jpg');
   houseImg = loadImage('assets/images/house_painting.jpg'); 
+  stairsghostImg = loadImage('assets/images/stairsghost.jpg'); 
   bloodyHandprintImg = loadImage('assets/images/bloodyHandprint.png'); // Βεβαιώσου ότι το αρχείο είναι στη σωστή διαδρομή
 }
 
@@ -292,6 +294,7 @@ function playGame() {
 checkCosmicDoorSound(player,showCosmicDoor1);
  
   drawWalls();
+  // drawLights();
   checkWallCollision();
   drawNoSmokingSign(); // Σχεδίαση σήματος "No Smoking"
   //drawSofa2();

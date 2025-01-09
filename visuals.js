@@ -15,6 +15,8 @@ let windowPositions = [
   //ALLAGI
   { x: 9500, y: 350}, //  Παράθυρο 4
   { x: 5300, y: 350 }, // Παράθυρο 5
+  { x: 5900, y: 350 }, // Παράθυρο 6
+  { x: 6260, y: 350 }, // Παράθυρο 7
   //ALLAGI
 ];
 
@@ -28,31 +30,43 @@ let doors = [
   // { type: 'roomDoor', x: 5790, y: 417, roomNumber: 101 },
   // { type: 'roomDoor', x: 6030, y: 417, roomNumber: 102 },
   // { type: 'roomDoor', x: 6270, y: 417, roomNumber: 103 },
-  { type: 'roomDoor', x: 6630, y: 417, roomNumber: 101 },
-  { type: 'roomDoor', x: 6870, y: 417, roomNumber: 102 },
-  { type: 'roomDoor', x:  7110, y: 417, roomNumber: 103 },
-  { type: 'roomDoor', x:  7350, y: 417, roomNumber: 104 },
-  { type: 'roomDoor', x:  7590, y: 417, roomNumber: 105 },
-  { type: 'roomDoor', x:  7830, y: 417, roomNumber: 106 },
-  { type: 'roomDoor', x:  8070, y: 417, roomNumber: 107 },
+  { type: 'roomDoor', x: 8310, y: 417, roomNumber: 108 },
+  { type: 'roomDoor', x: 8550, y: 417, roomNumber: 109 },
+  { type: 'roomDoor', x: 8790, y: 417, roomNumber: 120 },
+
+  { type: 'roomDoor', x: 6630, y: 417, roomNumber: 100 },
+  { type: 'roomDoor', x: 6870, y: 417, roomNumber: 101 },
+  { type: 'roomDoor', x:  7110, y: 417, roomNumber: 102 },
+  { type: 'roomDoor', x:  7350, y: 417, roomNumber: 103 },
+  { type: 'roomDoor', x:  7590, y: 417, roomNumber: 104 },
+  { type: 'roomDoor', x:  7830, y: 417, roomNumber: 105 },
+  { type: 'roomDoor', x:  8070, y: 417, roomNumber: 106 },
+  { type: 'roomDoor', x: 8310, y: 417, roomNumber: 107 },
+  { type: 'roomDoor', x: 8550, y: 417, roomNumber: 108 },
+  { type: 'roomDoor', x: 8790, y: 417, roomNumber: 109 },
   
  
-  // { type: 'roomDoor', x: 6390, y: 115, roomNumber: 107 },
 
-  // { type: 'roomDoor', x: 6630, y: 115, roomNumber: 108 },
-  { type: 'roomDoor', x: 6630, y: 115, roomNumber: 113 },
-  { type: 'roomDoor', x: 6870, y: 115, roomNumber: 114 },
-  { type: 'roomDoor', x: 7110, y: 115, roomNumber: 115 },
-  { type: 'roomDoor', x: 7350, y: 115, roomNumber: 116 },
-  { type: 'roomDoor', x: 7590, y: 115, roomNumber: 117 },
-  { type: 'roomDoor', x: 7830, y: 115, roomNumber: 118 },
-  { type: 'roomDoor', x: 8070, y: 115, roomNumber: 119 },
-  
-  
   { type: 'roomDoor', x: 2670, y: 115, roomNumber: 110 },
   { type: 'roomDoor', x: 3030, y: 115, roomNumber: 111 },
   { type: 'roomDoor', x: 3510, y: 115, roomNumber: 112 },
   
+
+
+
+  
+  { type: 'roomDoor', x: 6630, y: 115, roomNumber: 113 },
+  { type: 'roomDoor', x: 6870, y: 115, roomNumber: 114 },
+  { type: 'roomDoor', x: 7110, y: 115, roomNumber: 115 },
+  { type: 'roomDoor', x: 7350, y: 115, roomNumber: 116 },
+ // { type: 'roomDoor', x: 7590, y: 115, roomNumber: 117 },
+  { type: 'roomDoor', x: 7830, y: 115, roomNumber: 118 },
+  { type: 'roomDoor', x: 8070, y: 115, roomNumber: 119 },
+  { type: 'roomDoor', x: 8310, y: 115, roomNumber: 120 },
+  { type: 'roomDoor', x: 8550, y: 115, roomNumber: 121 },
+  { type: 'roomDoor', x: 8790, y: 115, roomNumber: 122 },
+  
+ 
   
  // { type: 'lockedDoor', x: 430, y: 435 }
 ];
@@ -81,8 +95,27 @@ let ReceptionDesk = [
 ];
 
 
+// let lightPositions = [
+//   {x: 1390 , y: 0},
+//   {x: 1390 , y: 950},
+//   {x: 1390 , y: 900},
+//   {x: 1390 , y: 850},
+//   {x: 1390 , y: 800},
+//   {x: 1390 , y: 750},
+//   {x: 1390 , y: 700},
+//   {x: 1390 , y: 650},
+//   {x: 1390 , y: 600},
+//   {x: 1390 , y: 550},
+//   {x: 1390 , y: 500},
+
+// ]
 
 
+// function drawLights(){
+//   for(let item of lightPositions){
+//     drawLightsStructure( item.x, item.y);
+//   }
+// }
 
 
 function drawReceptionDesk() {
@@ -140,6 +173,24 @@ function drawReceptionDeskStructure(x, y) {
 
 
 let scaryObjects = [
+
+  {type : 'light', x: 4225 , y: 300},
+  {type : 'light', x: 4463 , y: 300},
+  {type : 'light', x: 6690 , y: 300},
+  {type : 'light', x: 7400 , y: 300},
+  {type : 'light', x: 8130 , y: 300},
+  {type : 'light', x: 8840 , y: 300},
+ 
+
+  // {type : 'light', x: 4225 , y: 20},
+  // {type : 'light', x: 4463 , y: 20},
+  {type : 'light2', x: 6690 , y: 41},
+  {type : 'light2', x: 7400 , y: 41},
+  {type : 'light2', x: 8130 , y: 41},
+  {type : 'light2', x: 8840 , y: 41},
+
+
+  {type : 'light', x: 5425 , y: 300},
   { type: 'normal_doll', x:5890, y: 227},
   { type: 'normal_mirror', x:5950, y: 150},
   { type: 'door', x: 400, y: 100 },
@@ -158,6 +209,11 @@ let scaryObjects = [
  //  { type: 'rope', x: 1600, y: 50 },
   { type: 'bed', x: 4180, y: 230 },
 
+  {type: 'normalsuitcase', x: 3010, y: 522 },
+  {type: 'normalsuitcase', x: 3080, y: 522 },
+  {type: 'normalsuitcase', x: 3150, y: 522 },
+  {type: 'normalsuitcase', x: 3220, y: 522 },
+
   // { type: 'bloodyHandprint', x: 2700, y: 450 },
   //   { type: 'bloodyHandprint', x: 2550, y: 450 },
 
@@ -167,16 +223,20 @@ let scaryObjects = [
    
     { type: "reception_banner",x: 2665, y: 390, widh:300, height: 200},
     { type: 'paintingreception',x: 3055, y: 380, widh:500, height: 200},
-    {type: 'castle_image',x: 5450, y: 380, widh:500, height: 200},
+    {type: 'castle_image',x: 5030, y: 380, widh:500, height: 200},
     {type: 'library_image',x: 3870, y: 420, widh:500, height: 200},
 
     { type: 'g_painting', x: 4235, y: 95, width: 25, height: 45 },
-    { type: 'house_painting', x: 7355, y: 415, width: 150, height: 200 },
+    { type: 'house_painting', x: 7230, y: 415, width: 150, height: 200 },
+
+
+    { type: 'stairsghost', x: 6054, y: 360, width: 150, height: 100 },
     //ALLAGI
     { type: 'painting', x: 7960, y: 415, width: 150, height: 200 },
-    { type: 'desk', x: 5055, y: 500 },
+    { type: 'desk', x: 5470, y: 500 },
    // { type: 'sofa2', x: 700, y:500},
     { type: 'ElegantChair', x: 4110, y:520},
+    { type: 'ElegantChair', x: 5200, y:520},
     // {type:'ReceptionDesk', x: 4500, y: 500 }, // Κεντρικό γραφείο
     // {type:'ReceptionDesk', x: 4480, y: 460 }, // Κουδούνι ρεσεψιόν
     // {type:'ReceptionDesk', x: 4600, y: 450 }, // Λάμπα
@@ -261,10 +321,27 @@ function drawScaryObjects() {
 
   
     for (let obj of scaryObjects) {
+
+      if(obj.type == 'normalsuitcase'){
+        drawNormalSuitcase(obj.x,obj.y);
+        }
+      
+      if(obj.type === 'light'){
+        drawLightsStructure(obj.x,obj.y);
+      }
+      if(obj.type === 'light2'){
+        drawLightsStructure2(obj.x,obj.y);
+      }
       if( obj.type === 'to_Rooms' ) {
         drawToRooms(obj.x,obj.y);
       }
 
+      
+      if(obj.type == 'stairsghost'){
+        drawStairsGhost(obj.x,obj.y);
+        }
+      
+        
       if( obj.type === 'moon_painting' ) {
         drawMoonPainting(obj.x,obj.y);
       }
@@ -337,7 +414,25 @@ function drawScaryObjects() {
   }
   }
 
+function drawNormalSuitcase(x,y){
+  const scale = 0.5;
 
+  // Σώμα βαλίτσας
+  fill(139,  69,  19); // Κόκκινο αν είναι ανωμαλία
+  rect(x, y, 100 * scale, 70 * scale, 5); // Σώμα
+
+  // Λαβή
+  fill(100);
+  rect(x + 30 * scale, y - 10 * scale, 40 * scale, 10 * scale, 5);
+
+  // Διακοσμητικές γραμμές
+  stroke(80);
+  strokeWeight(2);
+  line(x + 10 * scale, y + 20 * scale, x + 90 * scale, y + 20 * scale);
+  line(x + 10 * scale, y + 50 * scale, x + 90 * scale, y + 50 * scale);
+  noStroke();
+
+}
 
 
 
@@ -598,6 +693,16 @@ function drawStair(x, y, steps, stepWidth, stepHeight) {
     }
 }
 
+
+function  drawStairsGhost(x,y){
+  image (stairsghostImg,x,y, 150,100);
+}
+function  drawLightsStructure(x,y){
+  image (lightImg,x,y, 200,320);
+}
+function  drawLightsStructure2(x,y){
+  image (lightImg,x,y, 200,260);
+}
 function   drawToRooms(x,y){
   image(toRoomsImg,x,y,75,75);
 }

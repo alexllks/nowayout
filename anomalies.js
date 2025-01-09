@@ -27,7 +27,7 @@ function drawFloodingWater(startX, startY, isAnomaly) {
 
 function setupRoom() {
   // Λίστα ανωμαλιών με βάρη
-  const anomalies = ["sofa", "fridge", "kitchen", "table","mirror", "doll", "TV", "Bookshelf","radio", "ghost","npc","none","none" ];
+  const anomalies = ['wideSofa','wideSofa','suitcase','suitcase','roomDoorNumber','roomDoorNumber',"sofa","sofa",'door', "fridge", "kitchen", "table","mirror", "doll", "TV","TV", "Bookshelf","radio", "ghost","npc","none","none","none" ];
   //const anomalies = ["doll"];
   // Το "ghost" εμφανίζεται περισσότερες φορές για να έχει μεγαλύτερη πιθανότητα
 
@@ -40,9 +40,15 @@ function setupRoom() {
 
     hasAnomaly = true; // Υποδεικνύει ότι υπάρχει ανωμαλία
     objects = [
+      { x: 5510, y: height - 110, type: 'radio', isAnomaly: false },
+
+      { x: 5930, y: height - 55, type: 'suitcase', isAnomaly: false },
+      { x: 6055, y: height - 55, type: 'wideSofa', isAnomaly: false },
+
+      {x: 7590,  y: 115, type: 'roomDoorNumber', roomNumber: 117,isAnomaly:false },
       { x: 2870, y: height - 55, type: 'npc', isAnomaly: false },
       //{ x: 4600, y: height - 100, type: 'radio', isAnomaly: false },
-      { x: 5075, y: height - 110, type: 'radio', isAnomaly: false },
+      { x: 5510, y: height - 110, type: 'radio', isAnomaly: false },
 
 
 
@@ -198,6 +204,12 @@ for (let ghost of ghosts) {
   }
   function drawObjects() {
     for (let obj of objects) {
+      if (obj.type === 'suitcase') {
+        drawSuitcase(obj.x, obj.y, obj.isAnomaly);
+    }
+    else if (obj.type === 'wideSofa') drawWideSofa(obj.x, obj.y, obj.isAnomaly);
+
+      if(obj.type === 'roomDoorNumber') drawRoomDoorNumber(obj.x,obj.y,obj.roomNumber,obj.isAnomaly);
       if (obj.type === 'npc') drawNpc(obj.x, obj.y, obj.isAnomaly);
         if (obj.type === 'door') drawDoor2(obj.x, obj.y, obj.isMoving);
         if (obj.type === 'mirror') drawMirror(obj.x, obj.y, obj.isAnomaly);
@@ -223,8 +235,125 @@ for (let ghost of ghosts) {
     }
     }
   }
+function drawSuitcase(x, y, isAnomaly) {
+    const scale = 0.5;
 
-  
+    // Σώμα βαλίτσας
+    fill(isAnomaly ? 101 : 139, isAnomaly ? 67 : 69, isAnomaly ? 33 : 19); // Σκούρο καφέ αν είναι ανωμαλία, καφέ κανονικά
+    rect(x, y, 100 * scale, 70 * scale, 5); // Σώμα
+
+    // Λαβή
+    fill(100);
+    rect(x + 30 * scale, y - 10 * scale, 40 * scale, 10 * scale, 5);
+
+    // Διακοσμητικές γραμμές
+    stroke(80);
+    strokeWeight(2);
+    line(x + 10 * scale, y + 20 * scale, x + 90 * scale, y + 20 * scale);
+    line(x + 10 * scale, y + 50 * scale, x + 90 * scale, y + 50 * scale);
+    noStroke();
+}
+// Συνάρτηση για τον καναπέ με περισσότερες γωνίες
+function drawWideSofa(x, y, isAnomaly) {
+  const scale = 0.5; // Κλίμακα για μεγαλύτερο μέγεθος
+
+  // Σώμα του καναπέ
+  fill(139, 69, 19); // Καφέ για το σώμα
+  rect(x, y, 300 * scale, 100 * scale); // Κυρίως σώμα με αιχμηρές άκρες
+
+  // Πλάτη του καναπέ
+  fill(160, 82, 45); // Ανοιχτό καφέ για την πλάτη
+  rect(x, y - 70 * scale, 300 * scale, 70 * scale); // Πλάτη μεγαλύτερη με αιχμηρές γωνίες
+
+  // Μαξιλάρια
+  fill(210, 180, 140); // Ανοιχτό μπεζ για τα μαξιλάρια
+  rect(x + 20 * scale, y - 60 * scale, 120 * scale, 60 * scale); // Πρώτο μαξιλάρι
+  rect(x + 160 * scale, y - 60 * scale, 120 * scale, 60 * scale); // Δεύτερο μαξιλάρι
+
+  // Χέρια καναπέ
+  fill(139, 69, 19); // Καφέ για τα χέρια
+  rect(x - 20 * scale, y, 40 * scale, 100 * scale); // Αριστερό χέρι
+  rect(x + 280 * scale, y, 40 * scale, 100 * scale); // Δεξί χέρι
+
+  // Διακοσμητικές ραφές
+  stroke(100, 50, 30);
+  strokeWeight(2);
+  line(x + 20 * scale, y - 30 * scale, x + 140 * scale, y - 30 * scale); // Ραφή στο πρώτο μαξιλάρι
+  line(x + 160 * scale, y - 30 * scale, x + 280 * scale, y - 30 * scale); // Ραφή στο δεύτερο μαξιλάρι
+  noStroke();
+
+  // Πόδια καναπέ
+  fill(101, 67, 33); // Σκούρο καφέ για τα πόδια
+  rect(x + 20 * scale, y + 100 * scale, 20 * scale, 20 * scale); // Αριστερό πόδι
+  rect(x + 260 * scale, y + 100 * scale, 20 * scale, 20 * scale); // Δεξί πόδι
+
+  // Εφέ ανωμαλίας
+  if (isAnomaly) {
+      fill(101, 67, 33, 150); // Διαφανές σκούρο καφέ για την ανωμαλία
+      rect(x, y, 300 * scale, 100 * scale); // Αλλαγή χρώματος στο σώμα
+      triangle(x + 50 * scale, y + 30 * scale, x + 150 * scale, y - 20 * scale, x + 250 * scale, y + 30 * scale); // Τρίγωνο ανωμαλίας
+  }
+}
+
+
+function   drawRoomDoorNumber(x,y,roomNumber,isAnomaly){
+
+
+  const doorWidth = 80;       // Πλάτος πόρτας
+  const doorHeight = 140;     // Αυξημένο ύψος πόρτας (π.χ., 160 αντί για 120)
+  const doorHandleY = y + doorHeight / 2; // Νέα θέση του πομολού, στο μέσο του ύψους
+  noStroke();
+
+  // Σώμα πόρτας με σκούρο ξύλο
+  fill(100, 50, 30); // Σκούρο καφέ για πιο παλιό ξύλο
+  rect(x, y, doorWidth, doorHeight);
+
+  // Σκιές για βάθος
+  fill(60, 30, 15); // Σκούρες σκιές
+  rect(x, y, 10, doorHeight); // Αριστερή σκιά
+  rect(x + doorWidth - 10, y, 10, doorHeight); // Δεξιά σκιά
+
+  // Γρατζουνιές και ραγίσματα
+  stroke(80);
+  strokeWeight(1);
+  line(x + 10, y + 0.3 * doorHeight, x + 30, y + 0.5 * doorHeight); // Διαγώνια γρατζουνιά
+  line(x + 50, y + 0.2 * doorHeight, x + 60, y + 0.4 * doorHeight); // Άλλη γρατζουνιά
+
+  // Αιματηρά αποτυπώματα
+  noStroke();
+  fill(150, 0, 0, 200); // Σκούρο κόκκινο για αίμα
+  ellipse(x + 20, y + doorHeight - 40, 10, 20); // Στίγμα 1
+  ellipse(x + 25, y + doorHeight - 30, 8, 18); // Στίγμα 2
+
+  // Χερούλι πόρτας (παλιό και σπασμένο)
+  fill(150, 150, 100); // Φθαρμένο χρυσό
+  ellipse(x + doorWidth - 15, doorHandleY, 8, 8); // Νέο ύψος πομολού στο κέντρο πόρτας
+
+  // Χαραμάδα με μάτια ή σκιές
+  fill(0); // Σκούρο για κενό
+  rect(x + 30, y + doorHeight - 50, 20, 5); // Χαραμάδα
+  fill(255, 0, 0); // Κόκκινα μάτια
+  ellipse(x + 35, y + doorHeight - 48, 3, 3); // Μάτι 1
+  ellipse(x + 45, y + doorHeight - 48, 3, 3); // Μάτι 2
+
+  if(!isAnomaly){
+  // Αριθμός δωματίου
+  fill(200, 0, 0); // Σκούρο κόκκινο για τον αριθμό
+  textAlign(CENTER, CENTER);
+  textSize(12);
+  text(`Room ${roomNumber}`, x + doorWidth / 2, y + 20);
+  }else if(isAnomaly){
+     // Αριθμός δωματίου
+  fill(200, 0, 0); // Σκούρο κόκκινο για τον αριθμό
+  textAlign(CENTER, CENTER);
+  textSize(12);
+  text(`Room ${roomNumber+1}`, x + doorWidth / 2, y + 20);
+  }
+}
+
+
+
+
 function drawNpc(x, y, isAnomaly) {
   if(isAnomaly){
     return ;
