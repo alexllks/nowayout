@@ -577,10 +577,18 @@ function mousePressed() {
       if (box.text === "New game") {
         console.log("Game started!"); // Παράδειγμα λειτουργίας
         gameState = "playing"; // Ξεκινάει το παιχνίδι
+        initializeGame();
+        allowRainSound = true;
+        setupRoom();
+        currentLevel = 0;
+        updateLevelTracker();
       } else if (box.text === "Resume game") {
         gameState = "playing";
         currentLevel = savedLevel;
         console.log("Loading Game...");
+        allowRainSound = true;
+        initializeGame();
+        setupRoom();
       } else if (box.text === "Instructions") {
         console.log("Instructions displayed!"); // Παράδειγμα λειτουργίας
         showInstructions = true; // Εμφάνιση οδηγιών
