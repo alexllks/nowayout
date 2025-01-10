@@ -20,6 +20,7 @@ let showDoorMessage = false;
 let playerImage;
 var gameState = "menu"; // Αρχικό μενού
 let currentLevel = 0;
+let savedLevel = 0;
 var isGameOver;
 //GRAMMI 26 ALLAGI
 let RIGHT_WALL_X = 9370; // Σταθερή θέση δεξιού τοίχου
@@ -267,7 +268,6 @@ function initializeGame() {
 }
 
 function playGame() {
-  
   // Εξασφαλίζουμε ότι η κάμερα ακολουθεί τον παίκτη
   let cameraX = constrain(player.x - width / 2, 0, PLATFORM_WIDTH - width + 100);
   translate(-cameraX, 0);
@@ -412,11 +412,32 @@ let spikes = []; // Πίνακας για τα καρφιά
 
 
 function keyPressed() {
-  if (key === 'n' || key === 'N') {
-      noclipMode = !noclipMode; // Εναλλαγή noclip mode
-      console.log("Noclip Mode: " + (noclipMode ? "Activated" : "Deactivated"));
+  // Navigate up and down using arrow keys
+  if (keyCode === ENTER && gameState === "complete") {
+    gameState = "menu";
+    stopAllSounds();
+    console.log(`---- ${gameState}`);  // Correct string interpolation
+    currentLevel = 0;
+    updateLevelTracker();
   }
-
+  if ((keyIsDown(ALT) && key === 'n' || key === 'N') && gameState === "playing") {
+    noclipMode = !noclipMode; // Εναλλαγή noclip mode
+    console.log("Noclip Mode: player speed " + (noclipMode ? "Activated" : "Deactivated"));
+  }
+  if ((keyIsDown(ALT) && keyCode === 80) && gameState === "playing") { // 83 is the keycode for 'S'
+    console.log("Alt + P pressed");
+    showMessage("Game paused on level ${currentLevel}");
+    stopAllSounds();
+    gameState = "menu";
+    savedLevel = currentLevel;
+  }
+  if ((keyIsDown(18) && keyCode === 77) && gameState === "playing") {
+    console.log('Alt + M was pressed!');
+    stopAllSounds();
+    gameState = "menu";
+    currentLevel = 0;
+    updateLevelTracker();
+  }
 }
 
 // function stopAllSounds() {
@@ -515,8 +536,9 @@ function returnToMainTrack() {
 
 let showInstructions = false;
 let menuBoxes = [
-  { text: "Play", x: 500, y: 200, width: 200, height: 50 },
-  { text: "Instructions", x: 500, y: 300, width: 200, height: 50 }
+  { text: "New game", x: 500, y: 200, width: 200, height: 50 },
+  { text: "Resume game", x: 500, y: 275, width: 200, height: 50 },
+  { text: "Instructions", x: 500, y: 350, width: 200, height: 50 }
 ];
 function displayMenu() {
   background(menubackground);
@@ -552,9 +574,13 @@ function mousePressed() {
       mouseY > box.y &&
       mouseY < box.y + box.height
     ) {
-      if (box.text === "Play") {
+      if (box.text === "New game") {
         console.log("Game started!"); // Παράδειγμα λειτουργίας
         gameState = "playing"; // Ξεκινάει το παιχνίδι
+      } else if (box.text === "Resume game") {
+        gameState = "playing";
+        currentLevel = savedLevel;
+        console.log("Loading Game...");
       } else if (box.text === "Instructions") {
         console.log("Instructions displayed!"); // Παράδειγμα λειτουργίας
         showInstructions = true; // Εμφάνιση οδηγιών
