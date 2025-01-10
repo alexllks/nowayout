@@ -132,7 +132,7 @@ function setup() {
   bufferCanvas = createGraphics(settings.canvasWidth, settings.canvasHeight); // Δημιουργία buffer canvas
 
   player = new Player();
-  initializeLevelTracker();
+  
   platforms = Platform.createPlatforms();
   // Ενεργοποίηση Debug Mode
   if (debugMode) {
@@ -195,7 +195,6 @@ function displayLost() {
   // Έλεγχος αν ο χρήστης πατάει το πλήκτρο 'M'
   if (keyIsDown(77)) { // 77 είναι ο κωδικός για το πλήκτρο 'M'
       currentLevel = 0; // Επαναφορά επιπέδων
-      updateLevelTracker(); // Ενημέρωση του tracker
       gameState = "menu"; // Επιστροφή στο μενού
       initializeGame(); // Επαναφορά του παιχνιδιού
   }
@@ -279,9 +278,12 @@ function initializeGame() {
 }
 
 function playGame() {
+
   // Εξασφαλίζουμε ότι η κάμερα ακολουθεί τον παίκτη
   let cameraX = constrain(player.x - width / 2, 0, PLATFORM_WIDTH - width + 100);
+  
   translate(-cameraX, 0);
+  
   // Σχεδίαση 2D στοιχείων
   background(240, 230, 140);
 
@@ -292,6 +294,7 @@ function playGame() {
   drawGhosts();
   drawObjects();
 
+  
 
   //drawDoor();
    // Σχεδίαση της πρώτης Cosmic Door
@@ -326,6 +329,7 @@ checkCosmicDoorSound(player,showCosmicDoor1);
   drawSpikes();
   drawReceptionDesk();
   drawFireplaces();
+  
    // Σχεδίαση NPC σε σταθερό σημείο
    //drawNpc(2820, 550); // Ο NPC θα εμφανιστεί στη θέση (200, 300)
 
@@ -357,7 +361,7 @@ updatePlatforms(platforms);
   Platform.drawPlatforms(platforms);
 
   Platform.drawPlatforms(platforms); // Σχεδίαση πλατφορμών//
-  
+  drawLevel(cameraX);
 
   for (let obstacle of obstacles) {
     if (typeof obstacle.update === "function") {
@@ -430,7 +434,6 @@ function keyPressed() {
     stopAllSounds();
     console.log(`---- ${gameState}`);  // Correct string interpolation
     currentLevel = 0;
-    updateLevelTracker();
   }
   if ((keyIsDown(ALT) && key === 'n' || key === 'N') && gameState === "playing") {
     noclipMode = !noclipMode; // Εναλλαγή noclip mode
@@ -450,7 +453,6 @@ function keyPressed() {
     stopAllSounds();
     gameState = "menu";
     currentLevel = 0;
-    updateLevelTracker();
   }
 }
 
@@ -466,6 +468,36 @@ function keyPressed() {
 //     }
 //   }
 // }
+
+function drawLevel(cameraX) {
+  let levelOffsetX = cameraX + 1080; // Σταθερή απόσταση από την αριστερή πλευρά της κάμερας
+  let levelOffsetY = 55;          // Σταθερή απόσταση από την κορυφή της οθόνης
+
+  // Σκιά στο φόντο
+  fill(0, 0, 0, 150); // Μαύρο με διαφάνεια
+  rect(levelOffsetX - 10, levelOffsetY - 10, 150, 40, 10); // Στρογγυλεμένο φόντο
+
+  // Κείμενο με σκιά
+  fill(0, 0, 0, 200); // Μαύρη σκιά
+  textSize(24);
+  textAlign(LEFT, TOP);
+  text(`Level: ${currentLevel}`, levelOffsetX + 2, levelOffsetY + 2);
+
+  // Κύριο κείμενο
+  fill(255, 255, 255); // Λευκό
+  text(`Level: ${currentLevel}`, levelOffsetX, levelOffsetY);
+
+  // Πλαίσιο γύρω από το φόντο
+  noFill();
+  stroke(255, 255, 255); // Λευκό περίγραμμα
+  strokeWeight(2);
+  rect(levelOffsetX - 10, levelOffsetY - 10, 150, 40, 10); // Στρογγυλεμένο πλαίσιο
+}
+
+
+
+
+
 
 
  
@@ -611,7 +643,6 @@ function mousePressed() {
           allowRainSound = true;
           setupRoom();
           currentLevel = 0;
-          updateLevelTracker();
         } else if (box.text === "Resume game") {
 
           gameState = "playing";
@@ -649,7 +680,6 @@ function  playGameAfterLost() {
       
       gameState = "playing";
       currentLevel = 0;
-      updateLevelTracker();
       initializeGame();
       //setupRoom();
       if (currentLevel > totalLevels) {
@@ -678,7 +708,6 @@ function checkExit(isBackExit) {
   if ((isBackExit && hasAnomaly) || (!isBackExit && !hasAnomaly)) {
       showMessage("Correct! Moving to the next level.");
       currentLevel++;
-      updateLevelTracker();
       
       
       if (currentLevel > totalLevels) {
@@ -714,32 +743,32 @@ function showMessage(newMessage) {
 
 
 
-function initializeLevelTracker() {
-  const levelsList = document.getElementById('levels-list');
-  levelsList.innerHTML = ''; // Καθαρισμός λίστας
+// function initializeLevelTracker() {
+//   const levelsList = document.getElementById('levels-list');
+//   levelsList.innerHTML = ''; // Καθαρισμός λίστας
 
-  for (let i = 1; i <= totalLevels; i++) {
-      const levelItem = document.createElement('li');
-      levelItem.textContent = `Level ${i}`;
-      if (i < currentLevel) {
-          levelItem.classList.add('completed'); // Μαρκάρισμα περασμένων επιπέδων
-      }
-      levelsList.appendChild(levelItem);
-  }
-}
+//   for (let i = 1; i <= totalLevels; i++) {
+//       const levelItem = document.createElement('li');
+//       levelItem.textContent = `Level ${i}`;
+//       if (i < currentLevel) {
+//           levelItem.classList.add('completed'); // Μαρκάρισμα περασμένων επιπέδων
+//       }
+//       levelsList.appendChild(levelItem);
+//   }
+// }
 
-function updateLevelTracker() {
-  showCosmicDoor1 = random() < 0.9; // ανανέωση τιμής σε κάθε γύρο
-  const levelsList = document.getElementById('levels-list').children;
-  for (let i = 0; i < levelsList.length; i++) {
-      if (i  < currentLevel) {
-          levelsList[i].classList.add('completed'); // Μαρκάρισμα περασμένων επιπέδων
-      } else {
-          levelsList[i].classList.remove('completed'); // Επαναφορά για μη περασμένα επίπεδα
-      }
-  }
-  console.log(`Level tracker updated. Current level: ${currentLevel}`);
-}
+// function updateLevelTracker() {
+//   showCosmicDoor1 = random() < 0.9; // ανανέωση τιμής σε κάθε γύρο
+//   const levelsList = document.getElementById('levels-list').children;
+//   for (let i = 0; i < levelsList.length; i++) {
+//       if (i  < currentLevel) {
+//           levelsList[i].classList.add('completed'); // Μαρκάρισμα περασμένων επιπέδων
+//       } else {
+//           levelsList[i].classList.remove('completed'); // Επαναφορά για μη περασμένα επίπεδα
+//       }
+//   }
+//   console.log(`Level tracker updated. Current level: ${currentLevel}`);
+// }
 
 
 

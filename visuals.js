@@ -1687,7 +1687,6 @@ function exitSecretRoom() {
         player.x =730; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο
         player.y = height - PLATFORM_HEIGHT - player.height;
         currentLevel += 4;
-        updateLevelTracker();
 
         console.log(`Exited secret room. Current level: ${currentLevel}`);
         allowRainSound = true; // Επαναφορά του ήχου της βροχής
