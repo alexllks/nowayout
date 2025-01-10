@@ -33,6 +33,8 @@ class Player {
         return; // Σταματά η υπόλοιπη ενημέρωση
     }
 
+    
+
     this.velocityY += this.gravity;
     this.y += this.velocityY;
     this.checkCollisions();
@@ -47,6 +49,8 @@ class Player {
         this.isLeft = true;
         this.isRight = false; // Αν πατηθεί αριστερά, σταματά το δεξιά
         footstepSound.setVolume(0.3);
+        
+        
     }
 
     // Κίνηση δεξιά
@@ -55,6 +59,7 @@ class Player {
         this.isRight = true;
         this.isLeft = false; // Αν πατηθεί δεξιά, σταματά το αριστερά
 
+        
         if (this.x + this.width / 2 >= NEW_WALL_X2 && this.x < NEW_WALL_X2) {
             this.x = NEW_WALL_X2 - this.width / 2;
         }
@@ -88,6 +93,8 @@ class Player {
   checkCollisions() {
       let onPlatform = false;
       this.onStair = false;
+      this.currentStair = null; // Επαναφορά του currentStair
+
 
       for (let platform of platforms) {
           let minContact = this.width * 0.5;
@@ -138,56 +145,60 @@ class Player {
       }
 
       
-//   // Αν ο παίκτης συγκρούεται από κάτω
-// if (
-//   this.x + this.width > platform.x && // Μέσα στο πλάτος της πλατφόρμας
-//   this.x < platform.x + platform.width && // Μέσα στο πλάτος της πλατφόρμας
-//   this.y <= platform.y + platform.height+5 && // Το κεφάλι του παίκτη αγγίζει την κάτω πλευρά της πλατφόρμας
-//   this.y > platform.y // Το κεφάλι βρίσκεται κάτω από την κάτω πλευρά της πλατφόρμας
-// ) {
-//   console.log('Collision από κάτω');
-//   this.y = platform.y + platform.height; // Τοποθέτηση κάτω από την πλατφόρμα
-//   this.velocityY = 0; // Σταματά την ανοδική κίνηση
-// }
-  }
+    }
+
+
+    //  // Έλεγχος αν βρίσκεται σε σκάλα και μετακίνηση στο επόμενο σκαλί
+    //  if (this.onStair) {
+    //     let stair = this.currentStair;
+    //     let stepIndex = Math.floor((this.x - stair.x) / stair.stepWidth);
+    //     if (stepIndex >= 0 && stepIndex < stair.steps) {
+    //         let stepY = stair.y - stepIndex * stair.stepHeight;
+    //         this.y = stepY - this.height;
+    //     }
+    // }
+
+
+    for (let stair of stairs) {
+          for (let i = 0; i < stair.steps; i++) {
+              let stepX = stair.x + i * stair.stepWidth;
+              let stepY = stair.y - i * stair.stepHeight;
+
+              if (
+                  this.x + this.width / 2 > stepX &&
+                  this.x - this.width / 2 < stepX + stair.stepWidth &&
+                  this.y + this.height >= stepY &&
+                  this.y + this.height <= stepY + Math.abs(this.velocityY + 5)
+              ) {
+                  this.onStair = true;
+                  this.y = stepY - this.height;
+                  this.velocityY = 0;
+                  this.canJump = true;
+                  this.isFalling = false;
+                  break;
+              }
+              
+          }
+         // if (this.onStair) break;
       }
 
+      if (this.y + this.height >= height - PLATFORM_HEIGHT) {
+          this.y = height - PLATFORM_HEIGHT - this.height;
+          this.velocityY = 0;
+          this.canJump = true;
+          this.isFalling = false;
+      } else if (!onPlatform && !this.onStair) {
+          this.isFalling = true;
+          this.canJump = false;
+      }
+
+      // Εμφάνιση συντεταγμένων στην κονσόλα
+      console.log(`Player coordinates: x=${this.x}, y=${this.y}`);
+}
 
 
-
-
-      // for (let stair of stairs) {
-      //     for (let i = 0; i < stair.steps; i++) {
-      //         let stepX = stair.x + i * stair.stepWidth;
-      //         let stepY = stair.y - i * stair.stepHeight;
-
-      //         if (
-      //             this.x + this.width / 2 > stepX &&
-      //             this.x - this.width / 2 < stepX + stair.stepWidth &&
-      //             this.y + this.height >= stepY &&
-      //             this.y + this.height <= stepY + Math.abs(this.velocityY + 5)
-      //         ) {
-      //             this.onStair = true;
-      //             this.y = stepY - this.height;
-      //             this.velocityY = 0;
-      //             this.canJump = true;
-      //             this.isFalling = false;
-      //             break;
-      //         }
-      //     }
-      //     if (this.onStair) break;
-      // }
-
-      // if (this.y + this.height >= height - PLATFORM_HEIGHT) {
-      //     this.y = height - PLATFORM_HEIGHT - this.height;
-      //     this.velocityY = 0;
-      //     this.canJump = true;
-      //     this.isFalling = false;
-      // } else if (!onPlatform && !this.onStair) {
-      //     this.isFalling = true;
-      //     this.canJump = false;
-      // }
-  
+      
+        
 
   show() {
       drawGameChar(this.x, this.y, this.isLeft, this.isRight, this.isFalling, this.isPlummeting);

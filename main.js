@@ -60,6 +60,7 @@ let NEW_WALL_X = 11900; // Θέση του νέου τοίχου στον άξο
 //let FIRST_WALL_SECRET=13900;
 let NEW_WALL_X2 = 22000; // Θέση του νέου τοίχου στον άξονα X
 let UPPER_WALL = 1;
+let UPPER_WALL_SECRET = 18250;
 
 let audioStarted = false; // Έναρξη ήχου
 
@@ -517,6 +518,18 @@ if (
   player.velocityY = 0; // Επαναφορά ταχύτητας
 }
 
+// Έλεγχος σύγκρουσης κάτω από το ταβάνι
+if(player.y>=354 && player.y<height - 170 + 5 ){
+if (
+  player.x + player.width > UPPER_WALL_SECRET && // Ο παίκτης βρίσκεται στο εύρος X του τοίχου
+  player.x < UPPER_WALL_SECRET + 80 && // Το μήκος του τοίχου
+  player.y < height - 170 + 5 && // Ο παίκτης βρίσκεται σε επαφή με το κάτω μέρος του τοίχου
+  player.y + player.height > height - 575 // Ο παίκτης προσπαθεί να περάσει κάτω από το τοίχο
+) {
+  player.y = height - 170 + 5; // Σταθεροποίηση ακριβώς πάνω από το ταβάνι
+  player.velocityY = 0; // Επαναφορά ταχύτητας
+}
+}
 
 
 

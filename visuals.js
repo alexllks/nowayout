@@ -1360,6 +1360,11 @@ function drawWalls() {
  rect(UPPER_WALL, height - 575, 30000, 40);
 
 
+ fill(100, 100, 100); // Σκούρο γκρι χρώμα
+ rect(UPPER_WALL_SECRET, height - 170, 80, 5);
+
+
+
  fill(60, 60, 60);
 
  rect(SECOND_WALL, 0, 20, height);
