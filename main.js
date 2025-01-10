@@ -91,16 +91,18 @@ function preload() {
   stairStepSound = loadSound('assets/sounds/stair_footsteps.wav');
   //rainSound = loadSound('assets/sounds/rain.wav'); // Ήχος βροχής
 
+  lightImg = loadImage('assets/images/light.png');
   mooonImg= loadImage('assets/images/hotelscary.jpg');
   receptionImg = loadImage ( 'assets/images/imagereception.jpg');
   castleImg = loadImage('assets/images/castle.jpg');
   libraryImg = loadImage('assets/images/library.jpg');
-
+  menubackground = loadImage('assets/images/menu-background3.png');
   moon2Img = loadImage('assets/images/moon2.jpg');
   toRoomsImg =loadImage('assets/images/toRooms.jpg');
   paintingImg = loadImage('assets/images/haunting_painting.jpg'); // Βεβαιώσου ότι η διαδρομή είναι σωστή
   graveyardImg = loadImage('assets/images/graveyard_painting.jpg');
   houseImg = loadImage('assets/images/house_painting.jpg'); 
+  stairsghostImg = loadImage('assets/images/stairsghost.jpg'); 
   bloodyHandprintImg = loadImage('assets/images/bloodyHandprint.png'); // Βεβαιώσου ότι το αρχείο είναι στη σωστή διαδρομή
 }
 
@@ -145,10 +147,10 @@ function setup() {
  // Debug: Εκτύπωση της τιμής της `showCosmicDoor1`
  //console.log("Show Cosmic Door 1:", showCosmicDoor1);
   // Προτροπή στον χρήστη να κάνει κλικ για τον ήχο
-  textSize(20);
-  fill(255);
-  textAlign(CENTER);
-  text("Click to start audio and music", width / 2, height / 2);
+  // textSize(20);
+  // fill(255);
+  // textAlign(CENTER);
+  // text("Click to start audio and music", width / 2, height / 2);
 }
 
 
@@ -224,7 +226,7 @@ function drawWater() {
 }
 
 function checkWaterCollision(player) {
-  if (player.x >= secretRoomStartX && player.y + player.height >= height - PLATFORM_HEIGHT) {
+  if (player.x >= secretRoomStartX-50 && player.y + player.height >= height - PLATFORM_HEIGHT) {
     if(player.x<=secretRoomStartX+secretRoomWidth-400){
       console.log("Ο παίκτης έπεσε στο νερό!");
       // isGameOver = true; // Ορισμός της κατάστασης "game over
@@ -292,6 +294,7 @@ function playGame() {
 checkCosmicDoorSound(player,showCosmicDoor1);
  
   drawWalls();
+  // drawLights();
   checkWallCollision();
   drawNoSmokingSign(); // Σχεδίαση σήματος "No Smoking"
   //drawSofa2();
@@ -511,43 +514,51 @@ function returnToMainTrack() {
 }
 
 let showInstructions = false;
-
+let menuBoxes = [
+  { text: "Play", x: 500, y: 200, width: 200, height: 50 },
+  { text: "Instructions", x: 500, y: 300, width: 200, height: 50 }
+];
 function displayMenu() {
-  
-
-  background(30);
+  background(menubackground);
   textAlign(CENTER, CENTER);
-  fill(255);
-  if (showInstructions) {
-    // Εμφάνιση Οδηγιών
-    textSize(28);
-    text("How to Play", width / 2, height / 2 - 100);
-    textSize(20);
-    text("Use the arrow keys to move.", width / 2, height / 2 - 40);
-    text("Press UP or SPACE to jump.", width / 2, height / 2);
-    textSize(16);
-    text("Press BACKSPACE to return", width / 2, height / 2 + 100);
+  textSize(20);
 
-    if (keyIsDown(BACKSPACE)) {
-      showInstructions = false; // Επιστροφή στο κύριο μενού
-    }
-  } else {
-    // Κύριο Μενού
-    textSize(32);
-    text("Welcome to the Game", width / 2, height / 2 - 20);
-    textSize(20);
-    text("Press ENTER to Play", width / 2, height / 2 + 20);
-    text("Press 'I' for Instructions", width / 2, height / 2 + 60);
-
-    
-    if (keyIsDown(ENTER)) {
-      gameState = "playing";
-      initializeGame();
-      setupRoom();
+  // Εμφάνιση κουτιών με hover εφέ
+  for (let box of menuBoxes) {
+    // Ελέγχουμε αν το ποντίκι είναι πάνω στο κουτί
+    if (
+      mouseX > box.x &&
+      mouseX < box.x + box.width &&
+      mouseY > box.y &&
+      mouseY < box.y + box.height
+    ) {
+      fill(200, 100, 100); // Κόκκινο για hover
+    } else {
+      fill(100, 100, 100); // Γκρι για κανονική κατάσταση
     }
 
-    if (keyIsDown(73)) { // 'I' key
-      showInstructions = true;
+    rect(box.x, box.y, box.width, box.height, 10); // Σχεδίαση του κουτιού
+    fill(255); // Χρώμα κειμένου
+    text(box.text, box.x + box.width / 2, box.y + box.height / 2);
+  }
+}
+
+function mousePressed() {
+  // Έλεγχος για click στα κουτιά
+  for (let box of menuBoxes) {
+    if (
+      mouseX > box.x &&
+      mouseX < box.x + box.width &&
+      mouseY > box.y &&
+      mouseY < box.y + box.height
+    ) {
+      if (box.text === "Play") {
+        console.log("Game started!"); // Παράδειγμα λειτουργίας
+        gameState = "playing"; // Ξεκινάει το παιχνίδι
+      } else if (box.text === "Instructions") {
+        console.log("Instructions displayed!"); // Παράδειγμα λειτουργίας
+        showInstructions = true; // Εμφάνιση οδηγιών
+      }
     }
   }
 }

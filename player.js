@@ -4,7 +4,7 @@ class Player {
     this.y = height - PLATFORM_HEIGHT - 60;
     this.width = 40;
     this.height = 0;
-    this.speed =30;
+    this.speed =10;
     this.velocityY = 0;
     this.gravity = 0.6;
 
@@ -24,8 +24,8 @@ class Player {
 
     if (noclipMode) {
       // Ελεύθερη κίνηση χωρίς φυσική
-      if (keyIsDown(LEFT_ARROW)) this.x -= this.speed;
-      if (keyIsDown(RIGHT_ARROW)) this.x += this.speed;
+      if (keyIsDown(LEFT_ARROW)) this.x -= this.speed*4;
+      if (keyIsDown(RIGHT_ARROW)) this.x += this.speed*4;
       if (keyIsDown(UP_ARROW)) this.y -= this.speed;
       if (keyIsDown(DOWN_ARROW)) this.y += this.speed;
 
