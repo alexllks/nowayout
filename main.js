@@ -254,7 +254,17 @@ function isDying(){
        }, 1000);
 }
 
+function initializeGame2() {
 
+  soundManager.play('background', false, 0.2); // Έναρξη του ήχου νυχτερίδων
+  isGameOver = false;
+  player.isDying = false;
+  player.x = saved_x;
+  player.y = saved_y;
+  player.velocityY = 0;
+ 
+ // gameState = "menu"; // Επιστροφή στο μενού
+}
 
 function initializeGame() {
 
@@ -410,7 +420,8 @@ updatePlatforms(platforms);
 
 let spikes = []; // Πίνακας για τα καρφιά
 
-
+let saved_x;
+let saved_y;
 
 function keyPressed() {
   // Navigate up and down using arrow keys
@@ -429,6 +440,8 @@ function keyPressed() {
     console.log("Alt + P pressed");
     showMessage("Game paused on level ${currentLevel}");
     stopAllSounds();
+    saved_x = player.x;
+    saved_y = player.y;
     gameState = "menu";
     savedLevel = currentLevel;
   }
@@ -579,32 +592,38 @@ function displayMenu() {
 }
 
 function mousePressed() {
-  // Έλεγχος για click στα κουτιά
-  for (let box of menuBoxes) {
-    if (
-      mouseX > box.x &&
-      mouseX < box.x + box.width &&
-      mouseY > box.y &&
-      mouseY < box.y + box.height
-    ) {
-      if (box.text === "New game") {
-        console.log("Game started!"); // Παράδειγμα λειτουργίας
-        gameState = "playing"; // Ξεκινάει το παιχνίδι
-        initializeGame();
-        allowRainSound = true;
-        setupRoom();
-        currentLevel = 0;
-        updateLevelTracker();
-      } else if (box.text === "Resume game") {
-        gameState = "playing";
-        currentLevel = savedLevel;
-        console.log("Loading Game...");
-        allowRainSound = true;
-        initializeGame();
-        setupRoom();
-      } else if (box.text === "Instructions") {
-        console.log("Instructions displayed!"); // Παράδειγμα λειτουργίας
-        showInstructions = true; // Εμφάνιση οδηγιών
+  if (gameState === 'playing'){
+    return;
+  }
+  else {
+    // Έλεγχος για click στα κουτιά
+    for (let box of menuBoxes) {
+      if (
+        mouseX > box.x &&
+        mouseX < box.x + box.width &&
+        mouseY > box.y &&
+        mouseY < box.y + box.height
+      ) {
+        if (box.text === "New game") {
+          console.log("Game started!"); // Παράδειγμα λειτουργίας
+          gameState = "playing"; // Ξεκινάει το παιχνίδι
+          initializeGame();
+          allowRainSound = true;
+          setupRoom();
+          currentLevel = 0;
+          updateLevelTracker();
+        } else if (box.text === "Resume game") {
+
+          gameState = "playing";
+          currentLevel = savedLevel;
+          console.log("Loading Game...");
+          allowRainSound = true;
+          initializeGame2();
+          //setupRoom();
+        } else if (box.text === "Instructions") {
+          console.log("Instructions displayed!"); // Παράδειγμα λειτουργίας
+          showInstructions = true; // Εμφάνιση οδηγιών
+        }
       }
     }
   }

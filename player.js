@@ -193,7 +193,7 @@ class Player {
       }
 
       // Εμφάνιση συντεταγμένων στην κονσόλα
-      console.log(`Player coordinates: x=${this.x}, y=${this.y}`);
+      //console.log(`Player coordinates: x=${this.x}, y=${this.y}`);
 }
 
 
