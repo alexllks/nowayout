@@ -357,11 +357,15 @@ updateBats(bats); // Ενημέρωση των νυχτερίδων
 drawBats(bats); // Σχεδίαση των νυχτερίδων
 
 
-updatePlatforms(platforms); 
-  Platform.drawPlatforms(platforms);
 
-  Platform.drawPlatforms(platforms); // Σχεδίαση πλατφορμών//
-  drawLevel(cameraX);
+  //Platform.drawPlatforms(platforms);
+  updatePlatforms(platforms); 
+Platform.drawPlatforms(platforms); // Σχεδίαση πλατφορμών//
+
+
+
+
+//drawVolumeSlider(cameraX);
 
   for (let obstacle of obstacles) {
     if (typeof obstacle.update === "function") {
@@ -404,10 +408,8 @@ updatePlatforms(platforms);
     text("Press F to pass this door", player.x - 500 + width / 2, height - 100);
   }
 
-
-
-
-
+drawLevel(cameraX);
+//drawVolumeSlider
   
  // Ενημέρωση θέσης και φυσικής του παίκτη
  player.update();
@@ -470,8 +472,11 @@ function keyPressed() {
 // }
 
 function drawLevel(cameraX) {
-  let levelOffsetX = cameraX + 1080; // Σταθερή απόσταση από την αριστερή πλευρά της κάμερας
-  let levelOffsetY = 55;          // Σταθερή απόσταση από την κορυφή της οθόνης
+  push(); // Αποθήκευση της τρέχουσας κατάστασης σχεδίασης
+
+  // Θέση και σχεδίαση του level
+  let levelOffsetX = cameraX + 1084; // Σταθερή απόσταση από την αριστερή πλευρά της κάμερας
+  let levelOffsetY = 10;          // Σταθερή απόσταση από την κορυφή της οθόνης
 
   // Σκιά στο φόντο
   fill(0, 0, 0, 150); // Μαύρο με διαφάνεια
@@ -492,9 +497,9 @@ function drawLevel(cameraX) {
   stroke(255, 255, 255); // Λευκό περίγραμμα
   strokeWeight(2);
   rect(levelOffsetX - 10, levelOffsetY - 10, 150, 40, 10); // Στρογγυλεμένο πλαίσιο
+
+  pop(); // Επαναφορά της προηγούμενης κατάστασης σχεδίασης
 }
-
-
 
 
 
@@ -623,6 +628,46 @@ function displayMenu() {
   }
 }
 
+
+let sliderX, sliderY, knobX;
+let volumeLevel = 50; // Αρχική ένταση (0-100)
+let sliderWidth = 300; // Πλάτος της μπάρας
+let sliderHeight = 10; // Ύψος της μπάρας
+
+function drawVolumeSlider(cameraX) {
+  // Θέση της μπάρας έντασης με βάση τη θέση της κάμερας
+  let sliderX = cameraX + 700; // Οριζόντια θέση της μπάρας
+  let sliderY = 10;           // Κάθετη θέση της μπάρας
+  let knobX = sliderX + (sliderWidth * volumeLevel) / 100; // Θέση του κουμπιού (knob)
+
+  // Σχεδίαση της μπάρας έντασης
+  fill(100); // Γκρι φόντο μπάρας
+  rect(sliderX, sliderY, sliderWidth, sliderHeight, 5); // Γραμμή της μπάρας (με στρογγυλεμένες άκρες)
+
+  // Σχεδίαση του γεμάτου τμήματος (ένταση)
+  fill(0, 122, 255); // Μπλε γεμάτο τμήμα
+  rect(sliderX, sliderY, knobX - sliderX, sliderHeight, 5);
+
+  // Σχεδίαση του κουμπιού (knob)
+  fill(255); // Λευκό κουμπί
+  ellipse(knobX, sliderY + sliderHeight / 2, 20, 20); // Κυκλικό κουμπί
+
+  // Σχεδίαση της έντασης σε ποσοστό
+  fill(255); // Λευκό κείμενο
+  textSize(16);
+  textAlign(CENTER, TOP);
+  text(`Volume: ${volumeLevel}%`, sliderX + sliderWidth / 2, sliderY + 20);
+
+  // Ενημέρωση περιοχής για το σύρσιμο (αν χρησιμοποιηθεί `mouseDragged`)
+  volumeSliderArea = {
+    x: sliderX,
+    y: sliderY,
+    width: sliderWidth,
+    height: sliderHeight,
+  };
+} 
+
+
 function mousePressed() {
   if (gameState === 'playing'){
     return;
@@ -656,6 +701,28 @@ function mousePressed() {
           showInstructions = true; // Εμφάνιση οδηγιών
         }
       }
+    }
+  }
+}
+function mouseDragged() {
+  // Ελέγχουμε αν το ποντίκι είναι πάνω από τη μπάρα έντασης
+  if (
+    mouseX >= volumeSliderArea.x &&
+    mouseX <= volumeSliderArea.x + volumeSliderArea.width &&
+    mouseY >= volumeSliderArea.y - 10 &&
+    mouseY <= volumeSliderArea.y + volumeSliderArea.height + 10
+  ) {
+    // Υπολογισμός νέας έντασης
+    volumeLevel = Math.round(
+      ((mouseX - volumeSliderArea.x) / volumeSliderArea.width) * 100
+    );
+
+    // Περιορισμός της έντασης μεταξύ 0 και 100
+    volumeLevel = constrain(volumeLevel, 0, 100);
+
+    // Ενημέρωση της master έντασης στο soundManager
+    if (typeof soundManager !== "undefined" && soundManager.setMasterVolume) {
+      soundManager.setMasterVolume(volumeLevel / 100); // Ενημέρωση έντασης 0.0 - 1.0
     }
   }
 }
