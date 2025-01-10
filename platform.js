@@ -51,6 +51,7 @@ class Platform {
       
       // Συγκεκριμένες θέσεις πλατφορμών
       const specificPlatformPositions = [
+       
         { x: secretRoomStartX - 20 , y: height - PLATFORM_HEIGHT - 100, width: 100,height:20 },
         //{ x: secretRoomStartX + 50, y: height - PLATFORM_HEIGHT - 200, width: 150 ,height:20},
         { x: secretRoomStartX + 200, y: height - PLATFORM_HEIGHT - 200, width: 100,height:20},
