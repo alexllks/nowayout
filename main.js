@@ -271,8 +271,9 @@ function playGame() {
   drawSignBoard3(1590, height - PLATFORM_HEIGHT - 210);
   drawReceptionDesk();
   drawFireplaces();
-  drawScaryObjects();
   drawObjects();
+  drawScaryObjects();
+
   drawCosmicDoor(secretRoomStartX + secretRoomWidth - 215, height - 200);
   drawSpikes();
 
