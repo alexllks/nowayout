@@ -289,7 +289,7 @@ function playGame() {
   drawGhosts();
   drawObjects();
 
-  
+  drawInclined();
 
   //drawDoor();
    // Σχεδίαση της πρώτης Cosmic Door
@@ -567,17 +567,18 @@ if (
 }
 
 // Έλεγχος σύγκρουσης κάτω από το ταβάνι
-if(player.y>=354 && player.y<height - 170 + 5 ){
-if (
-  player.x + player.width > UPPER_WALL_SECRET && // Ο παίκτης βρίσκεται στο εύρος X του τοίχου
-  player.x < UPPER_WALL_SECRET + 80 && // Το μήκος του τοίχου
-  player.y < height - 170 + 5 && // Ο παίκτης βρίσκεται σε επαφή με το κάτω μέρος του τοίχου
-  player.y + player.height > height - 575 // Ο παίκτης προσπαθεί να περάσει κάτω από το τοίχο
-) {
-  player.y = height - 170 + 5; // Σταθεροποίηση ακριβώς πάνω από το ταβάνι
-  player.velocityY = 0; // Επαναφορά ταχύτητας
-}
-}
+if(player.y>=354 && player.y<height - 170 + 50 ){
+  if (
+    player.x + player.width > UPPER_WALL_SECRET && // Ο παίκτης βρίσκεται στο εύρος X του τοίχου
+    player.x < UPPER_WALL_SECRET + 80 && // Το μήκος του τοίχου
+    player.y < height - 170 + 50 && // Ο παίκτης βρίσκεται σε επαφή με το κάτω μέρος του τοίχου
+    player.y + player.height > height - 575 // Ο παίκτης προσπαθεί να περάσει κάτω από το τοίχο
+  ) {
+    player.y = height - 170 + 50; // Σταθεροποίηση ακριβώς πάνω από το ταβάνι
+    player.velocityY = 0; // Επαναφορά ταχύτητας
+  }
+  }
+  
 
 
 

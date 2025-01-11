@@ -74,7 +74,6 @@ let doors = [
 
 
 
-
 let Bookshelfs= [
   {  x: 4230, y: 437},
   {  x: 4350, y: 437}, 
@@ -94,28 +93,69 @@ let ReceptionDesk = [
   { x: 2810, y: 510 } // Θέση της ρεσεψιόν
 ];
 
+let inclinedEscalators = [
+  { x: 1980, y: 550, width: 220, height: 140, speedX: 0, speedY: -0.5 }, // Escalator 1
+  { x: 2285, y:405, width: 220, height: 160, speedX: 0, speedY: -1 },  // Escalator 2
+];
 
-// let lightPositions = [
-//   {x: 1390 , y: 0},
-//   {x: 1390 , y: 950},
-//   {x: 1390 , y: 900},
-//   {x: 1390 , y: 850},
-//   {x: 1390 , y: 800},
-//   {x: 1390 , y: 750},
-//   {x: 1390 , y: 700},
-//   {x: 1390 , y: 650},
-//   {x: 1390 , y: 600},
-//   {x: 1390 , y: 550},
-//   {x: 1390 , y: 500},
-
-// ]
+function drawInclined(){
+  for (let escalator of inclinedEscalators) {
+    drawInclinedEscalator(escalator.x, escalator.y, escalator.width, escalator.height);
+}
+}
 
 
-// function drawLights(){
-//   for(let item of lightPositions){
-//     drawLightsStructure( item.x, item.y);
-//   }
-// }
+
+
+function drawInclinedEscalator(x, y, width, height) {
+ 
+
+  // Σχεδίαση κεκλιμένης πλατφόρμας
+  noFill();
+  noStroke();
+  beginShape();
+  vertex(x, y); // Κάτω-αριστερά
+  vertex(x + width, y - height); // Πάνω-δεξιά
+  vertex(x + width, y - height + 10); // Προσαρμογή για το τέλος
+  vertex(x, y + 10); // Προσαρμογή για την αρχή
+  endShape(CLOSE);
+
+  
+}
+function checkInclinedEscalatorCollision(player) {
+  let onEscalator = false;
+
+  for (let escalator of inclinedEscalators) {
+      let slope = escalator.height / escalator.width; // Υπολογισμός κλίσης
+      let relativeX = player.x - escalator.x; // Θέση παίκτη σε σχέση με το escalator
+
+      // Έλεγχος αν ο παίκτης βρίσκεται εντός των ορίων του escalator
+      if (relativeX >= 0 && relativeX <= escalator.width) {
+          let expectedY = escalator.y - relativeX * slope; // Υπολογισμός ύψους στο σημείο
+
+          if (
+              player.y + player.height >= expectedY && // Αν ο παίκτης ακουμπά τον escalator
+              player.y + player.height <= expectedY + 10 // Μικρή ανοχή
+          ) {
+              player.x += escalator.speedX; // Μετακίνηση του παίκτη
+              player.y = expectedY - player.height; // Τοποθέτηση στο escalator
+              player.velocityY = 0; // Σταματάμε τη βαρύτητα
+              player.isFalling = false; // Δεν πέφτει
+              player.canJump = true; // Μπορεί να πηδήξει
+              onEscalator = true;
+              
+              break; // Σταματάμε την αναζήτηση
+          }
+      }
+  }
+
+  if (!onEscalator) {
+      player.isFalling = true; // Ενεργοποίηση πτώσης
+  }
+}
+
+
+
 
 
 function drawReceptionDesk() {
@@ -1196,21 +1236,18 @@ function displayScore(score) {
         rect(x, 0, 20, height); // Σανίδες κάθε 120 pixels
     }
 
-    // Προεξοχή στον τοίχο (για περισσότερη υφή)
-    fill(30, 30, 30); // Σκούρο γκρι
-    rect(0, height / 2 - 10, width, 20);
+   
 
     // Σκιάσεις για πιο τρομακτική ατμόσφαιρα
     fill(0, 0, 0, 80); // Μαύρη ημιδιαφανής σκιά
     rect(0, height / 2 + 20, PLATFORM_WIDTH, height / 2); // Κάτω μισό τοίχου
 
-    // Λάμπες στον τοίχο
-    //drawLamps();
+   
 }
 
 // Συνάρτηση για τη σχεδίαση στατικών λαμπών
 function drawLamps() {
-    for (let x = 100; x < width; x += 300) { // Τοποθέτηση λαμπών κάθε 300 pixels
+    for (let x = 100; x < width; x += 100) { // Τοποθέτηση λαμπών κάθε 300 pixels
         noStroke();
 
         // Εφέ διάχυσης φωτός
@@ -1241,11 +1278,36 @@ function drawLamps() {
 
   // }
   
-  
+let walllights= [
+  {x:70 ,y:100},
+ // {x:190 ,y:100},
+  {x:310 ,y:100},
+ // {x:430 ,y:100},
+  {x:550 ,y:100},
+ // {x:670 ,y:100},
+  {x:790 ,y:100},
+ // {x:910 ,y:100},
+  {x:1030 ,y:100},
+ // {x:1150 ,y:100},
+  {x:1270 ,y:100},
+//  {x:1390 ,y:100},
+  {x:1510 ,y:100},
+//  {x:1630 ,y:100},
+  {x:1750 ,y:100},
+//  {x:1870 ,y:100},
+  {x:1990 ,y:100},
+//  {x:2110 ,y:100},
+  {x:2230 ,y:100},
+ // {x:2350 ,y:100},
+  {x:2470 ,y:100},
+
+]
+
+
   function drawWallLights() {
     // Lighting effect
-    for (let x = 200; x < width; x += 200) {
-        drawLight(x, 60);
+    for (let wall of walllights) {
+        drawLight(wall.x, wall.y);
     }
 }
 
@@ -1551,31 +1613,44 @@ function drawCosmicDoor(x, y) {
   rect(x + 110, y + 70, 8, 4); // Δεξιό χερούλι
 }
 
-function checkCosmicDoorSound(player,showCosmicDoor1) {
-  let doorX = 3470; // Θέση της πόρτας
-  let range = 200; // Εύρος γύρω από την πόρτα
-  let doorX2 = 28320; // Θέση της πόρτας
- 
-  // Έλεγχος αν ο παίκτης βρίσκεται εντός του εύρους
+function checkCosmicDoorSound(player, showCosmicDoor1) {
+  let doorX = 3470; // Θέση της πρώτης πόρτας
+  let doorX2 = 28320; // Θέση της δεύτερης πόρτας
+  let range = 600; // Μέγιστη απόσταση για τον ήχο
+  let volume; // Ένταση του ήχου
+
+  // Υπολογισμός απόστασης από την πρώτη πόρτα
   if (player.x >= doorX - range && player.x <= doorX + range) {
+    let distance = Math.abs(player.x - doorX);
+    volume = map(distance, 0, range, 1.0, 0.0); // Υπολογισμός έντασης (1.0 όταν είναι κοντά, 0.0 όταν είναι μακριά)
+    volume = constrain(volume, 0.0, 1.0); // Περιορισμός στα όρια [0.0, 1.0]
+
     if (showCosmicDoor1) {
-      // Ξεκίνα τον ήχο αν δεν παίζει ήδη
       if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
-          soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
+        soundManager.play('cosmicdoor', true, volume); // Ξεκίνα τον ήχο αν δεν παίζει ήδη
       }
+      soundManager.setVolume('cosmicdoor', volume); // Ρύθμιση έντασης
     }
-  }else if (player.x >= doorX+18370 - range && player.x <= doorX+18370 + range) {
-     // Ξεκίνα τον ήχο αν δεν παίζει ήδη
-     if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
-      soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
-  }
-}else {
-      // Σταμάτησε τον ήχο αν ο παίκτης είναι εκτός εύρους
-      soundManager.stop('cosmicdoor');
-  }
+  } 
+  // Υπολογισμός απόστασης από τη δεύτερη πόρτα
+  else if (player.x >= doorX2 - range && player.x <= doorX2 + range) {
+    let distance = Math.abs(player.x - doorX2);
+    volume = map(distance, 0, range, 1.0, 0.0); // Υπολογισμός έντασης
+    volume = constrain(volume, 0.0, 1.0); // Περιορισμός στα όρια [0.0, 1.0]
 
-
+    if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
+      soundManager.play('cosmicdoor', true, volume); // Ξεκίνα τον ήχο αν δεν παίζει ήδη
+    }
+    soundManager.setVolume('cosmicdoor', volume); // Ρύθμιση έντασης
+  } 
+  // Αν ο παίκτης είναι εκτός εύρους και για τις δύο πόρτες
+  else {
+    soundManager.stop('cosmicdoor'); // Σταμάτα τον ήχο
+  }
 }
+
+
+
   
   // // Έλεγχος αν ο παίκτης βρίσκεται εντός του εύρους
   //   if (player.x >= doorX2 - range && player.x <= doorX2 + range) {
@@ -1648,6 +1723,9 @@ function updateCosmicDoorSound(player, cosmicDoorX, cosmicDoorY) {
 
 let isTransitioningCosmic = false;
 let showDoorCosmicMessage = false;
+
+
+
 function 
 checkCosmicDoorInteraction(player) {
   if (

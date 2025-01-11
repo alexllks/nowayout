@@ -34,7 +34,8 @@ class Player {
     }
 
     
-
+    checkInclinedEscalatorCollision(this);
+    
     this.velocityY += this.gravity;
     this.y += this.velocityY;
     this.checkCollisions();
@@ -148,39 +149,9 @@ class Player {
     }
 
 
-    //  // Έλεγχος αν βρίσκεται σε σκάλα και μετακίνηση στο επόμενο σκαλί
-    //  if (this.onStair) {
-    //     let stair = this.currentStair;
-    //     let stepIndex = Math.floor((this.x - stair.x) / stair.stepWidth);
-    //     if (stepIndex >= 0 && stepIndex < stair.steps) {
-    //         let stepY = stair.y - stepIndex * stair.stepHeight;
-    //         this.y = stepY - this.height;
-    //     }
-    // }
+ 
 
-
-    for (let stair of stairs) {
-          for (let i = 0; i < stair.steps; i++) {
-              let stepX = stair.x + i * stair.stepWidth;
-              let stepY = stair.y - i * stair.stepHeight;
-
-              if (
-                  this.x + this.width / 2 > stepX &&
-                  this.x - this.width / 2 < stepX + stair.stepWidth &&
-                  this.y + this.height >= stepY &&
-                  this.y + this.height <= stepY + Math.abs(this.velocityY + 5)
-              ) {
-                  this.onStair = true;
-                  this.y = stepY - this.height;
-                  this.velocityY = 0;
-                  this.canJump = true;
-                  this.isFalling = false;
-                  break;
-              }
-              
-          }
-         // if (this.onStair) break;
-      }
+   
 
       if (this.y + this.height >= height - PLATFORM_HEIGHT) {
           this.y = height - PLATFORM_HEIGHT - this.height;
