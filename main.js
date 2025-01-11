@@ -3,77 +3,78 @@
 
 
 let player;
+
 let platforms = [];
+let ghosts = [];
 let objects = [];
-let objects2 = [];
+let obstacles = [];
+let spikes = []; 
 let bufferCanvas;
 let gameStarted = false;
 let totalLevels = 9;
-let levels = Array.from({ length: totalLevels }, (_, i) => i + 1); // [1, 2, 3, ..., 9]
+
 let hasAnomaly = false;
 var isGameOver;
+
 let PLATFORM_HEIGHT = 20; // Ύψος πλατφόρμας
 let PLATFORM_WIDTH = 25100; // Πλάτος σκηνής
 let CEILING_HEIGHT = 50; // Ύψος ταβανιού
-let backgroundMusic = { isPlaying: () => false, loop: () => {} }; // Dummy αντικείμενο ήχου
+
 let showDoorMessage = false;
-let playerImage;
+
 var gameState = "menu"; // Αρχικό μενού
 let currentLevel = 0;
 let savedLevel = 0;
 var isGameOver;
-//GRAMMI 26 ALLAGI
+
+
 let RIGHT_WALL_X = 9370; // Σταθερή θέση δεξιού τοίχου
-//---------------------------------------------------------------
 let END_WALL_X = 21642;
 let WALL_WIDTH = 50;   // Νέο πλάτος τοίχου
-
 let MIDDLE_WALL_X= 7240;
 let FIRST_WALL = 4920;
 let SECOND_WALL = 5760;
 let THIRD_WALL = 2540;
 let FIFTH_WALL =6480;
 let FORTH_WALL = 3960;
-let obstacles = []; // Δήλωση πίνακα για τα εμπόδια
-
-let npcActivated = false; // Αρχικά ο NPC είναι ανενεργός
-
+let NEW_WALL_X = 11900; // Θέση του νέου τοίχου στον άξονα X
+let NEW_WALL_X2 = 22000; // Θέση του νέου τοίχου στον άξονα X
+let UPPER_WALL = 1;
+let UPPER_WALL_SECRET = 18250;
+let secretRoomStartX = 12000; // Θέση έναρξης του secret room στον άξονα X
+let secretRoomWidth = 10000;  // Πλάτος του secret room
 
 let lights = []; // Φωτισμός
 var lightToggleTime = 0; // Χρόνος για αναβόσβημα
 
-let enemy;
+
 let showCosmicDoor1 = false;
-
-let battleStartTime;
-
-let npcs = []; // Λίστα NPCs
-
+let playerImage;
 let backgroundHorrorMusic;
 let footstepSound;
 let stairStepSound;
 let npcFootstepSound;
 let tvSound;
-let secretRoomStartX = 12000; // Θέση έναρξης του secret room στον άξονα X
-let secretRoomWidth = 10000;  // Πλάτος του secret room
-let NEW_WALL_X = 11900; // Θέση του νέου τοίχου στον άξονα X
-//let FIRST_WALL_SECRET=13900;
-let NEW_WALL_X2 = 22000; // Θέση του νέου τοίχου στον άξονα X
-let UPPER_WALL = 1;
-let UPPER_WALL_SECRET = 18250;
-
+let tvSoundActive = false;  // Σημαία για την ενεργοποίηση ήχου
 let audioStarted = false; // Έναρξη ήχου
 
-let tvSoundActive = false;  // Σημαία για την ενεργοποίηση ήχου
-
-
-let rainSoundActive = false; // Σημαία για την κατάσταση του ήχου βροχής
-let npcFootstepSoundActive = false; // Σημαία για την κατάσταση του ήχου NPC
-
-
-
+let isTransitioning = false; // Αρχικά η πόρτα δεν βρίσκεται σε μετάβαση
 let debugMode = false;
 let noclipMode = false; // Για το debug mode
+
+//key pressed
+let saved_x;
+let saved_y;
+let saved_anomaly;
+let isResume = false;
+
+
+//window
+let isRainPlaying = false; // Σημαία για να παρακολουθεί αν ο ήχος βροχής παίζει
+let allowRainSound = true; // Ελέγχει αν ο ήχος της βροχής μπορεί να παίξει
+let allowWaterSound = true;
+
+
 
 function preload() {
   soundManager = new SoundManager();
@@ -83,15 +84,10 @@ function preload() {
   soundManager.load('waters', 'assets/sounds/waters.mp3');
   soundManager.load('jump', 'assets/sounds/jumping.wav');
   soundManager.load('background', 'assets/sounds/horror_background.mp3');
-  soundFormats('mp3', 'ogg','wav'); // Ορισμός μορφών για συμβατότητα
-  //playerImage = loadImage("assets/images/evil.png"); // Βεβαιώσου ότι το αρχείο υπάρχει
   doorSound = loadSound ("assets/sounds/scary-background.mp3")
-
   tvSound = loadSound('assets/sounds/tv.mp3'); // Φόρτωση του ήχου
-  footstepSound = loadSound('assets/sounds/footsteps.wav');//Φορτωση ηχου 
-  npcFootstepSound = loadSound('assets/sounds/npc_footsteps.wav');//Φορτωση ηχου 
-  stairStepSound = loadSound('assets/sounds/stair_footsteps.wav');
-  //rainSound = loadSound('assets/sounds/rain.wav'); // Ήχος βροχής
+
+  soundFormats('mp3', 'ogg','wav'); // Ορισμός μορφών για συμβατότητα
 
   lightImg = loadImage('assets/images/light.png');
   mooonImg= loadImage('assets/images/hotelscary.jpg');
@@ -128,40 +124,18 @@ function preload() {
 
 
 function setup() {
+
   createCanvas(1224, 576);
   bufferCanvas = createGraphics(settings.canvasWidth, settings.canvasHeight); // Δημιουργία buffer canvas
-
   player = new Player();
-  
   platforms = Platform.createPlatforms();
-  // Ενεργοποίηση Debug Mode
-  if (debugMode) {
-    enterSecretRoom(); // Τοποθέτηση του παίκτη στο secret room
-  }
-
   document.getElementById('volume-slider').addEventListener('input', (event) => {
     const newVolume = parseFloat(event.target.value); // Τρέχουσα τιμή του slider
     soundManager.setMasterVolume(newVolume); // Ενημέρωση της master έντασης
 });
-
 // Πιθανότητα εμφάνισης της πόρτας
   showCosmicDoor1 = random() < 0.9;
- // Debug: Εκτύπωση της τιμής της `showCosmicDoor1`
- //console.log("Show Cosmic Door 1:", showCosmicDoor1);
-  // Προτροπή στον χρήστη να κάνει κλικ για τον ήχο
-  // textSize(20);
-  // fill(255);
-  // textAlign(CENTER);
-  // text("Click to start audio and music", width / 2, height / 2);
 }
-
-
-
- 
- 
-
-
-  
 
 
 function draw() {
@@ -178,29 +152,7 @@ function draw() {
     displayLost();
   }
 }
-function displayLost() {
 
-
-  background(0);
-
-  // Εμφάνιση μηνύματος θανάτου
-  fill(255, 0, 0); // Κόκκινο χρώμα
-  textAlign(CENTER, CENTER);
-  textSize(32);
-  text("Game Over", width / 2, height / 2 - 50);
-
-  // Εμφάνιση προτροπής για επιστροφή στο μενού
-  textSize(16);
-  fill(255); // Λευκό χρώμα
-  text("Press M to return to the menu", width / 2, height / 2);
-
-  // Έλεγχος αν ο χρήστης πατάει το πλήκτρο 'M'
-  if (keyIsDown(77)) { // 77 είναι ο κωδικός για το πλήκτρο 'M'
-      currentLevel = 0; // Επαναφορά επιπέδων
-      gameState = "menu"; // Επιστροφή στο μενού
-      initializeGame(); // Επαναφορά του παιχνιδιού
-  }
-}
 
 
 
@@ -278,37 +230,20 @@ function playGame() {
 
   // Εξασφαλίζουμε ότι η κάμερα ακολουθεί τον παίκτη
   let cameraX = constrain(player.x - width / 2, 0, PLATFORM_WIDTH - width + 100);
-  
   translate(-cameraX, 0);
-  
-  // Σχεδίαση 2D στοιχείων
-  background(240, 230, 140);
+
 
   drawWall();
- drawStairs(); // Σχεδίαση σκάλας
-  //drawTopBorder();
+  drawStairs(); // Σχεδίαση σκάλας
   drawWallLights();
   drawGhosts();
   drawObjects();
-
   drawInclined();
-
-  //drawDoor();
-   // Σχεδίαση της πρώτης Cosmic Door
-   if (showCosmicDoor1) {
-     // Debug: Εκτύπωση της τιμής της `showCosmicDoor1`
-     //console.log("Show Cosmic Door 1:", showCosmicDoor1);
-      drawCosmicDoor(3400, 370);
-    } else {
-      console.log("Cosmic Door 1 not shown.");
-    }
-checkCosmicDoorSound(player,showCosmicDoor1);
- 
+  if (showCosmicDoor1) {drawCosmicDoor(3400, 370);} 
+  checkCosmicDoorSound(player,showCosmicDoor1);
   drawWalls();
-  // drawLights();
   checkWallCollision();
   drawNoSmokingSign(); // Σχεδίαση σήματος "No Smoking"
-  //drawSofa2();
   drawDoors();
   drawWindow();
   drawBookshelfs();
@@ -322,59 +257,38 @@ checkCosmicDoorSound(player,showCosmicDoor1);
   drawSignBoard2(270, height - PLATFORM_HEIGHT - 210); // Θέση 2ης πινακίδας
   drawSignBoard3(1590, height - PLATFORM_HEIGHT - 210);
   drawCosmicDoor(secretRoomStartX + secretRoomWidth - 215, height - 200);
- // checkCosmicSecretDoorSound(player);
   drawSpikes();
   drawReceptionDesk();
   drawFireplaces();
   
-   // Σχεδίαση NPC σε σταθερό σημείο
-   //drawNpc(2820, 550); // Ο NPC θα εμφανιστεί στη θέση (200, 300)
-
-  // Έλεγχος σύγκρουσης με καρφιά
-  if (checkSpikeCollision(player)) {
-      console.log("Ο παίκτης χτύπησε σε καρφιά!");
-     // gameState = "gameover"; // Ορισμός της κατάστασης σε "gameover"
-      soundManager.stop('bats'); // Διακοπή του ήχου νυχτερίδων
-        soundManager.stop('waters');
-        soundManager.stopAllSounds();
-        allowRainSound = true; // Επαναφορά του ήχου της βροχής
-    
-     isDying();
-      // isGameOver = true;
-      //resetPlayerPosition(); // Επιστροφή παίκτη στην αρχή
-  }
 
 
 
 
-  
+  updateBats(bats); // Ενημέρωση των νυχτερίδων
+  drawBats(bats); // Σχεδίαση των νυχτερίδων
 
 
-updateBats(bats); // Ενημέρωση των νυχτερίδων
-drawBats(bats); // Σχεδίαση των νυχτερίδων
-
-
-
-  //Platform.drawPlatforms(platforms);
   updatePlatforms(platforms); 
-Platform.drawPlatforms(platforms); // Σχεδίαση πλατφορμών//
-
-
-
-
-//drawVolumeSlider(cameraX);
-
-  for (let obstacle of obstacles) {
-    if (typeof obstacle.update === "function") {
-        obstacle.update(); // Ενημέρωση αν έχει λογική κίνησης
-    }
-    obstacle.show(); // Σχεδίαση εμποδίου
-}
+  Platform.drawPlatforms(platforms); // Σχεδίαση πλατφορμών// Ενημέρωση πλατφορμών
 
 
   checkWaterCollision(player); // Έλεγχος σύγκρουσης με το νερό
 
 
+  checkCosmicDoorInteraction(player);
+  checkDoorInteraction(player,showCosmicDoor1); // Έλεγχος για άνοιγμα πόρτας
+
+  // Έλεγχος σύγκρουσης με καρφιά
+  if (checkSpikeCollision(player)) {
+    console.log("Ο παίκτης χτύπησε σε καρφιά!");
+   // gameState = "gameover"; // Ορισμός της κατάστασης σε "gameover"
+      soundManager.stop('bats'); // Διακοπή του ήχου νυχτερίδων
+      soundManager.stop('waters');
+      soundManager.stopAllSounds();
+      allowRainSound = true; // Επαναφορά του ήχου της βροχής
+      isDying();
+  }
 
     // Έλεγχος αν ο παίκτης βγήκε εκτός ορίων
   if (player.x > PLATFORM_WIDTH) {
@@ -382,8 +296,7 @@ Platform.drawPlatforms(platforms); // Σχεδίαση πλατφορμών//
   } else if (player.x < 0) {
     checkExit(true); // Έξοδος από αριστερά
   } 
- checkCosmicDoorInteraction(player);
- checkDoorInteraction(player,showCosmicDoor1); // Έλεγχος για άνοιγμα πόρτας
+
 
  
  // Εμφάνιση μηνύματος αν ο παίκτης είναι κοντά στην πόρτα
@@ -406,11 +319,9 @@ Platform.drawPlatforms(platforms); // Σχεδίαση πλατφορμών//
   }
 
 drawLevel(cameraX);
-//drawVolumeSlider
   
- // Ενημέρωση θέσης και φυσικής του παίκτη
+
  player.update();
- // Σχεδίαση παίκτη
  player.show();
  drawWater(); // Σχεδίαση νερού
   drawLightsPosition();
@@ -421,43 +332,6 @@ drawLevel(cameraX);
  }
 }
 
-
-let spikes = []; // Πίνακας για τα καρφιά
-
-let saved_x;
-let saved_y;
-let saved_anomaly;
-let isResume = false;
-
-function keyPressed() {
-  // Navigate up and down using arrow keys
-  if (keyCode === ENTER && gameState === "complete") {
-    gameState = "menu";
-    stopAllSounds();
-    console.log(`---- ${gameState}`);  // Correct string interpolation
-    currentLevel = 0;
-  }
-  if ((keyIsDown(ALT) && key === 'n' || key === 'N') && gameState === "playing") {
-    noclipMode = !noclipMode; // Εναλλαγή noclip mode
-    console.log("Noclip Mode: player speed " + (noclipMode ? "Activated" : "Deactivated"));
-  }
-  if ((keyIsDown(ALT) && keyCode === 80) && gameState === "playing") { // 83 is the keycode for 'S'
-    console.log("Alt + P pressed");
-    showMessage("Game paused on level ${currentLevel}");
-    stopAllSounds();
-    isResume = true;
-    saved_x = player.x;
-    saved_y = player.y;
-    gameState = "menu";
-    savedLevel = currentLevel;
-  }
-  if ((keyIsDown(18) && keyCode === 77) && gameState === "playing") {
-    console.log('Alt + M was pressed!');
-    stopAllSounds();
-    gameState = "menu";
-    currentLevel = 0;
-  }
-}
 
 // function stopAllSounds() {
 //   const allSounds = [backgroundHorrorMusic, tvSound, npcFootstepSound, rainSound];
@@ -472,41 +346,6 @@ function keyPressed() {
 //   }
 // }
 
-function drawLevel(cameraX) {
-  push(); // Αποθήκευση της τρέχουσας κατάστασης σχεδίασης
-
-  // Θέση και σχεδίαση του level
-  let levelOffsetX = cameraX + 1084; // Σταθερή απόσταση από την αριστερή πλευρά της κάμερας
-  let levelOffsetY = 10;          // Σταθερή απόσταση από την κορυφή της οθόνης
-
-  // Σκιά στο φόντο
-  fill(0, 0, 0, 150); // Μαύρο με διαφάνεια
-  rect(levelOffsetX - 10, levelOffsetY - 10, 150, 40, 10); // Στρογγυλεμένο φόντο
-
-  // Κείμενο με σκιά
-  fill(0, 0, 0, 200); // Μαύρη σκιά
-  textSize(24);
-  textAlign(LEFT, TOP);
-  text(`Level: ${currentLevel}`, levelOffsetX + 2, levelOffsetY + 2);
-
-  // Κύριο κείμενο
-  fill(255, 255, 255); // Λευκό
-  text(`Level: ${currentLevel}`, levelOffsetX, levelOffsetY);
-
-  // Πλαίσιο γύρω από το φόντο
-  noFill();
-  stroke(255, 255, 255); // Λευκό περίγραμμα
-  strokeWeight(2);
-  rect(levelOffsetX - 10, levelOffsetY - 10, 150, 40, 10); // Στρογγυλεμένο πλαίσιο
-
-  pop(); // Επαναφορά της προηγούμενης κατάστασης σχεδίασης
-}
-
-
-
-
-
- 
 function enterSecretRoom() {
   //soundManager.stopAllSounds(); // Σταματάει όλους τους ήχους
   stopAllSounds();
@@ -526,6 +365,20 @@ function enterSecretRoom() {
 }, 500); // Χρονική καθυστέρηση για να ολοκληρωθεί η μετάβαση
 }
 
+function exitSecretRoom() {
+  soundManager.stop('bats'); // Διακοπή του ήχου νυχτερίδων
+  soundManager.stop('waters');
+  soundManager.stopAllSounds();
+
+  // Μεταφορά του παίκτη στη νέα θέση
+  player.x =730; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο
+  player.y = height - PLATFORM_HEIGHT - player.height;
+  currentLevel += 4;
+
+  console.log(`Exited secret room. Current level: ${currentLevel}`);
+  allowRainSound = true; // Επαναφορά του ήχου της βροχής
+}
+
 
 function checkWallCollision() {
   // Έλεγχος αν ο παίκτης ακουμπά τον αριστερό τοίχο
@@ -541,8 +394,6 @@ function checkWallCollision() {
   if (player.x < NEW_WALL_X + 50 && player.x + player.width / 2 > NEW_WALL_X) {
     player.x = NEW_WALL_X + 50; // Σταματάει δεξιά από τον τοίχο
 }
-
-
 
 // Έλεγχος για τον δεξιό τοίχο μέσα στο secret room
 if (player.x + player.width > NEW_WALL_X2) {
@@ -582,14 +433,77 @@ if(player.y>=354 && player.y<height - 170 + 50 ){
   }
   }
   
+}
+
+let isTransitioningCosmic = false;
+let showDoorCosmicMessage = false;
 
 
 
-// // Έλεγχος για τον Πρωτο τοίχο μέσα στο secret room
-// if (player.x + player.width > FIRST_WALL_SECRET) {
-//   player.x = FIRST_WALL_SECRET - player.width; // Σταματάει στον δεξιό τοίχο
-// }
+function  checkCosmicDoorInteraction(player) {
+  if (
+      player.x + player.width > secretRoomStartX &&
+      player.x >= secretRoomStartX + secretRoomWidth - 185 &&
+      player.y + player.height > doorY &&
+      player.y < doorY + height - 200
+  ) {
+      showDoorCosmicMessage = true
 
+      if (keyIsDown(70) && !isTransitioningCosmic) { // Πατά το "F"
+        isTransitioningCosmic = true;
+        gameState =="playing"; 
+        
+        exitSecretRoom(); // Μετάβαση στο επόμενο δωμάτιο
+
+        
+        setupRoom();
+        isChasing = false; // Επαναφορά του flag
+        
+        // Απελευθέρωση του flag μετά τη μετάβαση
+        setTimeout(() => {
+          isTransitioningCosmic = false; // Επαναφορά του flag
+      }, 500); // Χρονική καθυστέρηση για να ολοκληρωθεί η μετάβαση
+      }
+  } else {
+      showDoorCosmicMessage = false;
+  }
+}
+
+function checkDoorInteraction(player,showCosmicDoor1) {
+  if (showCosmicDoor1) {
+  if (
+      player.x + player.width > doorX &&
+      player.x < doorX + doorWidth &&
+      player.y + player.height > doorY &&
+      player.y < doorY + doorHeight
+  ) {
+      showDoorMessage = true;
+
+      if (keyIsDown(70) && !isTransitioning) { // Πατά το "F"
+          isTransitioning = true;
+
+          enterSecretRoom();
+          //isTransitioning = false;
+      }
+  }else{ showDoorMessage = false;} 
+}else {
+      showDoorMessage = false;
+  }
+}
+
+
+function checkSpikeCollision(player) {
+  for (let spike of Spikes) {
+      if (
+          player.x-40 + player.width > spike.x &&
+          player.x < spike.x + spike.width &&
+          player.y + player.height >= spike.y &&
+          player.y < spike.y + spike.height
+      ) {
+          return true; // Επιστροφή αν υπάρχει σύγκρουση
+      }
+  }
+  return false;
 }
 
 function returnToMainTrack() {
@@ -629,107 +543,29 @@ function displayMenu() {
     text(box.text, box.x + box.width / 2, box.y + box.height / 2);
   }
 }
+function displayLost() {
 
+  background(0);
 
-let sliderX, sliderY, knobX;
-let volumeLevel = 50; // Αρχική ένταση (0-100)
-let sliderWidth = 300; // Πλάτος της μπάρας
-let sliderHeight = 10; // Ύψος της μπάρας
+  // Εμφάνιση μηνύματος θανάτου
+  fill(255, 0, 0); // Κόκκινο χρώμα
+  textAlign(CENTER, CENTER);
+  textSize(32);
+  text("Game Over", width / 2, height / 2 - 50);
 
-function drawVolumeSlider(cameraX) {
-  // Θέση της μπάρας έντασης με βάση τη θέση της κάμερας
-  let sliderX = cameraX + 700; // Οριζόντια θέση της μπάρας
-  let sliderY = 10;           // Κάθετη θέση της μπάρας
-  let knobX = sliderX + (sliderWidth * volumeLevel) / 100; // Θέση του κουμπιού (knob)
-
-  // Σχεδίαση της μπάρας έντασης
-  fill(100); // Γκρι φόντο μπάρας
-  rect(sliderX, sliderY, sliderWidth, sliderHeight, 5); // Γραμμή της μπάρας (με στρογγυλεμένες άκρες)
-
-  // Σχεδίαση του γεμάτου τμήματος (ένταση)
-  fill(0, 122, 255); // Μπλε γεμάτο τμήμα
-  rect(sliderX, sliderY, knobX - sliderX, sliderHeight, 5);
-
-  // Σχεδίαση του κουμπιού (knob)
-  fill(255); // Λευκό κουμπί
-  ellipse(knobX, sliderY + sliderHeight / 2, 20, 20); // Κυκλικό κουμπί
-
-  // Σχεδίαση της έντασης σε ποσοστό
-  fill(255); // Λευκό κείμενο
+  // Εμφάνιση προτροπής για επιστροφή στο μενού
   textSize(16);
-  textAlign(CENTER, TOP);
-  text(`Volume: ${volumeLevel}%`, sliderX + sliderWidth / 2, sliderY + 20);
+  fill(255); // Λευκό χρώμα
+  text("Press M to return to the menu", width / 2, height / 2);
 
-  // Ενημέρωση περιοχής για το σύρσιμο (αν χρησιμοποιηθεί `mouseDragged`)
-  volumeSliderArea = {
-    x: sliderX,
-    y: sliderY,
-    width: sliderWidth,
-    height: sliderHeight,
-  };
-} 
-
-
-function mousePressed() {
-  if (gameState === 'playing' || gameState === 'lost'
-  || gameState === 'complete' || gameState === 'gameover' 
-  ) {
-    return;
-  }
-  else {
-    // Έλεγχος για click στα κουτιά
-    for (let box of menuBoxes) {
-      if (
-        mouseX > box.x &&
-        mouseX < box.x + box.width &&
-        mouseY > box.y &&
-        mouseY < box.y + box.height
-      ) {
-        if (box.text === "New game") {
-          console.log("Game started!"); // Παράδειγμα λειτουργίας
-          gameState = "playing"; // Ξεκινάει το παιχνίδι
-          isResume = false;
-          initializeGame();
-          allowRainSound = true;
-          setupRoom();
-          currentLevel = 0;
-        } else if (box.text === "Resume game") {
-          gameState = "playing";
-          currentLevel = savedLevel;
-          console.log("Loading Game...");
-          allowRainSound = true;
-          initializeGame();
-          setupRoom();
-        } else if (box.text === "Instructions") {
-          console.log("Instructions displayed!"); // Παράδειγμα λειτουργίας
-          showInstructions = true; // Εμφάνιση οδηγιών
-        }
-      }
-    }
+  // Έλεγχος αν ο χρήστης πατάει το πλήκτρο 'M'
+  if (keyIsDown(77)) { // 77 είναι ο κωδικός για το πλήκτρο 'M'
+      currentLevel = 0; // Επαναφορά επιπέδων
+      gameState = "menu"; // Επιστροφή στο μενού
+      initializeGame(); // Επαναφορά του παιχνιδιού
   }
 }
-// function mouseDragged() {
-//   // Ελέγχουμε αν το ποντίκι είναι πάνω από τη μπάρα έντασης
-//   if (
-//     mouseX >= volumeSliderArea.x &&
-//     mouseX <= volumeSliderArea.x + volumeSliderArea.width &&
-//     mouseY >= volumeSliderArea.y - 10 &&
-//     mouseY <= volumeSliderArea.y + volumeSliderArea.height + 10
-//   ) {
-//     // Υπολογισμός νέας έντασης
-//     volumeLevel = Math.round(
-//       ((mouseX - volumeSliderArea.x) / volumeSliderArea.width) * 100
-//     );
 
-//     // Περιορισμός της έντασης μεταξύ 0 και 100
-//     volumeLevel = constrain(volumeLevel, 0, 100);
-
-//     // Ενημέρωση της master έντασης στο soundManager
-//     if (typeof soundManager !== "undefined" && soundManager.setMasterVolume) {
-//       soundManager.setMasterVolume(volumeLevel / 100); // Ενημέρωση έντασης 0.0 - 1.0
-//     }
-//   }
-// }
 
 
 function displayGz() {
@@ -799,6 +635,106 @@ function checkExit(isBackExit) {
 }
 
 
+function keyPressed() {
+  // Navigate up and down using arrow keys
+  if (keyCode === ENTER && gameState === "complete") {
+    gameState = "menu";
+    stopAllSounds();
+    console.log(`---- ${gameState}`);  // Correct string interpolation
+    currentLevel = 0;
+  }
+  if ((keyIsDown(ALT) && key === 'n' || key === 'N') && gameState === "playing") {
+    noclipMode = !noclipMode; // Εναλλαγή noclip mode
+    console.log("Noclip Mode: player speed " + (noclipMode ? "Activated" : "Deactivated"));
+  }
+  if ((keyIsDown(ALT) && keyCode === 80) && gameState === "playing") { // 83 is the keycode for 'S'
+    console.log("Alt + P pressed");
+    showMessage("Game paused on level ${currentLevel}");
+    stopAllSounds();
+    isResume = true;
+    saved_x = player.x;
+    saved_y = player.y;
+    gameState = "menu";
+    savedLevel = currentLevel;
+  }
+  // if ((keyIsDown(18) && keyCode === 77) && gameState === "playing") {
+  //   console.log('Alt + M was pressed!');
+  //   stopAllSounds();
+  //   gameState = "menu";
+  //   currentLevel = 0;
+  // }
+}
+
+
+
+function mousePressed() {
+  if (gameState === 'playing' || gameState === 'lost'
+  || gameState === 'complete' || gameState === 'gameover' 
+  ) {
+    return;
+  }
+  else {
+    // Έλεγχος για click στα κουτιά
+    for (let box of menuBoxes) {
+      if (
+        mouseX > box.x &&
+        mouseX < box.x + box.width &&
+        mouseY > box.y &&
+        mouseY < box.y + box.height
+      ) {
+        if (box.text === "New game") {
+          console.log("Game started!"); // Παράδειγμα λειτουργίας
+          gameState = "playing"; // Ξεκινάει το παιχνίδι
+          isResume = false;
+          initializeGame();
+          allowRainSound = true;
+          setupRoom();
+          currentLevel = 0;
+        } else if (box.text === "Resume game") {
+          gameState = "playing";
+          currentLevel = savedLevel;
+          console.log("Loading Game...");
+          allowRainSound = true;
+          initializeGame();
+          setupRoom();
+        } else if (box.text === "Instructions") {
+          console.log("Instructions displayed!"); // Παράδειγμα λειτουργίας
+          showInstructions = true; // Εμφάνιση οδηγιών
+        }
+      }
+    }
+  }
+}
+
+function drawLevel(cameraX) {
+  push(); // Αποθήκευση της τρέχουσας κατάστασης σχεδίασης
+
+  // Θέση και σχεδίαση του level
+  let levelOffsetX = cameraX + 1084; // Σταθερή απόσταση από την αριστερή πλευρά της κάμερας
+  let levelOffsetY = 10;          // Σταθερή απόσταση από την κορυφή της οθόνης
+
+  // Σκιά στο φόντο
+  fill(0, 0, 0, 150); // Μαύρο με διαφάνεια
+  rect(levelOffsetX - 10, levelOffsetY - 10, 150, 40, 10); // Στρογγυλεμένο φόντο
+
+  // Κείμενο με σκιά
+  fill(0, 0, 0, 200); // Μαύρη σκιά
+  textSize(24);
+  textAlign(LEFT, TOP);
+  text(`Level: ${currentLevel}`, levelOffsetX + 2, levelOffsetY + 2);
+
+  // Κύριο κείμενο
+  fill(255, 255, 255); // Λευκό
+  text(`Level: ${currentLevel}`, levelOffsetX, levelOffsetY);
+
+  // Πλαίσιο γύρω από το φόντο
+  noFill();
+  stroke(255, 255, 255); // Λευκό περίγραμμα
+  strokeWeight(2);
+  rect(levelOffsetX - 10, levelOffsetY - 10, 150, 40, 10); // Στρογγυλεμένο πλαίσιο
+
+  pop(); // Επαναφορά της προηγούμενης κατάστασης σχεδίασης
+}
 function showMessage(newMessage) {
   message = newMessage;
   messageTime = millis();
@@ -807,39 +743,7 @@ function showMessage(newMessage) {
 
 
 
-// function initializeObstacles() {
-//   obstacleSprites = new Group();
-// }
 
-
-
-
-// function initializeLevelTracker() {
-//   const levelsList = document.getElementById('levels-list');
-//   levelsList.innerHTML = ''; // Καθαρισμός λίστας
-
-//   for (let i = 1; i <= totalLevels; i++) {
-//       const levelItem = document.createElement('li');
-//       levelItem.textContent = `Level ${i}`;
-//       if (i < currentLevel) {
-//           levelItem.classList.add('completed'); // Μαρκάρισμα περασμένων επιπέδων
-//       }
-//       levelsList.appendChild(levelItem);
-//   }
-// }
-
-// function updateLevelTracker() {
-//   showCosmicDoor1 = random() < 0.9; // ανανέωση τιμής σε κάθε γύρο
-//   const levelsList = document.getElementById('levels-list').children;
-//   for (let i = 0; i < levelsList.length; i++) {
-//       if (i  < currentLevel) {
-//           levelsList[i].classList.add('completed'); // Μαρκάρισμα περασμένων επιπέδων
-//       } else {
-//           levelsList[i].classList.remove('completed'); // Επαναφορά για μη περασμένα επίπεδα
-//       }
-//   }
-//   console.log(`Level tracker updated. Current level: ${currentLevel}`);
-// }
 
 
 

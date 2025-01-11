@@ -1,35 +1,23 @@
 // visuals.js
 
 
-let ghosts = [];
-
-
 let windowPositions = [
   
-  { x: 140, y: 350 },  // Παράθυρο 2
+  { x: 140, y: 350 },  
   
-  { x: 2780, y: 97 }, // Παράθυρο 1
-  { x: 3263, y: 90 },  // Παράθυρο 2
-  { x: 3739, y: 90 }, // Παράθυρο 3
-  { x: 3739, y: 350 }, // Παράθυρο 3
-  //ALLAGI
-  { x: 9500, y: 350}, //  Παράθυρο 4
-  { x: 5300, y: 350 }, // Παράθυρο 5
-  { x: 5900, y: 350 }, // Παράθυρο 6
-  { x: 6260, y: 350 }, // Παράθυρο 7
-  //ALLAGI
+  { x: 2780, y: 97 }, 
+  { x: 3263, y: 90 },  
+  { x: 3739, y: 90 }, 
+  { x: 3739, y: 350 }, 
+  { x: 9500, y: 350}, 
+  { x: 5300, y: 350 }, 
+  { x: 5900, y: 350 }, 
+  { x: 6260, y: 350 }, 
 ];
 
-//ALLAGI
-let sofaPositions = [
-  {x:9580, y:555}
-];
-//ALLAGI
 
 let doors = [
-  // { type: 'roomDoor', x: 5790, y: 417, roomNumber: 101 },
-  // { type: 'roomDoor', x: 6030, y: 417, roomNumber: 102 },
-  // { type: 'roomDoor', x: 6270, y: 417, roomNumber: 103 },
+
   { type: 'roomDoor', x: 8310, y: 417, roomNumber: 108 },
   { type: 'roomDoor', x: 8550, y: 417, roomNumber: 109 },
   { type: 'roomDoor', x: 8790, y: 417, roomNumber: 120 },
@@ -59,19 +47,13 @@ let doors = [
   { type: 'roomDoor', x: 6870, y: 115, roomNumber: 114 },
   { type: 'roomDoor', x: 7110, y: 115, roomNumber: 115 },
   { type: 'roomDoor', x: 7350, y: 115, roomNumber: 116 },
- // { type: 'roomDoor', x: 7590, y: 115, roomNumber: 117 },
   { type: 'roomDoor', x: 7830, y: 115, roomNumber: 118 },
   { type: 'roomDoor', x: 8070, y: 115, roomNumber: 119 },
   { type: 'roomDoor', x: 8310, y: 115, roomNumber: 120 },
   { type: 'roomDoor', x: 8550, y: 115, roomNumber: 121 },
   { type: 'roomDoor', x: 8790, y: 115, roomNumber: 122 },
   
- 
-  
- // { type: 'lockedDoor', x: 430, y: 435 }
 ];
-
-
 
 
 let Bookshelfs= [
@@ -90,155 +72,39 @@ let stairs = [
   
 ];
 let ReceptionDesk = [
-  { x: 2810, y: 510 } // Θέση της ρεσεψιόν
+  { x: 2810, y: 510 } 
 ];
 
 let inclinedEscalators = [
-  { x: 1980, y: 550, width: 220, height: 140, speedX: 0, speedY: -0.5 }, // Escalator 1
-  { x: 2285, y:405, width: 220, height: 160, speedX: 0, speedY: -1 },  // Escalator 2
+  { x: 1980, y: 540, width: 220, height: 140, speedX: 0, speedY: -0.5 }, // Escalator 1
+  { x: 2285, y:415, width: 220, height: 175, speedX: 0, speedY: -1 },  // Escalator 2
 ];
 
-function drawInclined(){
-  for (let escalator of inclinedEscalators) {
-    drawInclinedEscalator(escalator.x, escalator.y, escalator.width, escalator.height);
-}
-}
 
 
 
-
-function drawInclinedEscalator(x, y, width, height) {
- 
-
-  // Σχεδίαση κεκλιμένης πλατφόρμας
-  noFill();
-  noStroke();
-  beginShape();
-  vertex(x, y); // Κάτω-αριστερά
-  vertex(x + width, y - height); // Πάνω-δεξιά
-  vertex(x + width, y - height + 10); // Προσαρμογή για το τέλος
-  vertex(x, y + 10); // Προσαρμογή για την αρχή
-  endShape(CLOSE);
-
-  
-}
-function checkInclinedEscalatorCollision(player) {
-  let onEscalator = false;
-
-  for (let escalator of inclinedEscalators) {
-      let slope = escalator.height / escalator.width; // Υπολογισμός κλίσης
-      let relativeX = player.x - escalator.x; // Θέση παίκτη σε σχέση με το escalator
-
-      // Έλεγχος αν ο παίκτης βρίσκεται εντός των ορίων του escalator
-      if (relativeX >= 0 && relativeX <= escalator.width) {
-          let expectedY = escalator.y - relativeX * slope; // Υπολογισμός ύψους στο σημείο
-
-          if (
-              player.y + player.height >= expectedY && // Αν ο παίκτης ακουμπά τον escalator
-              player.y + player.height <= expectedY + 10 // Μικρή ανοχή
-          ) {
-              player.x += escalator.speedX; // Μετακίνηση του παίκτη
-              player.y = expectedY - player.height; // Τοποθέτηση στο escalator
-              player.velocityY = 0; // Σταματάμε τη βαρύτητα
-              player.isFalling = false; // Δεν πέφτει
-              player.canJump = true; // Μπορεί να πηδήξει
-              onEscalator = true;
-              
-              break; // Σταματάμε την αναζήτηση
-          }
-      }
-  }
-
-  if (!onEscalator) {
-      player.isFalling = true; // Ενεργοποίηση πτώσης
-  }
-}
-
-
-
-
-
-function drawReceptionDesk() {
-  for (let item of ReceptionDesk) {
-    drawReceptionDeskStructure(item.x, item.y);
-  }
-}
-
-
-
-function drawReceptionDeskStructure(x, y) {
-  let scale = 0.5;
-
-  // Σχεδίαση NPC πίσω από το γραφείο
- // drawNpc(x + 130 * scale, y-1/2  * scale); // Τοποθέτηση NPC στο σωστό σημείο
-
-  // Βασικό σώμα γραφείου
-  fill(245, 222, 179); // Μπεζ χρώμα
-  rect(x, y, 300 * scale, 100 * scale, 10); // Κυρίως σώμα
-
-  // Διακοσμητικές γραμμές για μαρμάρινη υφή
-  stroke(210, 180, 140);
-  strokeWeight(1);
-  line(x + 20 * scale, y + 20 * scale, x + 280 * scale, y + 40 * scale);
-  line(x + 50 * scale, y + 60 * scale, x + 270 * scale, y + 80 * scale);
-  noStroke();
-
- 
-
-  // Επάνω μέρος του γραφείου
-  fill(139, 69, 19); // Καφέ χρώμα
-  rect(x, y - 20 * scale, 300 * scale, 20 * scale, 5);
-
-  // Οθόνη υπολογιστή
-  fill(20, 20, 120);
-  rect(x + 155 * scale, y - 60 * scale, 50 * scale, 40 * scale, 5); // Μεγαλύτερη οθόνη
-
-  rect(x + 175 * scale, y - 20 * scale, 10 * scale, 5 * scale); // Βάση
-  fill(255, 255, 255, 80);
-  quad(
-      x + 15 * scale, y + 15 * scale,
-      x + 45 * scale, y + 15 * scale,
-      x + 35 * scale, y + 30 * scale,
-      x + 15 * scale, y + 30 * scale
-  );
-
-  // Κουδούνι
-  fill(255, 215, 0); // Ανοιχτό χρυσό χρώμα για κουδούνι
-  ellipse(x + 80 * scale, y - 30 * scale, 20 * scale, 20 * scale); // Σώμα κουδουνιού
-  fill(255, 240, 180);
-  ellipse(x + 80 * scale, y - 35 * scale, 10 * scale, 10 * scale); // Κορυφή κουδουνιού
-}
-
-
-let lightsPosition = [  {type : 'light', x: 4225 , y: 300},
+let lightsPosition = [ 
+  {type : 'light', x: 4225 , y: 300},
   {type : 'light', x: 4463 , y: 300},
   {type : 'light', x: 6690 , y: 300},
   {type : 'light', x: 7400 , y: 300},
   {type : 'light', x: 8130 , y: 300},
   {type : 'light', x: 8840 , y: 300},
-
-  {type : 'light', x: 5425 , y: 300},]
+  {type : 'light', x: 5425 , y: 300},
+];
 
 let scaryObjects = [
-
-
-
-  { type: 'normal_doll', x:5890, y: 227},
+  { type: 'normal_doll', x:5880, y: 227},
   { type: 'normal_mirror', x:5950, y: 150},
   { type: 'door', x: 400, y: 100 },
+
   { type: 'candle', x: 4570, y: 235 },
   { type: 'candle', x: 4690, y: 235 },
   { type: 'candle', x: 5950, y: 255 },
   { type: 'candle', x: 5985, y: 255 },
   { type: 'candle', x: 5915, y: 255 },
-  //{ type: 'bloodyDoll', x: 950, y: 400 },
+  
   { type: 'clockss', x: 5762, y: 650 ,hour:12,minute:0},
-
-
-
-  // { type: 'book', x: 800, y: 400 },
-  // //{ type: 'lantern', x: 500, y: 250 },
- //  { type: 'rope', x: 1600, y: 50 },
   { type: 'bed', x: 4180, y: 230 },
 
   {type: 'normalsuitcase', x: 3010, y: 522 },
@@ -246,33 +112,39 @@ let scaryObjects = [
   {type: 'normalsuitcase', x: 3150, y: 522 },
   {type: 'normalsuitcase', x: 3220, y: 522 },
 
-  // { type: 'bloodyHandprint', x: 2700, y: 450 },
-  //   { type: 'bloodyHandprint', x: 2550, y: 450 },
+  {type: 'to_Rooms', x: 3870, y: 135, width: 25, height: 45 },
+  {type: 'moon_painting', x: 6250, y: 95, width: 25, height: 45 },
+  
+  {type: "reception_banner",x: 2665, y: 390, widh:300, height: 200},
+  {type: 'paintingreception',x: 3055, y: 380, widh:500, height: 200},
+  {type: 'castle_image',x: 5030, y: 380, widh:500, height: 200},
+  {type: 'library_image',x: 3870, y: 420, widh:500, height: 200},
+  {type: 'g_painting', x: 4235, y: 95, width: 25, height: 45 },
+  {type: 'house_painting', x: 7230, y: 415, width: 150, height: 200 },
+  {type: 'stairsghost', x: 6054, y: 360, width: 150, height: 100 },
 
-   //ALLAGI
-   {  type: 'to_Rooms', x: 3870, y: 135, width: 25, height: 45 },
-    {  type: 'moon_painting', x: 6250, y: 95, width: 25, height: 45 },
-   
-    { type: "reception_banner",x: 2665, y: 390, widh:300, height: 200},
-    { type: 'paintingreception',x: 3055, y: 380, widh:500, height: 200},
-    {type: 'castle_image',x: 5030, y: 380, widh:500, height: 200},
-    {type: 'library_image',x: 3870, y: 420, widh:500, height: 200},
+  {type: 'painting', x: 7960, y: 415, width: 150, height: 200 },
+  {type: 'desk', x: 5470, y: 500 },
 
-    { type: 'g_painting', x: 4235, y: 95, width: 25, height: 45 },
-    { type: 'house_painting', x: 7230, y: 415, width: 150, height: 200 },
-
-
-    { type: 'stairsghost', x: 6054, y: 360, width: 150, height: 100 },
-    //ALLAGI
-    { type: 'painting', x: 7960, y: 415, width: 150, height: 200 },
-    { type: 'desk', x: 5470, y: 500 },
-   // { type: 'sofa2', x: 700, y:500},
-    { type: 'ElegantChair', x: 4110, y:520},
-    { type: 'ElegantChair', x: 5200, y:520},
-    // {type:'ReceptionDesk', x: 4500, y: 500 }, // Κεντρικό γραφείο
-    // {type:'ReceptionDesk', x: 4480, y: 460 }, // Κουδούνι ρεσεψιόν
-    // {type:'ReceptionDesk', x: 4600, y: 450 }, // Λάμπα
+  {type: 'ElegantChair', x: 4110, y:520},
+  {type: 'ElegantChair', x: 5200, y:520},
 ];
+
+
+let walllights= [
+  {x:70 ,y:100},
+  {x:310 ,y:100},
+  {x:550 ,y:100},
+  {x:790 ,y:100},
+  {x:1030 ,y:100},
+  {x:1270 ,y:100},
+  {x:1510 ,y:100},
+  {x:1750 ,y:100},
+  {x:1990 ,y:100},
+  {x:2230 ,y:100},
+  {x:2470 ,y:100},
+
+]
 
 let Spikes = [
   { x: 15750, y: 256, width: 200, height: 20 },
@@ -280,74 +152,21 @@ let Spikes = [
 ];
 
 
+let sofaPositions = [
+  {x:9580, y:555}
+];
 
 
-// visuals.js
-
-// Λίστα με τα τζάκια στον χώρο
 let fireplaces = [
   { x: 4400, y: 181 },
   { x: 6130, y: 181 },
- // { x: 1200, y: 400 },
 ];
-
-// Σ
-// Συνάρτηση για τη σχεδίαση ενός τζακιού με καμινάδα
-function drawFireplace(x, y) {
-  const scale = 0.5; // Κλίμακα μεγέθους για το τζάκι
-
-  // Καμινάδα
-  fill(139, 69, 19); // Καφέ χρώμα για την καμινάδα
-  rect(x + 80 * scale, y - 281 * scale, 40 * scale, 281 * scale); // Ψηλότερο σώμα της καμινάδας
-
-  // Βασική δομή τζακιού
-  fill(139, 69, 19); // Καφέ χρώμα για το ξύλο
-  rect(x, y, 200 * scale, 150 * scale); // Σώμα του τζακιού
-
-  // Άνοιγμα τζακιού
-  fill(0); // Μαύρο για το εσωτερικό
-  rect(x + 50 * scale, y + 50 * scale, 100 * scale, 80 * scale);
-
-  // Φλόγες μέσα στο μαύρο πλαίσιο
-  for (let i = 0; i < 5; i++) {
-      fill(255, random(100, 200), 0, random(180, 255)); // Φλόγες με δυναμική φωτεινότητα
-      beginShape();
-      vertex(x + 75 * scale + i * 10 * scale, y + 120 * scale);
-      vertex(x + 70 * scale + i * 10 * scale, y + 100 * scale - random(10, 30) * scale);
-      vertex(x + 80 * scale + i * 10 * scale, y + 120 * scale);
-      endShape(CLOSE);
-  }
-
-  // Σκιάσεις και λεπτομέρειες
-  fill(100, 50, 25);
-  rect(x, y, 200 * scale, 20 * scale); // Διακοσμητική κορυφή
-  fill(80, 40, 20);
-  rect(x + 20 * scale, y + 140 * scale, 160 * scale, 10 * scale); // Βάση
-
-  // Διακοσμητικές γραμμές
-  stroke(120, 60, 30);
-  strokeWeight(2 * scale);
-  for (let i = 0; i < 4; i++) {
-      line(x + 50 * scale + i * 40 * scale, y, x + 50 * scale + i * 40 * scale, y + 50 * scale);
-  }
-  noStroke();
-}
-
-// Συνάρτηση για τη σχεδίαση όλων των τζακιών
-function drawFireplaces() {
-  for (let fireplace of fireplaces) {
-      drawFireplace(fireplace.x, fireplace.y);
-  }
-}
-
 
 
 function drawScaryObjects() {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
-  const currentMinute = currentTime.getMinutes();
-  let playerX = player.x; // Συντεταγμένες του παίκτη
-  let playerY = player.y;
+  const currentMinute = currentTime.getMinutes()
 
   
     for (let obj of scaryObjects) {
@@ -427,8 +246,6 @@ function drawScaryObjects() {
           drawCandle(obj.x, obj.y);
       } else if (obj.type === 'brokenImage') {
           drawBrokenImage(obj.x, obj.y);
-      } else if (obj.type === 'bloodyDoll') {
-          drawBloodyDoll(obj.x, obj.y);
       } else if (obj.type === 'clockss') {
         drawWallClock(obj.x, obj.y,currentHour, currentMinute);
       }  else if (obj.type === 'desk') {
@@ -438,6 +255,169 @@ function drawScaryObjects() {
       }
   }
   }
+
+
+
+
+function drawInclined(){
+  for (let escalator of inclinedEscalators) {
+    drawInclinedEscalator(escalator.x, escalator.y, escalator.width, escalator.height);
+}
+}
+
+
+function drawInclinedEscalator(x, y, width, height) {
+ 
+
+  noFill();
+  noStroke();
+  beginShape();
+  vertex(x, y); // Κάτω-αριστερά
+  vertex(x + width, y - height); // Πάνω-δεξιά
+  vertex(x + width, y - height + 10); // Προσαρμογή για το τέλος
+  vertex(x, y + 10); // Προσαρμογή για την αρχή
+  endShape(CLOSE);
+
+  
+}
+function checkInclinedEscalatorCollision(player) {
+  let onEscalator = false;
+
+  for (let escalator of inclinedEscalators) {
+      let slope = escalator.height / escalator.width; // Υπολογισμός κλίσης
+      let relativeX = player.x - escalator.x; // Θέση παίκτη σε σχέση με το escalator
+
+      // Έλεγχος αν ο παίκτης βρίσκεται εντός των ορίων του escalator
+      if (relativeX >= 0 && relativeX <= escalator.width) {
+          let expectedY = escalator.y - relativeX * slope; // Υπολογισμός ύψους στο σημείο
+
+          if (
+              player.y + player.height >= expectedY && // Αν ο παίκτης ακουμπά τον escalator
+              player.y + player.height <= expectedY + 10 // Μικρή ανοχή
+          ) {
+              player.x += escalator.speedX; // Μετακίνηση του παίκτη
+              player.y = expectedY - player.height; // Τοποθέτηση στο escalator
+              player.velocityY = 0; // Σταματάμε τη βαρύτητα
+              player.isFalling = false; // Δεν πέφτει
+              player.canJump = true; // Μπορεί να πηδήξει
+              onEscalator = true;
+              
+              break; // Σταματάμε την αναζήτηση
+          }
+      }
+  }
+
+  if (!onEscalator) {
+      player.isFalling = true; // Ενεργοποίηση πτώσης
+  }
+}
+
+
+
+
+
+function drawReceptionDesk() {
+  for (let item of ReceptionDesk) {
+    drawReceptionDeskStructure(item.x, item.y);
+  }
+}
+
+
+
+function drawReceptionDeskStructure(x, y) {
+  let scale = 0.5;
+
+
+  // Βασικό σώμα γραφείου
+  fill(245, 222, 179); // Μπεζ χρώμα
+  rect(x, y, 300 * scale, 100 * scale, 10); // Κυρίως σώμα
+
+  // Διακοσμητικές γραμμές για μαρμάρινη υφή
+  stroke(210, 180, 140);
+  strokeWeight(1);
+  line(x + 20 * scale, y + 20 * scale, x + 280 * scale, y + 40 * scale);
+  line(x + 50 * scale, y + 60 * scale, x + 270 * scale, y + 80 * scale);
+  noStroke();
+
+ 
+
+  // Επάνω μέρος του γραφείου
+  fill(139, 69, 19); // Καφέ χρώμα
+  rect(x, y - 20 * scale, 300 * scale, 20 * scale, 5);
+
+  // Οθόνη υπολογιστή
+  fill(20, 20, 120);
+  rect(x + 155 * scale, y - 60 * scale, 50 * scale, 40 * scale, 5); // Μεγαλύτερη οθόνη
+
+  rect(x + 175 * scale, y - 20 * scale, 10 * scale, 5 * scale); // Βάση
+  fill(255, 255, 255, 80);
+  quad(
+      x + 15 * scale, y + 15 * scale,
+      x + 45 * scale, y + 15 * scale,
+      x + 35 * scale, y + 30 * scale,
+      x + 15 * scale, y + 30 * scale
+  );
+
+  // Κουδούνι
+  fill(255, 215, 0); // Ανοιχτό χρυσό χρώμα για κουδούνι
+  ellipse(x + 80 * scale, y - 30 * scale, 20 * scale, 20 * scale); // Σώμα κουδουνιού
+  fill(255, 240, 180);
+  ellipse(x + 80 * scale, y - 35 * scale, 10 * scale, 10 * scale); // Κορυφή κουδουνιού
+}
+
+
+
+// Σ
+// Συνάρτηση για τη σχεδίαση ενός τζακιού με καμινάδα
+function drawFireplace(x, y) {
+  const scale = 0.5; // Κλίμακα μεγέθους για το τζάκι
+
+  // Καμινάδα
+  fill(139, 69, 19); // Καφέ χρώμα για την καμινάδα
+  rect(x + 80 * scale, y - 281 * scale, 40 * scale, 281 * scale); // Ψηλότερο σώμα της καμινάδας
+
+  // Βασική δομή τζακιού
+  fill(139, 69, 19); // Καφέ χρώμα για το ξύλο
+  rect(x, y, 200 * scale, 150 * scale); // Σώμα του τζακιού
+
+  // Άνοιγμα τζακιού
+  fill(0); // Μαύρο για το εσωτερικό
+  rect(x + 50 * scale, y + 50 * scale, 100 * scale, 80 * scale);
+
+  // Φλόγες μέσα στο μαύρο πλαίσιο
+  for (let i = 0; i < 5; i++) {
+      fill(255, random(100, 200), 0, random(180, 255)); // Φλόγες με δυναμική φωτεινότητα
+      beginShape();
+      vertex(x + 75 * scale + i * 10 * scale, y + 120 * scale);
+      vertex(x + 70 * scale + i * 10 * scale, y + 100 * scale - random(10, 30) * scale);
+      vertex(x + 80 * scale + i * 10 * scale, y + 120 * scale);
+      endShape(CLOSE);
+  }
+
+  // Σκιάσεις και λεπτομέρειες
+  fill(100, 50, 25);
+  rect(x, y, 200 * scale, 20 * scale); // Διακοσμητική κορυφή
+  fill(80, 40, 20);
+  rect(x + 20 * scale, y + 140 * scale, 160 * scale, 10 * scale); // Βάση
+
+  // Διακοσμητικές γραμμές
+  stroke(120, 60, 30);
+  strokeWeight(2 * scale);
+  for (let i = 0; i < 4; i++) {
+      line(x + 50 * scale + i * 40 * scale, y, x + 50 * scale + i * 40 * scale, y + 50 * scale);
+  }
+  noStroke();
+}
+
+// Συνάρτηση για τη σχεδίαση όλων των τζακιών
+function drawFireplaces() {
+  for (let fireplace of fireplaces) {
+      drawFireplace(fireplace.x, fireplace.y);
+  }
+}
+
+
+
 
 function drawNormalSuitcase(x,y){
   const scale = 0.5;
@@ -584,19 +564,6 @@ function drawSpikeRow(x, y, width, height) {
   }
 }
 
-function checkSpikeCollision(player) {
-  for (let spike of Spikes) {
-      if (
-          player.x-40 + player.width > spike.x &&
-          player.x < spike.x + spike.width &&
-          player.y + player.height >= spike.y &&
-          player.y < spike.y + spike.height
-      ) {
-          return true; // Επιστροφή αν υπάρχει σύγκρουση
-      }
-  }
-  return false;
-}
 
   function drawRealisticSofa(x, y) {
     const scale =0.4; // Κλίμακα για το μέγεθος
@@ -864,16 +831,16 @@ function drawBrokenImage(x, y) {
   line(x + 50, y + 10, x + 10, y + 70);
 }
 
-function drawBloodyDoll(x, y) {
-  fill(250, 220, 200); // Δέρμα
-  ellipse(x, y - 30, 20, 20); // Κεφάλι
+// function drawBloodyDoll(x, y) {
+//   fill(250, 220, 200); // Δέρμα
+//   ellipse(x, y - 30, 20, 20); // Κεφάλι
 
-  fill(200, 0, 0); // Ματωμένο φόρεμα
-  rect(x - 10, y - 20, 20, 30);
+//   fill(200, 0, 0); // Ματωμένο φόρεμα
+//   rect(x - 10, y - 20, 20, 30);
 
-  fill(200, 0, 0, 150); // Αίμα
-  ellipse(x, y + 10, 15, 10);
-}
+//   fill(200, 0, 0, 150); // Αίμα
+//   ellipse(x, y + 10, 15, 10);
+// }
 
 function drawWallClock(x, y, stoppedHour = 3, stoppedMinute = 15, reverse = false) {
   // Σώμα Ρολογιού
@@ -978,9 +945,7 @@ function drawDoors() {
   for (let door of doors) {
     if (door.type === 'roomDoor') {
       drawHorrorDoor(door.x, door.y, door.roomNumber);
-    } else if (door.type === 'lockedDoor') {
-      drawLockedDoor(door.x, door.y);
-    }
+    } 
   }
 }
 
@@ -1054,30 +1019,6 @@ function drawRoomDoor(x, y, roomNumber) {
   text(`Room ${roomNumber}`, x + 40, y + 20); // Τοποθεσία αριθμού
 }
 
-function drawLockedDoor(x, y) {
-  // Σώμα πόρτας
-  fill(139, 69, 19); // Καφέ χρώμα για την πόρτα
-  rect(x, y, 80, 120); // Πόρτα
-
-  // // Πλαίσιο πόρτας
-  // noFill();
-  // stroke(100); // Σκούρο γκρι πλαίσιο
-  // strokeWeight(4);
-  // rect(x - 5, y - 5, 90, 130); // Πλαίσιο
-
-  // Χερούλι
-  fill(255, 223, 0); // Χρυσό χερούλι
-  ellipse(x + 65, y + 60, 10, 10); // Χερούλι
-
-//   // Αλυσίδα
-//   stroke(150); // Ασημί για την αλυσίδα
-//   strokeWeight(3);
-//   for (let i = 0; i < 5; i++) {
-//     line(x + 20 + i * 10, y + 50 + i * 10, x + 30 + i * 10, y + 60 + i * 10);
-//   }
-// }
-}
-
 
 
 
@@ -1105,22 +1046,6 @@ function drawSofa2() {
 
 
 
-function loadVisuals(level) {
-  const visuals = levelVisuals[level];
-  for (const visual of visuals) {
-      if (visual.type === 'frame') {
-          drawFrame(visual.x, visual.y); // Σχεδίαση κορνίζας
-      } else if (visual.type === 'ghost') {
-          createGhost(visual.x, visual.y); // Δημιουργία φαντάσματος
-      }
-  }
-}
-
-
-
-let isRainPlaying = false; // Σημαία για να παρακολουθεί αν ο ήχος βροχής παίζει
-let allowRainSound = true; // Ελέγχει αν ο ήχος της βροχής μπορεί να παίξει
-let allowWaterSound = true;
 function drawWindow() {
   const windowWidth = 100; // Πλάτος παραθύρου
   const windowHeight = 150; // Ύψος παραθύρου
@@ -1168,10 +1093,7 @@ function drawWindow() {
   }
 }
 
-function stopAllSounds() {
-  allowRainSound = false; // Απαγορεύει τον ήχο της βροχής
-  soundManager.stopAllSounds(); // Σταματά όλους τους ήχους
-}
+
 
 
 
@@ -1179,19 +1101,19 @@ function stopAllSounds() {
 
 
 function drawRain(x, y, width, height) {
-  const drops = 50; // Πλήθος σταγόνων
-  fill(135, 206, 235, 150); // Μπλε-διαφανές για σταγόνες
+  const drops = 50; 
+  fill(135, 206, 235, 150); 
   noStroke();
 
   for (let i = 0; i < drops; i++) {
       const dropX = x + random(width);
       const dropY = y + random(height);
-      rect(dropX, dropY/1.005, 2, 10); // Μικρές γραμμές για σταγόνες
+      rect(dropX, dropY/1.005, 2, 10); 
   }
 }
 function drawLightning(x, y, width, height) {
-  if (random() > 0.98) { // Κεραυνός εμφανίζεται τυχαία
-      stroke(255, 255, 0); // Κίτρινο για κεραυνό
+  if (random() > 0.98) { 
+      stroke(255, 255, 0); 
       strokeWeight(2);
       let startX = x + 50;
       let startY = y + 10;
@@ -1214,16 +1136,14 @@ function drawLightning(x, y, width, height) {
 
 
 
-
-// 
-
-
-
 function displayScore(score) {
     fill(0);
     textSize(24);
     text(`Score: ${score}`, 10, 30);
   }
+
+
+
   function drawWall() {
     // Βασικό σκούρο φόντο για τον τοίχο
     fill(20, 20, 20); // Σχεδόν μαύρο χρώμα
@@ -1267,40 +1187,8 @@ function drawLamps() {
 
 
 
-  // function drawTopBorder() {
-
-
-  //   // Σχεδίαση ταβανιού και δαπέδου
-  //   fill(100);
-  //   rect(0, height - PLATFORM_HEIGHT, PLATFORM_WIDTH, PLATFORM_HEIGHT);
-  //   rect(0, CEILING_HEIGHT-50, PLATFORM_WIDTH, PLATFORM_HEIGHT);
-
-  // }
   
-let walllights= [
-  {x:70 ,y:100},
- // {x:190 ,y:100},
-  {x:310 ,y:100},
- // {x:430 ,y:100},
-  {x:550 ,y:100},
- // {x:670 ,y:100},
-  {x:790 ,y:100},
- // {x:910 ,y:100},
-  {x:1030 ,y:100},
- // {x:1150 ,y:100},
-  {x:1270 ,y:100},
-//  {x:1390 ,y:100},
-  {x:1510 ,y:100},
-//  {x:1630 ,y:100},
-  {x:1750 ,y:100},
-//  {x:1870 ,y:100},
-  {x:1990 ,y:100},
-//  {x:2110 ,y:100},
-  {x:2230 ,y:100},
- // {x:2350 ,y:100},
-  {x:2470 ,y:100},
 
-]
 
 
   function drawWallLights() {
@@ -1311,28 +1199,7 @@ let walllights= [
 }
 
 
-let isTransitioning = false; // Αρχικά η πόρτα δεν βρίσκεται σε μετάβαση
-function checkDoorInteraction(player,showCosmicDoor1) {
-  if (showCosmicDoor1) {
-  if (
-      player.x + player.width > doorX &&
-      player.x < doorX + doorWidth &&
-      player.y + player.height > doorY &&
-      player.y < doorY + doorHeight
-  ) {
-      showDoorMessage = true;
 
-      if (keyIsDown(70) && !isTransitioning) { // Πατά το "F"
-          isTransitioning = true;
-
-          enterSecretRoom();
-          //isTransitioning = false;
-      }
-  }else{ showDoorMessage = false;} 
-}else {
-      showDoorMessage = false;
-  }
-}
 
 
 function drawPoster(){
@@ -1454,19 +1321,12 @@ fill(60, 60, 60);
 
 rect(FIFTH_WALL, 0, 20, height);
 
-//  // Ρεαλιστική πόρτα με πόμολο αριστερά
-//  drawElegantDoor(4720 , height / 2 +150);
+
 
    // Αρχικό τοίχος secretRoom
    fill(60, 60, 60);
    rect(NEW_WALL_X, 0,WALL_WIDTH, height);
 
-
-   
-  //  //Πρώτο Τοιχος secreRoom
-  //  fill(60,60,60);
-  //  rect(FIRST_WALL_SECRET, height/2, 20, height / 2 + 165); // Πάνω μέρος
-   //rect(FIRST_WALL_SECRET, (height / 2 )-300, 20, height / 2 -200); // Κάτω μέρος
 
 
 //Τελικος τοιχος secreRoom
@@ -1549,13 +1409,6 @@ rect(x + 55, y , 20, 115); // Εσωτερικό της πόρτας
   fill(255, 215, 0); // Χρυσό πόμολο
   ellipse(x + 15 * scale, y + 60 * scale, 8 * scale, 8 * scale); // Τοποθέτηση αριστερά
 
-  // // Διακοσμητική κορυφή
-  // fill(139, 69, 19); // Πιο σκούρο καφέ για την κορυφή
-  // arc(x + 30 * scale, y - 25 * scale, 50 * scale, 20 * scale, PI, TWO_PI);
-
-  // // Χρυσό κόσμημα στην κορυφή
-  // fill(255, 223, 0); // Χρυσό
-  // ellipse(x + 30 * scale, y - 25 * scale, 10 * scale, 10 * scale);
 }
 
 
@@ -1591,7 +1444,7 @@ function drawCosmicDoor(x, y) {
   // Εσωτερική λάμψη
   noStroke();
   fill(255, 200, 50, 200); // Φωτεινό χρυσό
- // ellipse(x + 50 * scale, y + 75 * scale, 10 * scale, 10 * scale); // Κεντρική λάμψη
+
 
   // Σωματίδια φωτός
   for (let i = 0; i < 40; i++) {
@@ -1650,51 +1503,6 @@ function checkCosmicDoorSound(player, showCosmicDoor1) {
 
 
 
-  
-  // // Έλεγχος αν ο παίκτης βρίσκεται εντός του εύρους
-  //   if (player.x >= doorX2 - range && player.x <= doorX2 + range) {
-  //       // Ξεκίνα τον ήχο αν δεν παίζει ήδη
-  //       if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
-  //           soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
-  //       }
-  //   } else {
-  //       // Σταμάτησε τον ήχο αν ο παίκτης είναι εκτός εύρους
-  //       soundManager.stop('cosmicdoor');
-  //   }
-
-  
-
-  
-
-
-  // function checkCosmicSecretDoorSound(player) {
-  //   let doorX = 28320; // Θέση της πόρτας
-  //   let range = 200; // Εύρος γύρω από την πόρτα
-  
-  
-  //   // Έλεγχος αν ο παίκτης βρίσκεται εντός του εύρους
-  //   if (player.x >= doorX - range && player.x <= doorX + range) {
-  //       // Ξεκίνα τον ήχο αν δεν παίζει ήδη
-  //       if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
-  //           soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
-  //       }
-  //   } else {
-  //       // Σταμάτησε τον ήχο αν ο παίκτης είναι εκτός εύρους
-  //       soundManager.stop('cosmicdoor');
-  //   }
-  // }  
-  
-//   // Έλεγχος αν ο παίκτης βρίσκεται εντός του εύρους
-//   if (player.x >= doorX2 - range && player.x <= doorX2 + range) {
-//     // Ξεκίνα τον ήχο αν δεν παίζει ήδη
-//     if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
-//         soundManager.play('cosmicdoor', true, 1.0); // Σταθερή ένταση 1.0
-//     }
-// } else {
-//     // Σταμάτησε τον ήχο αν ο παίκτης είναι εκτός εύρους
-//     soundManager.stop('cosmicdoor');
-// }
-
 
 function updateCosmicDoorSound(player, cosmicDoorX, cosmicDoorY) {
   let doorCenterX = cosmicDoorX + 70 / 2; 
@@ -1716,59 +1524,6 @@ function updateCosmicDoorSound(player, cosmicDoorX, cosmicDoorY) {
       soundManager.stop('cosmicdoor');
   }
 }
-
-//secretRoomStartX + secretRoomWidth - 215, height - 200
-
-
-let isTransitioningCosmic = false;
-let showDoorCosmicMessage = false;
-
-
-
-function 
-checkCosmicDoorInteraction(player) {
-  if (
-      player.x + player.width > secretRoomStartX &&
-      player.x >= secretRoomStartX + secretRoomWidth - 185 &&
-      player.y + player.height > doorY &&
-      player.y < doorY + height - 200
-  ) {
-      showDoorCosmicMessage = true
-
-      if (keyIsDown(70) && !isTransitioningCosmic) { // Πατά το "F"
-        isTransitioningCosmic = true;
-        gameState =="playing"; 
-        
-        exitSecretRoom(); // Μετάβαση στο επόμενο δωμάτιο
-
-        
-        setupRoom();
-        isChasing = false; // Επαναφορά του flag
-        
-        // Απελευθέρωση του flag μετά τη μετάβαση
-        setTimeout(() => {
-          isTransitioningCosmic = false; // Επαναφορά του flag
-      }, 500); // Χρονική καθυστέρηση για να ολοκληρωθεί η μετάβαση
-      }
-  } else {
-      showDoorCosmicMessage = false;
-  }
-}
-
-function exitSecretRoom() {
-        soundManager.stop('bats'); // Διακοπή του ήχου νυχτερίδων
-        soundManager.stop('waters');
-        soundManager.stopAllSounds();
- 
-        // Μεταφορά του παίκτη στη νέα θέση
-        player.x =730; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο
-        player.y = height - PLATFORM_HEIGHT - player.height;
-        currentLevel += 4;
-
-        console.log(`Exited secret room. Current level: ${currentLevel}`);
-        allowRainSound = true; // Επαναφορά του ήχου της βροχής
-}
-
 
 
 function drawNoSmokingSign() {
@@ -1800,6 +1555,8 @@ function drawNoSmokingSign() {
 
 
 // ************************* SIGN BOARDS ******************************* //
+
+
 function drawExitSignArrow(x, y) {
   const signWidth = 80; // Διπλάσιο πλάτος της πινακίδας
   const signHeight = 30; // Διπλάσιο ύψος της πινακίδας

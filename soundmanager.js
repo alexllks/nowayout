@@ -47,22 +47,13 @@ class SoundManager {
             sound.setVolume(volume);
         }
     }
-
-
-
-    // Ρυθμίζει την ένταση όλων των ήχων σε συγκεκριμένη τιμή
-    // setVolumeForAll(value) {
-    //     let volume = Math.max(0.0, Math.min(value, 1.0)); // Περιορισμός μεταξύ 0.0 και 1.0
-    //     for (let name in this.sounds) {
-    //         let sound = this.sounds[name];
-    //         if (sound) {
-    //             sound.setVolume(volume);
-    //             console.log(`Set volume for ${name} to ${volume}`);
-    //         }
-    //     }
-    // }
 }
 
+
+function stopAllSounds() {
+    allowRainSound = false; // Απαγορεύει τον ήχο της βροχής
+    soundManager.stopAllSounds(); // Σταματά όλους τους ήχους
+  }
 
 function calculateVolume(player, windowX, windowY, maxDistance) {
     let distance = dist(player.x, player.y, windowX, windowY);

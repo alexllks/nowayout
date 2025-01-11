@@ -1,34 +1,7 @@
-
-function drawFloodingWater(startX, startY, isAnomaly) {
-  let waveHeight = 10; // Height of the wave peaks
-  let waveSpeed = 2; // Speed of the waves' motion
-  let waveFrequency = 0.02; // Frequency of the waves
-  let floodWidth = isAnomaly ? frameCount * 2 : 0; // Flood progression
-  
-  // Draw the water surface with waves
-  fill(0, 0, 255, 180); // Blue with transparency
-  noStroke();
-  beginShape();
-  for (let x = startX; x >= startX - floodWidth; x--) {
-      let y = startY + sin((x + frameCount * waveSpeed) * waveFrequency) * waveHeight;
-      vertex(x, y);
-  }
-  vertex(startX - floodWidth, height); // Extend down to the bottom
-  vertex(startX, height); // Bottom-right corner
-  endShape(CLOSE);
-  
-  // Flood limit to prevent it from filling indefinitely
-  if (startX - floodWidth <= 0) {
-      floodWidth = startX; 
-  }
-}
-
-
-
 function setupRoom() {
   // Λίστα ανωμαλιών με βάρη
-  const anomalies = ['wideSofa','wideSofa','suitcase','suitcase','roomDoorNumber','roomDoorNumber',"sofa","sofa",'door', "fridge", "kitchen", "table","mirror", "doll", "TV","TV", "Bookshelf","radio", "ghost","npc","none","none","none" ];
-  //const anomalies = ["doll"];
+  //const anomalies = ['wideSofa','wideSofa','suitcase','suitcase','roomDoorNumber','roomDoorNumber',"sofa","sofa",'door', "fridge", "kitchen", "table","mirror", "doll", "TV","TV", "Bookshelf","radio", "ghost","npc","none","none","none" ];
+  const anomalies = ["mirror"];
   // Το "ghost" εμφανίζεται περισσότερες φορές για να έχει μεγαλύτερη πιθανότητα
   let selectedAnomaly = "";
 
@@ -123,11 +96,37 @@ function setupRoom() {
 }
 
 
+function drawObjects() {
+  for (let obj of objects) {
+    if (obj.type === 'suitcase') {
+      drawSuitcase(obj.x, obj.y, obj.isAnomaly);
+  }
+  else if (obj.type === 'wideSofa') drawWideSofa(obj.x, obj.y, obj.isAnomaly);
 
+    if(obj.type === 'roomDoorNumber') drawRoomDoorNumber(obj.x,obj.y,obj.roomNumber,obj.isAnomaly);
+    if (obj.type === 'npc') drawNpc(obj.x, obj.y, obj.isAnomaly);
+      if (obj.type === 'door') drawDoor2(obj.x, obj.y, obj.isMoving);
+      if (obj.type === 'mirror') drawMirror(obj.x, obj.y, obj.isAnomaly);
+   
+      if (obj.type === 'sofa') drawSofa(obj.x, obj.y, obj.isAnomaly);
+      if (obj.type === 'fridge') drawFridge(obj.x, obj.y, obj.isAnomaly);
+      if (obj.type === 'kitchen') drawKitchen(obj.x, obj.y, obj.isAnomaly);
+      if (obj.type === 'cart') drawCart(obj.x, obj.y, obj.isAnomaly);
+      if (obj.type === 'chair') drawChair(obj.x, obj.y, obj.isAnomaly);
+      if (obj.type === 'table') drawDiningTable(obj.x, obj.y, obj.isAnomaly);
+      if (obj.type === 'TV') drawTV(obj.x, obj.y, obj.isAnomaly);
+      if (obj.type === 'Bookshelf') drawBookshelf(obj.x, obj.y, obj.isAnomaly);
+      if (obj.type === 'Painting') drawPainting(obj.x, obj.y, obj.isAnomaly);
+      if(obj.type === 'ghost') drawGhosts();
 
+      if (obj.type === 'radio') drawRadio(obj.x, obj.y, obj.isAnomaly ? 'anomaly' : 'normal');
 
-
-
+         if (obj.type === 'doll') {
+        drawDoll(6025, obj.y, obj.isAnomaly); 
+        updateDoll(obj, player);
+  }
+  }
+}
 
 
 
@@ -208,39 +207,9 @@ for (let ghost of ghosts) {
     }
     if (millis() - lightToggleTime > 500) lightToggleTime = millis();
   }
-  function drawObjects() {
-    for (let obj of objects) {
-      if (obj.type === 'suitcase') {
-        drawSuitcase(obj.x, obj.y, obj.isAnomaly);
-    }
-    else if (obj.type === 'wideSofa') drawWideSofa(obj.x, obj.y, obj.isAnomaly);
 
-      if(obj.type === 'roomDoorNumber') drawRoomDoorNumber(obj.x,obj.y,obj.roomNumber,obj.isAnomaly);
-      if (obj.type === 'npc') drawNpc(obj.x, obj.y, obj.isAnomaly);
-        if (obj.type === 'door') drawDoor2(obj.x, obj.y, obj.isMoving);
-        if (obj.type === 'mirror') drawMirror(obj.x, obj.y, obj.isAnomaly);
-     
-        if (obj.type === 'sofa') drawSofa(obj.x, obj.y, obj.isAnomaly);
-        if (obj.type === 'fridge') drawFridge(obj.x, obj.y, obj.isAnomaly);
-        if (obj.type === 'kitchen') drawKitchen(obj.x, obj.y, obj.isAnomaly);
-        if (obj.type === 'cart') drawCart(obj.x, obj.y, obj.isAnomaly);
-       // if (obj.type === 'table') drawTable(obj.x, obj.y, obj.isAnomaly);
-        if (obj.type === 'lamp') drawLamp(obj.x, obj.y, obj.isAnomaly);
-        if (obj.type === 'chair') drawChair(obj.x, obj.y, obj.isAnomaly);
-        if (obj.type === 'table') drawDiningTable(obj.x, obj.y, obj.isAnomaly);
-        if (obj.type === 'TV') drawTV(obj.x, obj.y, obj.isAnomaly);
-        if (obj.type === 'Bookshelf') drawBookshelf(obj.x, obj.y, obj.isAnomaly);
-        if (obj.type === 'Painting') drawPainting(obj.x, obj.y, obj.isAnomaly);
-        if(obj.type === 'ghost') drawGhosts();
 
-        if (obj.type === 'radio') drawRadio(obj.x, obj.y, obj.isAnomaly ? 'anomaly' : 'normal');
-
-           if (obj.type === 'doll') {
-          drawDoll(obj.x, obj.y, obj.isAnomaly); 
-          updateDoll(obj, player);
-    }
-    }
-  }
+  
 function drawSuitcase(x, y, isAnomaly) {
     const scale = 0.5;
 
@@ -302,7 +271,7 @@ function drawWideSofa(x, y, isAnomaly) {
 }
 
 
-function   drawRoomDoorNumber(x,y,roomNumber,isAnomaly){
+function drawRoomDoorNumber(x,y,roomNumber,isAnomaly){
 
 
   const doorWidth = 80;       // Πλάτος πόρτας
@@ -358,7 +327,29 @@ function   drawRoomDoorNumber(x,y,roomNumber,isAnomaly){
 }
 
 
-
+function drawFloodingWater(startX, startY, isAnomaly) {
+  let waveHeight = 10; // Height of the wave peaks
+  let waveSpeed = 2; // Speed of the waves' motion
+  let waveFrequency = 0.02; // Frequency of the waves
+  let floodWidth = isAnomaly ? frameCount * 2 : 0; // Flood progression
+  
+  // Draw the water surface with waves
+  fill(0, 0, 255, 180); // Blue with transparency
+  noStroke();
+  beginShape();
+  for (let x = startX; x >= startX - floodWidth; x--) {
+      let y = startY + sin((x + frameCount * waveSpeed) * waveFrequency) * waveHeight;
+      vertex(x, y);
+  }
+  vertex(startX - floodWidth, height); // Extend down to the bottom
+  vertex(startX, height); // Bottom-right corner
+  endShape(CLOSE);
+  
+  // Flood limit to prevent it from filling indefinitely
+  if (startX - floodWidth <= 0) {
+      floodWidth = startX; 
+  }
+}
 
 function drawNpc(x, y, isAnomaly) {
   if(isAnomaly){
@@ -409,54 +400,10 @@ function drawNpc(x, y, isAnomaly) {
   rect(x - 8 * scale, y + 10 * scale, 6 * scale, 5 * scale); // Μπότες αριστερό πόδι
   rect(x + 2 * scale, y + 10 * scale, 6 * scale, 5 * scale); // Μπότες δεξί πόδι
 }
-  function drawRadio(x, y, type = "normal") {
+  function drawRadio(x, y, isAnomaly) {
     const scale = 0.3; // Κλίμακα μεγέθους για να προσαρμόσεις το μέγεθος
-    if (type === "normal") {
+    if (!isAnomaly) {
      
-
-      // Σώμα ραδιοφώνου
-      fill(50, 25, 5);
-      rect(x, y, 150 * scale, 100 * scale, 10); // Κυρίως σώμα με στρογγυλεμένες γωνίες
-  
-      // Χρυσές γραμμές
-      stroke(255, 215, 0); // Χρυσό
-      strokeWeight(2);
-      line(x + 5 * scale, y + 10 * scale, x + 145 * scale, y + 10 * scale); // Πάνω χρυσή γραμμή
-      line(x + 5 * scale, y + 90 * scale, x + 145 * scale, y + 90 * scale); // Κάτω χρυσή γραμμή
-      noStroke();
-  
-      // Γρίλια ηχείου
-      fill(50);
-      rect(x + 20 * scale, y + 20 * scale, 110 * scale, 30 * scale); // Κεντρική γρίλια
-  
-      // Κουμπιά έντασης και συντονισμού
-      fill(200, 200, 200); // Ασημί για τα κουμπιά
-      ellipse(x + 30 * scale, y + 75 * scale, 20 * scale, 20 * scale); // Κουμπί αριστερά
-      ellipse(x + 120 * scale, y + 75 * scale, 20 * scale, 20 * scale); // Κουμπί δεξιά
-  
-      // Οθόνη
-      fill(255, 165, 0); // Πορτοκαλί για την οθόνη
-      rect(x + 50 * scale, y + 60 * scale, 50 * scale, 15 * scale, 2); // Ορθογώνιο για την οθόνη
-  
-      // Στοιχεία οθόνης
-      fill(0); // Μαύρο για κείμενο
-      textSize(10 * scale);
-      textAlign(CENTER, CENTER);
-      text("88.5 FM", x + 75 * scale, y + 67.5 * scale);
-  
-      // Διακοσμητικά κουμπιά/πλήκτρα
-      fill(150);
-      for (let i = 0; i < 5; i++) {
-          rect(x + 50 * scale + i * 10 * scale, y + 80 * scale, 8 * scale, 5 * scale);
-      }
-  
-      // Κεραία
-      stroke(200);
-      strokeWeight(2);
-      line(x + 10 * scale, y, x - 20 * scale, y - 30 * scale); // Κεραία που προεξέχει
-      noStroke();
-  
-    } else if (type === "anomaly") {
         // Τρομακτικό Ραδιόφωνο
         fill(50, 20, 20); // Σκούρο κόκκινο για το ξύλο
         // Σώμα ραδιοφώνου
@@ -500,41 +447,33 @@ function drawNpc(x, y, isAnomaly) {
       strokeWeight(2);
       line(x + 10 * scale, y, x - 20 * scale, y - 30 * scale); // Κεραία που προεξέχει
       noStroke();
+    } else {
+        // Τρομακτικό Ραδιόφωνο
+        fill(50, 20, 20); // Σκούρο κόκκινο για το ξύλο
+        // Σώμα ραδιοφώνου
+      //fill(139, 69, 19); // Καφέ χρώμα για το ξύλο
+      rect(x, y, 150 * scale, 100 * scale, 10); // Κυρίως σώμα με στρογγυλεμένες γωνίες
+  
+      // Χρυσές γραμμές
+      stroke(255, 215, 0); // Χρυσό
+      strokeWeight(2);
+      line(x + 5 * scale, y + 10 * scale, x + 145 * scale, y + 10 * scale); // Πάνω χρυσή γραμμή
+      line(x + 5 * scale, y + 90 * scale, x + 145 * scale, y + 90 * scale); // Κάτω χρυσή γραμμή
+      noStroke();
+  
+      // Γρίλια ηχείου
+      fill(50);
+      rect(x + 20 * scale, y + 20 * scale, 110 * scale, 30 * scale); // Κεντρική γρίλια
+  
+      // Κεραία
+      stroke(200);
+      strokeWeight(2);
+      line(x + 10 * scale, y, x - 20 * scale, y - 30 * scale); // Κεραία που προεξέχει
+      noStroke();
 }
 
   }
 
-  function drawCharacter(x, y) {
-    const scale = 0.8; // Κλίμακα μεγέθους
-
-    // Σώμα του χαρακτήρα
-    fill(100, 200, 100); // Πράσινο για διαφορετικότητα από τον παίκτη
-    rect(x - 15 * scale, y - 50 * scale, 30 * scale, 50 * scale); // Σώμα
-
-    // Κεφάλι
-    fill(200, 150, 100); // Χρώμα δέρματος
-    ellipse(x, y - 65 * scale, 30 * scale, 30 * scale); // Κεφάλι
-
-    // Πόδια
-    fill(100, 200, 100);
-    rect(x - 10 * scale, y, 10 * scale, 20 * scale); // Αριστερό πόδι
-    rect(x, y, 10 * scale, 20 * scale); // Δεξί πόδι
-
-    // Μάτια
-    fill(0);
-    ellipse(x - 5 * scale, y - 70 * scale, 5 * scale, 5 * scale); // Αριστερό μάτι
-    ellipse(x + 5 * scale, y - 70 * scale, 5 * scale, 5 * scale); // Δεξί μάτι
-}
-
-
-function updateCharacter(obj) {
-  obj.x += obj.speed * obj.direction;
-
-  // Επαναφορά στη δεξιά πλευρά όταν φτάνει στο τέλος
-  if (obj.x < 0) {
-    obj.x = PLATFORM_WIDTH/2 + 100;
-  }
-}
 
 
   function drawMirror(x, y, isAnomaly) {
@@ -550,45 +489,14 @@ function updateCharacter(obj) {
     rect(x - width / 2 + 5, y - height / 2 + 5, width - 10, height - 10);
 
     if (isAnomaly) {
-        // Ραγισμένος καθρέφτης
-       // drawMirrorCracks(x, y, width, height);
 
         // Τρομακτική αντανάκλαση
         drawScaryReflection(x, y, width, height);
 
-        // Τρομακτικό μήνυμα
-        fill(255, 0, 0, 200);
-        textAlign(CENTER, CENTER);
-        textSize(16);
-       // text("GET OUT", x, y + height / 2 - 20);
     }
 }
 
-// Στοιχείο: Ρωγμές στον καθρέφτη
-function drawMirrorCracks(x, y, width, height) {
-    stroke(255, 255, 255, 150); // Λευκές ρωγμές
-    strokeWeight(1.5);
 
-    // Δημιουργία βασικών ρωγμών
-    for (let i = 0; i < 10; i++) {
-        const startX = random(x - width / 2 + 5, x + width / 2 - 5);
-        const startY = random(y - height / 2 + 5, y + height / 2 - 5);
-        const endX = startX + random(-30, 30);
-        const endY = startY + random(-30, 30);
-        line(startX, startY, endX, endY);
-    }
-
-    // Δημιουργία κεντρικής μεγάλης ρωγμής
-    const centerX = x;
-    const centerY = y;
-    for (let i = 0; i < 5; i++) {
-        const endX = centerX + random(-width / 2 + 10, width / 2 - 10);
-        const endY = centerY + random(-height / 2 + 10, height / 2 - 10);
-        line(centerX, centerY, endX, endY);
-    }
-
-    noStroke();
-}
 
 // Στοιχείο: Τρομακτική αντανάκλαση
 function drawScaryReflection(x, y, width, height) {
@@ -659,8 +567,8 @@ function drawDollFace(x, y, scale, isAnomaly) {
 function updateDoll(obj, player) {
   if (obj.isAnomaly) {
       // Υπολογισμός κατεύθυνσης προς τον παίκτη
-      let dx = player.x - obj.x;
-      let dy = player.y - obj.y;
+      let dx = player.x - obj.x - 5300;
+      let dy = player.y - obj.y ;
       let distance = Math.sqrt(dx * dx + dy * dy);
 
       // Κίνηση της κούκλας προς τον παίκτη
@@ -674,16 +582,6 @@ function updateDoll(obj, player) {
       obj.y = constrain(obj.y, 50, height - 50);
   }
 }
-
-
-function activateDollAnomaly() {
-  for (let doll of dolls) {
-      doll.isAnomaly = true;
-  }
-}
-
-
-
 
 
 
@@ -976,39 +874,7 @@ function drawDiningTable(x, y) {
     }
   }
   
-  function drawTable(x, y, isAnomaly) {
-    if (isAnomaly) {
-        fill(255, 215, 0); // Χρυσό για ανωμαλία
-        rect(x - 30, y - 15, 60, 15); // Μεγαλύτερη επιφάνεια
-        fill(139, 69, 19); // Σκούρο καφέ για τα πόδια
-        rect(x - 25, y, 10, 20); // Πλατύτερα πόδια
-        rect(x + 15, y, 10, 20);
-    } else {
-        fill(160, 82, 45); // Καφέ για το τραπέζι
-        rect(x - 30, y - 10, 60, 10); // Επιφάνεια του τραπεζιού
-        fill(139, 69, 19); // Σκούρο καφέ για τα πόδια
-        rect(x - 25, y, 5, 15);
-        rect(x + 20, y, 5, 15);
-    }
-  }
-  
 
-
-
-  function drawLamp(x, y, isAnomaly) {
-    if (isAnomaly) {
-        fill(255, 0, 0); // Κόκκινο αμπαζούρ για ανωμαλία
-        ellipse(x, y - 30, 25, 25); // Μεγαλύτερο αμπαζούρ
-        fill(50); // Σκούρο γκρι βάση
-        rect(x - 7, y - 10, 14, 15); // Μεγαλύτερη βάση
-    } else {
-        fill(255, 223, 0); // Κίτρινο για το αμπαζούρ
-        ellipse(x, y - 20, 20, 20); // Σώμα της λάμπας
-        fill(105, 105, 105); // Γκρι για τη βάση
-        rect(x - 5, y - 10, 10, 10); // Βάση
-        rect(x - 2, y, 4, 10); // Στήριγμα
-    }
-  }
   
   function drawChair(x, y, isAnomaly) {
     if (isAnomaly) {

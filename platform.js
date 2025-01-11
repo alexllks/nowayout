@@ -30,16 +30,7 @@ class Platform {
           let x = i * PLATFORM_WIDTH; // Θέση x κάθε πλατφόρμας
           let y = height - PLATFORM_HEIGHT; // Θέση y (π.χ., στο έδαφος)
           platforms.push(new Platform(x, y, PLATFORM_WIDTH,50));
-      }
-           //   // Σχεδίαση ταβανιού και δαπέδου
-        //    for (let i = 0; i < numPlatforms; i++) {
-        //     let x = i *PLATFORM_WIDTH; // Θέση x κάθε πλατφόρμας
-        //     let y = CEILING_HEIGHT - 30 - PLATFORM_HEIGHT; // Θέση y για την οροφή
-        //     platforms.push(new Platform(x, y, PLATFORM_WIDTH, PLATFORM_HEIGHT+30));
-        // }
-
-
-        
+      } 
       for (let i = 0; i < numPlatforms; i++) {
         let x = 2500; // Ξεκινάμε από το x = 200 για να αφήσουμε κενό
         let y = height - PLATFORM_HEIGHT - 300; // Κανονική θέση Y της πλατφόρμας
@@ -101,19 +92,6 @@ class Platform {
         { x: secretRoomStartX + 8600, y: height - PLATFORM_HEIGHT - 300, width: 100,height:50 },
 
         
-
-
-
-
-
-
-
-
-
-
-
-
-
         { x: 2200, y: height - 160, width: 120,height:50 }, // platform at stairs
   
 
@@ -130,34 +108,11 @@ class Platform {
         platforms.push(new Platform(pos.x, pos.y, pos.width,pos.height));
       }
 
-      
-
-      // Συγκεκριμένες θέσεις περιστρεφόμενων λεπίδων
-      const specificBladePositions = [
-        // { x: secretRoomStartX + 300, y: height - PLATFORM_HEIGHT - 120, radius: 40 },
-        // { x: secretRoomStartX + 1000, y: height - PLATFORM_HEIGHT - 200, radius: 50 },
-        // { x: secretRoomStartX + 1700, y: height - PLATFORM_HEIGHT - 150, radius: 60 },
-        // Πρόσθεσε κι άλλες περιστρεφόμενες λεπίδες αν χρειάζεται
-      ];
-
-      // Δημιουργία περιστρεφόμενων λεπίδων
-      for (let blade of specificBladePositions) {
-        obstacles.push(new RotatingBlade(blade.x, blade.y, blade.radius));
-      }
-
-
-
-
-
         // Συγκεκριμένες θέσεις και χαρακτηριστικά για τις νυχτερίδες
         const specificBatPositions = [
           { x: secretRoomStartX + 1700, y: 150, range: 100, speed: 2 }, //1st bat
            { x: secretRoomStartX + 6400, y: 200, range: 250, speed: 1.2 }, //2nd bat
            { x: secretRoomStartX + 4400, y: 200, range: 250, speed: 1.2 }, //3nd bat
-          // { x: secretRoomStartX + 900, y: 250, range: 200, speed: 2.5 },
-          // { x: secretRoomStartX + 1200, y: 180, range: 120, speed: 1.8 },
-          // { x: secretRoomStartX + 1500, y: 300, range: 180, speed: 2.2 },
-          // Πρόσθεσε κι άλλες νυχτερίδες αν χρειάζεται
         ];
 
         // Δημιουργία νυχτερίδων

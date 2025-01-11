@@ -49,7 +49,7 @@ class Player {
         this.x -= this.speed;
         this.isLeft = true;
         this.isRight = false; // Αν πατηθεί αριστερά, σταματά το δεξιά
-        footstepSound.setVolume(0.3);
+       
         
         
     }
@@ -65,14 +65,14 @@ class Player {
             this.x = NEW_WALL_X2 - this.width / 2;
         }
 
-        footstepSound.setVolume(0.3);
+
     }
 
     // Αν κανένα πλήκτρο δεν είναι πατημένο, σταματάει η κίνηση
     if (!movingLeft && !movingRight) {
         this.isLeft = false;
         this.isRight = false;
-        footstepSound.setVolume(0);
+        
     }
 
    // this.checkCollisions();
@@ -147,12 +147,6 @@ class Player {
 
       
     }
-
-
- 
-
-   
-
       if (this.y + this.height >= height - PLATFORM_HEIGHT) {
           this.y = height - PLATFORM_HEIGHT - this.height;
           this.velocityY = 0;
