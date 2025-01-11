@@ -179,6 +179,8 @@ function draw() {
   }
 }
 function displayLost() {
+
+
   background(0);
 
   // Εμφάνιση μηνύματος θανάτου
@@ -369,7 +371,7 @@ Platform.drawPlatforms(platforms); // Σχεδίαση πλατφορμών//
     obstacle.show(); // Σχεδίαση εμποδίου
 }
 
-  drawWater(); // Σχεδίαση νερού
+
   checkWaterCollision(player); // Έλεγχος σύγκρουσης με το νερό
 
 
@@ -410,7 +412,8 @@ drawLevel(cameraX);
  player.update();
  // Σχεδίαση παίκτη
  player.show();
-
+ drawWater(); // Σχεδίαση νερού
+  drawLightsPosition();
  if (currentLevel > totalLevels) {
   showMessage("Congratulations! You've completed all levels!");
   gameState = "complete";
@@ -668,7 +671,9 @@ function drawVolumeSlider(cameraX) {
 
 
 function mousePressed() {
-  if (gameState === 'playing'){
+  if (gameState === 'playing' || gameState === 'lost'
+  || gameState === 'complete' || gameState === 'gameover' 
+  ) {
     return;
   }
   else {
@@ -734,7 +739,7 @@ function displayGz() {
   textSize(32);
   text("Gongratulations you have complete all levels", width / 2, height / 2 - 20);
   textSize(20);
-  text("Press ENTER to play again", width / 2, height / 2 + 20);
+  text("Press ENTER to return to Menu", width / 2, height / 2 + 20);
   if (keyIsDown(ENTER)) {
       gameState = "playing";
       initializeGame();

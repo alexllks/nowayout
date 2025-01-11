@@ -210,21 +210,19 @@ function drawReceptionDeskStructure(x, y) {
 }
 
 
-
-
-let scaryObjects = [
-
-  {type : 'light', x: 4225 , y: 300},
+let lightsPosition = [  {type : 'light', x: 4225 , y: 300},
   {type : 'light', x: 4463 , y: 300},
   {type : 'light', x: 6690 , y: 300},
   {type : 'light', x: 7400 , y: 300},
   {type : 'light', x: 8130 , y: 300},
   {type : 'light', x: 8840 , y: 300},
- 
+
+  {type : 'light', x: 5425 , y: 300},]
+
+let scaryObjects = [
 
 
 
-  {type : 'light', x: 5425 , y: 300},
   { type: 'normal_doll', x:5890, y: 227},
   { type: 'normal_mirror', x:5950, y: 150},
   { type: 'door', x: 400, y: 100 },
@@ -344,8 +342,6 @@ function drawFireplaces() {
 
 
 
-
-
 function drawScaryObjects() {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
@@ -360,9 +356,6 @@ function drawScaryObjects() {
         drawNormalSuitcase(obj.x,obj.y);
         }
       
-      if(obj.type === 'light'){
-        drawLightsStructure(obj.x,obj.y);
-      }
 
       if( obj.type === 'to_Rooms' ) {
         drawToRooms(obj.x,obj.y);
@@ -723,6 +716,12 @@ function drawStair(x, y, steps, stepWidth, stepHeight) {
         // Στρογγυλές άκρες
         ellipse(columnX, y - i * stepHeight + stepHeight, 6, 6);
     }
+}
+
+function drawLightsPosition() {
+  for (let light of lightsPosition) {
+      drawLightsStructure(light.x, light.y);
+  }
 }
 
 
