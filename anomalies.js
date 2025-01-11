@@ -1,7 +1,11 @@
+
+let isFlooding = false; // Flag για την ανωμαλία πλημμύρας
+let floodX = 0; // Θέση του νερού
+
 function setupRoom() {
   // Λίστα ανωμαλιών με βάρη
   //const anomalies = ['wideSofa','wideSofa','suitcase','suitcase','roomDoorNumber','roomDoorNumber',"sofa","sofa",'door', "fridge", "kitchen", "table","mirror", "doll", "TV","TV", "Bookshelf","radio", "ghost","npc","none","none","none" ];
-  const anomalies = ["mirror"];
+  const anomalies = ["flood"];
   // Το "ghost" εμφανίζεται περισσότερες φορές για να έχει μεγαλύτερη πιθανότητα
   let selectedAnomaly = "";
 
@@ -19,38 +23,28 @@ function setupRoom() {
 
     hasAnomaly = true; // Υποδεικνύει ότι υπάρχει ανωμαλία
     objects = [
-      { x: 5510, y: height - 110, type: 'radio', isAnomaly: false },
-
-      { x: 5930, y: height - 55, type: 'suitcase', isAnomaly: false },
-      { x: 6055, y: height - 55, type: 'wideSofa', isAnomaly: false },
-
+      {x: secretRoomStartX - 100,y: 200,type: 'flood',isAnomaly: false,active: false,  width: 0  },
+      {x: 5510, y: height - 110, type: 'radio', isAnomaly: false },
+      {x: 5930, y: height - 55, type: 'suitcase', isAnomaly: false },
+      {x: 6055, y: height - 55, type: 'wideSofa', isAnomaly: false },
       {x: 7590,  y: 115, type: 'roomDoorNumber', roomNumber: 117,isAnomaly:false },
-      { x: 2870, y: height - 55, type: 'npc', isAnomaly: false },
-      //{ x: 4600, y: height - 100, type: 'radio', isAnomaly: false },
-      { x: 5510, y: height - 110, type: 'radio', isAnomaly: false },
-
-
-
-      { x: 4630, y: height - 400, type: 'mirror', isAnomaly: false },
-      { x: 6010, y: height - 347, type: 'doll', isAnomaly: false, speed: 2, direction: 1},
-      { x: 2685, y: height - 20, type: 'sofa', isAnomaly: false },
-      { x: 5340, y: height - 320, type: 'fridge', isAnomaly: false },
-      { x: 4980, y: height - 350, type: 'kitchen', isAnomaly: false },
-      //{ x: 3510, y: height - 400, type: 'table', isAnomaly:false},
-      { x: 5555, y: height - 410, type: 'TV', isAnomaly:false},
-      { x: 4470, y: height -140, type: 'Bookshelf', isAnomaly:false},
-      
-
-     // { x: 800, y: height - 30, type: 'cart', isAnomaly: false },
-     { x: 5545, y: height - 365, type: 'table', isAnomaly: false },
-     // { x: 1220, y: height - 30, type: 'lamp', isAnomaly: false },
-      { x: 5530, y: height - 330, type: 'chair', isAnomaly: false },
-      { x: 5650, y: height - 330, type: 'chair', isAnomaly: false },
-      { x: 2845, y: height - 200, type: 'Painting', isAnomaly: false },
-      { x: 2650, y: height - 20, type: 'sofa2', isAnomaly: false },
-      { x: 2910, y: height - 20, type: 'fridge2', isAnomaly: false },
-      { x: 2650, y: height - 20, type: 'sofa2', isAnomaly: false },
-        { x: 400, y: 300, type: 'ghost', isAnomaly: false }
+      {x: 2870, y: height - 55, type: 'npc', isAnomaly: false },
+      {x: 5510, y: height - 110, type: 'radio', isAnomaly: false },
+      {x: 4630, y: height - 400, type: 'mirror', isAnomaly: false },
+      {x: 6010, y: height - 347, type: 'doll', isAnomaly: false, speed: 2, direction: 1},
+      {x: 2685, y: height - 20, type: 'sofa', isAnomaly: false },
+      {x: 5340, y: height - 320, type: 'fridge', isAnomaly: false },
+      {x: 4980, y: height - 350, type: 'kitchen', isAnomaly: false },
+      {x: 5555, y: height - 410, type: 'TV', isAnomaly:false},
+      {x: 4470, y: height -140, type: 'Bookshelf', isAnomaly:false},
+      {x: 5545, y: height - 365, type: 'table', isAnomaly: false },
+      {x: 5530, y: height - 330, type: 'chair', isAnomaly: false },
+      {x: 5650, y: height - 330, type: 'chair', isAnomaly: false },
+      {x: 2845, y: height - 200, type: 'Painting', isAnomaly: false },
+      {x: 2650, y: height - 20, type: 'sofa2', isAnomaly: false },
+      {x: 2910, y: height - 20, type: 'fridge2', isAnomaly: false },
+      {x: 2650, y: height - 20, type: 'sofa2', isAnomaly: false },
+      {x: 400, y: 300, type: 'ghost', isAnomaly: false }
     ];
 
  
@@ -98,11 +92,10 @@ function setupRoom() {
 
 function drawObjects() {
   for (let obj of objects) {
-    if (obj.type === 'suitcase') {
-      drawSuitcase(obj.x, obj.y, obj.isAnomaly);
-  }
-  else if (obj.type === 'wideSofa') drawWideSofa(obj.x, obj.y, obj.isAnomaly);
 
+  if (obj.type === 'suitcase') {drawSuitcase(obj.x, obj.y, obj.isAnomaly);}
+  if (obj.type === 'wideSofa') drawWideSofa(obj.x, obj.y, obj.isAnomaly);
+  if (obj.type === 'flood') {drawFlood(obj.x, obj.y, obj.active, obj);}
     if(obj.type === 'roomDoorNumber') drawRoomDoorNumber(obj.x,obj.y,obj.roomNumber,obj.isAnomaly);
     if (obj.type === 'npc') drawNpc(obj.x, obj.y, obj.isAnomaly);
       if (obj.type === 'door') drawDoor2(obj.x, obj.y, obj.isMoving);
@@ -121,10 +114,7 @@ function drawObjects() {
 
       if (obj.type === 'radio') drawRadio(obj.x, obj.y, obj.isAnomaly ? 'anomaly' : 'normal');
 
-         if (obj.type === 'doll') {
-        drawDoll(6025, obj.y, obj.isAnomaly); 
-        updateDoll(obj, player);
-  }
+         if (obj.type === 'doll') {drawDoll(6025, obj.y, obj.isAnomaly); updateDoll(obj, player);}
   }
 }
 
@@ -194,6 +184,41 @@ for (let ghost of ghosts) {
         ) {
             playGameAfterLost();
         }
+    }
+}
+}
+
+
+function drawFlood(x, y, isActive, floodObj) {
+  if (!isActive) return;
+
+  let waveHeight = 10;
+  let waveSpeed = 2;
+  let waveFrequency = 0.02;
+
+  fill(0, 0, 255, 180); // Μπλε χρώμα νερού
+  noStroke();
+  beginShape();
+  for (let posX = x; posX >= x - floodObj.width; posX--) {
+      let waveY = y + sin((posX + frameCount * waveSpeed) * waveFrequency) * waveHeight;
+      vertex(posX, waveY);
+  }
+  vertex(x - floodObj.width, height);
+  vertex(x, height);
+  endShape(CLOSE);
+
+  // Αύξηση του πλάτους πλημμύρας
+  floodObj.width += 5; 
+  if (x - floodObj.width <= 0) {
+      floodObj.width = x; // Περιορισμός της πλημμύρας
+  }
+}
+function checkFloodTrigger(player) {
+for (let obj of objects) {
+    if (obj.type === 'flood' && player.x >= 1000 && !obj.active) {
+        obj.active = true;
+        console.log("Flood triggered!");
+        soundManager.play('waters', true, 0.5); // Ήχος πλημμύρας
     }
 }
 }

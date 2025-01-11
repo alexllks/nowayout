@@ -192,7 +192,21 @@ function checkWaterCollision(player) {
     
         // isGameOver = true; // Ενεργοποίηση του flag για game over
       isDying();
+    }
   }
+  for (let obj of objects) {
+    if (obj.type === 'flood' && obj.active) {
+        // Έλεγχος αν ο παίκτης έρχεται σε επαφή με το νερό
+        if (
+            player.x + player.width > obj.x - obj.width && // Ο παίκτης βρίσκεται μέσα στο εύρος του νερού
+            player.x < obj.x && 
+            player.y + player.height > obj.y
+        ) {
+            console.log("Player drowned in the water!");
+            isDying();
+            break; // Σταματάμε τον έλεγχο μόλις ανιχνευτεί σύγκρουση
+        }
+    }
 }
 }
 
@@ -237,7 +251,7 @@ function playGame() {
   drawStairs(); // Σχεδίαση σκάλας
   drawWallLights();
   drawGhosts();
-  drawObjects();
+
   drawInclined();
   if (showCosmicDoor1) {drawCosmicDoor(3400, 370);} 
   checkCosmicDoorSound(player,showCosmicDoor1);
@@ -247,7 +261,6 @@ function playGame() {
   drawDoors();
   drawWindow();
   drawBookshelfs();
-  drawScaryObjects();
   drawCourageSign(secretRoomStartX -40, height - PLATFORM_HEIGHT - 500);
   drawExitSignArrow(5670, height - PLATFORM_HEIGHT - 240);
   drawExitSign(9390, height - PLATFORM_HEIGHT - 240);
@@ -256,10 +269,13 @@ function playGame() {
   drawSignBoard2(9630, height - PLATFORM_HEIGHT - 210); // Νέες συντεταγμένες
   drawSignBoard2(270, height - PLATFORM_HEIGHT - 210); // Θέση 2ης πινακίδας
   drawSignBoard3(1590, height - PLATFORM_HEIGHT - 210);
-  drawCosmicDoor(secretRoomStartX + secretRoomWidth - 215, height - 200);
-  drawSpikes();
   drawReceptionDesk();
   drawFireplaces();
+  drawScaryObjects();
+  drawObjects();
+  drawCosmicDoor(secretRoomStartX + secretRoomWidth - 215, height - 200);
+  drawSpikes();
+
   
 
 
@@ -278,6 +294,8 @@ function playGame() {
 
   checkCosmicDoorInteraction(player);
   checkDoorInteraction(player,showCosmicDoor1); // Έλεγχος για άνοιγμα πόρτας
+  
+
 
   // Έλεγχος σύγκρουσης με καρφιά
   if (checkSpikeCollision(player)) {
@@ -323,6 +341,8 @@ drawLevel(cameraX);
 
  player.update();
  player.show();
+
+ checkFloodTrigger(player);
  drawWater(); // Σχεδίαση νερού
   drawLightsPosition();
  if (currentLevel > totalLevels) {
