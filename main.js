@@ -253,25 +253,20 @@ function isDying(){
        }, 1000);
 }
 
-function initializeGame2() {
 
-  soundManager.play('background', false, 0.2); // Έναρξη του ήχου νυχτερίδων
-  isGameOver = false;
-  player.isDying = false;
-  player.x = saved_x;
-  player.y = saved_y;
-  player.velocityY = 0;
- 
- // gameState = "menu"; // Επιστροφή στο μενού
-}
 
 function initializeGame() {
 
   soundManager.play('background', false, 0.2); // Έναρξη του ήχου νυχτερίδων
   isGameOver = false;
   player.isDying = false;
-  player.x = 730; // Θέση εκκίνησης του παίκτη
-  player.y = height - PLATFORM_HEIGHT - player.height;
+  if (isResume) {
+    player.x = saved_x;
+    player.y = saved_y;
+  } else {
+    player.x = 730; // Θέση εκκίνησης του παίκτη
+    player.y = height - PLATFORM_HEIGHT - player.height;
+  }
   player.velocityY = 0;
  
  // gameState = "menu"; // Επιστροφή στο μενού
@@ -301,10 +296,10 @@ function playGame() {
    if (showCosmicDoor1) {
      // Debug: Εκτύπωση της τιμής της `showCosmicDoor1`
      //console.log("Show Cosmic Door 1:", showCosmicDoor1);
-    drawCosmicDoor(3400, 370);
-} else {
-  console.log("Cosmic Door 1 not shown.");
-}
+      drawCosmicDoor(3400, 370);
+    } else {
+      console.log("Cosmic Door 1 not shown.");
+    }
 checkCosmicDoorSound(player,showCosmicDoor1);
  
   drawWalls();
@@ -428,6 +423,8 @@ let spikes = []; // Πίνακας για τα καρφιά
 
 let saved_x;
 let saved_y;
+let saved_anomaly;
+let isResume = false;
 
 function keyPressed() {
   // Navigate up and down using arrow keys
@@ -445,6 +442,7 @@ function keyPressed() {
     console.log("Alt + P pressed");
     showMessage("Game paused on level ${currentLevel}");
     stopAllSounds();
+    isResume = true;
     saved_x = player.x;
     saved_y = player.y;
     gameState = "menu";
@@ -684,18 +682,18 @@ function mousePressed() {
         if (box.text === "New game") {
           console.log("Game started!"); // Παράδειγμα λειτουργίας
           gameState = "playing"; // Ξεκινάει το παιχνίδι
+          isResume = false;
           initializeGame();
           allowRainSound = true;
           setupRoom();
           currentLevel = 0;
         } else if (box.text === "Resume game") {
-
           gameState = "playing";
           currentLevel = savedLevel;
           console.log("Loading Game...");
           allowRainSound = true;
-          initializeGame2();
-          //setupRoom();
+          initializeGame();
+          setupRoom();
         } else if (box.text === "Instructions") {
           console.log("Instructions displayed!"); // Παράδειγμα λειτουργίας
           showInstructions = true; // Εμφάνιση οδηγιών
@@ -704,28 +702,28 @@ function mousePressed() {
     }
   }
 }
-function mouseDragged() {
-  // Ελέγχουμε αν το ποντίκι είναι πάνω από τη μπάρα έντασης
-  if (
-    mouseX >= volumeSliderArea.x &&
-    mouseX <= volumeSliderArea.x + volumeSliderArea.width &&
-    mouseY >= volumeSliderArea.y - 10 &&
-    mouseY <= volumeSliderArea.y + volumeSliderArea.height + 10
-  ) {
-    // Υπολογισμός νέας έντασης
-    volumeLevel = Math.round(
-      ((mouseX - volumeSliderArea.x) / volumeSliderArea.width) * 100
-    );
+// function mouseDragged() {
+//   // Ελέγχουμε αν το ποντίκι είναι πάνω από τη μπάρα έντασης
+//   if (
+//     mouseX >= volumeSliderArea.x &&
+//     mouseX <= volumeSliderArea.x + volumeSliderArea.width &&
+//     mouseY >= volumeSliderArea.y - 10 &&
+//     mouseY <= volumeSliderArea.y + volumeSliderArea.height + 10
+//   ) {
+//     // Υπολογισμός νέας έντασης
+//     volumeLevel = Math.round(
+//       ((mouseX - volumeSliderArea.x) / volumeSliderArea.width) * 100
+//     );
 
-    // Περιορισμός της έντασης μεταξύ 0 και 100
-    volumeLevel = constrain(volumeLevel, 0, 100);
+//     // Περιορισμός της έντασης μεταξύ 0 και 100
+//     volumeLevel = constrain(volumeLevel, 0, 100);
 
-    // Ενημέρωση της master έντασης στο soundManager
-    if (typeof soundManager !== "undefined" && soundManager.setMasterVolume) {
-      soundManager.setMasterVolume(volumeLevel / 100); // Ενημέρωση έντασης 0.0 - 1.0
-    }
-  }
-}
+//     // Ενημέρωση της master έντασης στο soundManager
+//     if (typeof soundManager !== "undefined" && soundManager.setMasterVolume) {
+//       soundManager.setMasterVolume(volumeLevel / 100); // Ενημέρωση έντασης 0.0 - 1.0
+//     }
+//   }
+// }
 
 
 function displayGz() {

@@ -30,11 +30,17 @@ function setupRoom() {
   const anomalies = ['wideSofa','wideSofa','suitcase','suitcase','roomDoorNumber','roomDoorNumber',"sofa","sofa",'door', "fridge", "kitchen", "table","mirror", "doll", "TV","TV", "Bookshelf","radio", "ghost","npc","none","none","none" ];
   //const anomalies = ["doll"];
   // Το "ghost" εμφανίζεται περισσότερες φορές για να έχει μεγαλύτερη πιθανότητα
-
+  let selectedAnomaly = "";
 
   if (gameState != 'menu'){  
 
-    const selectedAnomaly = random(anomalies); // Επιλογή ανωμαλίας με βάση τα βάρη
+    if (!isResume) {
+      selectedAnomaly = random(anomalies); // Επιλογή ανωμαλίας με βάση τα βάρη
+      saved_anomaly = selectedAnomaly;
+    } else {
+      selectedAnomaly = saved_anomaly;
+      isResume = false;
+    }
     console.log(`Selected anomaly: ${selectedAnomaly}`);
 
 
