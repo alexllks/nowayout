@@ -4,8 +4,8 @@ let floodX = 0; // Θέση του νερού
 
 function setupRoom() {
   // Λίστα ανωμαλιών με βάρη
-  const anomalies = ['wideSofa','wideSofa','suitcase','suitcase','roomDoorNumber','roomDoorNumber',"sofa","sofa",'door', "fridge", "kitchen", "table","mirror", "doll", "TV","TV", "Bookshelf","radio", "ghost","npc","none","none","none" ];
-  //const anomalies = ["flood"];
+ // const anomalies = ['wideSofa','wideSofa','suitcase','suitcase','roomDoorNumber','roomDoorNumber',"sofa","sofa",'door', "fridge", "kitchen", "table","mirror", "doll", "TV","TV", "Bookshelf","radio", "ghost","npc","none","none","none" ];
+  const anomalies = ["flood"];
   // Το "ghost" εμφανίζεται περισσότερες φορές για να έχει μεγαλύτερη πιθανότητα
   let selectedAnomaly = "";
 
@@ -16,8 +16,8 @@ function setupRoom() {
 
     hasAnomaly = true; // Υποδεικνύει ότι υπάρχει ανωμαλία
     objects = [
-      { x: secretRoomStartX - 100, y: 200, type: 'flood', isAnomaly: false, active: false, width: 0, speed: 4 },
-
+     
+      {x: 6010, y: height - 347, type: 'doll', isAnomaly: false, speed: 2, direction: 1},
       {x: 5510, y: height - 110, type: 'radio', isAnomaly: false },
       {x: 5930, y: height - 55, type: 'suitcase', isAnomaly: false },
       {x: 6055, y: height - 55, type: 'wideSofa', isAnomaly: false },
@@ -25,7 +25,7 @@ function setupRoom() {
       {x: 2870, y: height - 55, type: 'npc', isAnomaly: false },
       {x: 5510, y: height - 110, type: 'radio', isAnomaly: false },
       {x: 4630, y: height - 400, type: 'mirror', isAnomaly: false },
-      {x: 6010, y: height - 347, type: 'doll', isAnomaly: false, speed: 2, direction: 1},
+     
       {x: 2685, y: height - 20, type: 'sofa', isAnomaly: false },
       {x: 5340, y: height - 320, type: 'fridge', isAnomaly: false },
       {x: 4980, y: height - 350, type: 'kitchen', isAnomaly: false },
@@ -38,7 +38,8 @@ function setupRoom() {
       {x: 2650, y: height - 20, type: 'sofa2', isAnomaly: false },
       {x: 2910, y: height - 20, type: 'fridge2', isAnomaly: false },
       {x: 2650, y: height - 20, type: 'sofa2', isAnomaly: false },
-      {x: 400, y: 300, type: 'ghost', isAnomaly: false }
+      {x: 400, y: 300, type: 'ghost', isAnomaly: false },
+      { x: secretRoomStartX - 100, y: 200, type: 'flood', isAnomaly: false, active: false, width: 0, speed: 10 }
     ];
 
  
@@ -86,10 +87,10 @@ function setupRoom() {
 
 function drawObjects() {
   for (let obj of objects) {
-
+    if (obj.type === 'doll') {drawDoll(6025, obj.y, obj.isAnomaly); updateDoll(obj, player);}
   if (obj.type === 'suitcase') {drawSuitcase(obj.x, obj.y, obj.isAnomaly);}
   if (obj.type === 'wideSofa') drawWideSofa(obj.x, obj.y, obj.isAnomaly);
-  if (obj.type === 'flood') {drawFlood(obj.x, obj.y, obj.active, obj, obj.isAnomaly);}
+ 
     if(obj.type === 'roomDoorNumber') drawRoomDoorNumber(obj.x,obj.y,obj.roomNumber,obj.isAnomaly);
     if (obj.type === 'npc') drawNpc(obj.x, obj.y, obj.isAnomaly);
       if (obj.type === 'door') drawDoor2(obj.x, obj.y, obj.isMoving);
@@ -108,8 +109,11 @@ function drawObjects() {
 
       if (obj.type === 'radio') drawRadio(obj.x, obj.y, obj.isAnomaly ? 'anomaly' : 'normal');
 
-         if (obj.type === 'doll') {drawDoll(6025, obj.y, obj.isAnomaly); updateDoll(obj, player);}
+       
+
+         if (obj.type === 'flood') {drawFlood(obj.x, obj.y, obj.active, obj, obj.isAnomaly);}
   }
+  
 }
 
 
@@ -415,13 +419,21 @@ function drawNpc(x, y, isAnomaly) {
   rect(x - 15 * scale, y - 42 * scale, 5 * scale, 20 * scale); // Αριστερό χέρι
   rect(x + 10 * scale, y - 42 * scale, 5 * scale, 20 * scale); // Δεξί χέρι
 
-  // Πόδια με μπότες
-  fill(100, 20, 20); // Σκούρο κόκκινο για τα πόδια
-  rect(x - 8 * scale, y - 5 * scale, 6 * scale, 15 * scale); // Αριστερό πόδι
-  rect(x + 2 * scale, y - 5 * scale, 6 * scale, 15 * scale); // Δεξί πόδι
-  fill(50); // Μαύρες μπότες
-  rect(x - 8 * scale, y + 10 * scale, 6 * scale, 5 * scale); // Μπότες αριστερό πόδι
-  rect(x + 2 * scale, y + 10 * scale, 6 * scale, 5 * scale); // Μπότες δεξί πόδι
+//   // Πόδια με μπότες
+//   fill(100, 20, 20); // Σκούρο κόκκινο για τα πόδια
+//   rect(x - 8 * scale, y - 5 * scale, 6 * scale, 15 * scale); // Αριστερό πόδι
+//   rect(x + 2 * scale, y - 5 * scale, 6 * scale, 15 * scale); // Δεξί πόδι
+//   fill(50); // Μαύρες μπότες
+//   rect(x - 8 * scale, y + 10 * scale, 6 * scale, 5 * scale); // Μπότες αριστερό πόδι
+//   rect(x + 2 * scale, y + 10 * scale, 6 * scale, 5 * scale); // Μπότες δεξί πόδι
+// }
+// Ψεύτικο γραφείο για κάλυψη του σώματος του NPC
+fill(245, 222, 179); // Χρώμα γραφείου
+rect(2810, 510, 300 * 0.5, 100 * 0.5); // Προσαρμογή διαστάσεων
+
+// Επάνω μέρος γραφείου
+fill(139, 69, 19);
+rect(2810, 510 - 20 * 0.5, 300 * 0.5, 20 * 0.5);
 }
   function drawRadio(x, y, isAnomaly) {
     const scale = 0.3; // Κλίμακα μεγέθους για να προσαρμόσεις το μέγεθος

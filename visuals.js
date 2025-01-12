@@ -94,40 +94,46 @@ let lightsPosition = [
 ];
 
 let scaryObjects = [
-  { type: 'normal_doll', x:5880, y: 227},
-  { type: 'normal_mirror', x:5950, y: 150},
+  //{ type: 'normal_doll', x:5880, y: 227},
+  
   { type: 'door', x: 400, y: 100 },
 
-  { type: 'candle', x: 4570, y: 235 },
-  { type: 'candle', x: 4690, y: 235 },
-  { type: 'candle', x: 5950, y: 255 },
-  { type: 'candle', x: 5985, y: 255 },
-  { type: 'candle', x: 5915, y: 255 },
+ 
+  
+ 
+
   
   { type: 'clockss', x: 5762, y: 650 ,hour:12,minute:0},
   { type: 'bed', x: 4180, y: 230 },
-
+  
   {type: 'normalsuitcase', x: 3010, y: 522 },
   {type: 'normalsuitcase', x: 3080, y: 522 },
+  { type: 'normal_mirror', x:5950, y: 150},
   {type: 'normalsuitcase', x: 3150, y: 522 },
   {type: 'normalsuitcase', x: 3220, y: 522 },
 
   {type: 'to_Rooms', x: 3870, y: 135, width: 25, height: 45 },
+  { type: 'candle', x: 5950, y: 255 },
+  { type: 'candle', x: 5915, y: 255 },
+  { type: 'candle', x: 5985, y: 255 },
   {type: 'moon_painting', x: 6250, y: 95, width: 25, height: 45 },
-  
   {type: "reception_banner",x: 2665, y: 390, widh:300, height: 200},
+  { type: 'normal_doll', x:5880, y: 227},
   {type: 'paintingreception',x: 3055, y: 380, widh:500, height: 200},
   {type: 'castle_image',x: 5030, y: 380, widh:500, height: 200},
   {type: 'library_image',x: 3870, y: 420, widh:500, height: 200},
   {type: 'g_painting', x: 4235, y: 95, width: 25, height: 45 },
   {type: 'house_painting', x: 7230, y: 415, width: 150, height: 200 },
   {type: 'stairsghost', x: 6054, y: 360, width: 150, height: 100 },
-
+  { type: 'candle', x: 4570, y: 235 },
+  { type: 'candle', x: 4690, y: 235 },
   {type: 'painting', x: 7960, y: 415, width: 150, height: 200 },
   {type: 'desk', x: 5470, y: 500 },
 
   {type: 'ElegantChair', x: 4110, y:520},
   {type: 'ElegantChair', x: 5200, y:520},
+  
+  
 ];
 
 

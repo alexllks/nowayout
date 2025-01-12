@@ -252,6 +252,7 @@ function playGame() {
 
 
   drawWall();
+    
   drawStairs(); // Σχεδίαση σκάλας
   drawWallLights();
   drawGhosts();
@@ -274,13 +275,16 @@ function playGame() {
   drawSignBoard2(270, height - PLATFORM_HEIGHT - 210); // Θέση 2ης πινακίδας
   drawSignBoard3(1590, height - PLATFORM_HEIGHT - 210);
   
-  drawFireplaces();
-  drawObjects();
+  
   drawScaryObjects();
+  drawFireplaces();
+  drawReceptionDesk();
+  drawObjects();
+
 
   drawCosmicDoor(secretRoomStartX + secretRoomWidth - 215, height - 200);
   drawSpikes();
-  drawReceptionDesk();
+ 
   
 
 
