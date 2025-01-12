@@ -1628,8 +1628,8 @@ function drawExitSign(x, y) {
 
 
 function drawCourageSign(x, y) {
-  const boardWidth = 150; // Πλάτος πινακίδας
-  const boardHeight = 150; // Ύψος πινακίδας
+  const boardWidth = 200; // Πλάτος πινακίδας
+  const boardHeight = 80; // Ύψος πινακίδας
 
   // Πλαίσιο πινακίδας
   fill(139, 69, 19); // Καφέ για το ξύλο
@@ -1643,12 +1643,12 @@ function drawCourageSign(x, y) {
   fill(0); // Μαύρο για το κείμενο
   textSize(14); // Τίτλος
   textAlign(CENTER, CENTER);
-  text("You Are Brave!", x + boardWidth / 2, y + 30);
+  text("Stay Strong!", x + boardWidth / 2, y + 30);
 
   textSize(12); // Μήνυμα
-  text("If you make it to the end,", x + boardWidth / 2, y + 65);
-  text("there is nothing to fear", x + boardWidth / 2, y + 85);
-  text("for this round.", x + boardWidth / 2, y + 105);
+  text("Reach the end to gain 4 levels!", x + boardWidth / 2, y + 55);
+
+    
 }
 
 

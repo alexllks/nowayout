@@ -112,7 +112,7 @@ class Platform {
         const specificBatPositions = [
           { x: secretRoomStartX + 1700, y: 150, range: 100, speed: 2 }, //1st bat
            { x: secretRoomStartX + 6400, y: 200, range: 250, speed: 1.2 }, //2nd bat
-           { x: secretRoomStartX + 4400, y: 200, range: 250, speed: 1.2 }, //3nd bat
+
         ];
 
         // Δημιουργία νυχτερίδων

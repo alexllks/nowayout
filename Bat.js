@@ -56,6 +56,8 @@ class Bat {
         ellipse(this.x - 5 * scale, this.y - 10 * scale, 3 * scale, 3 * scale);
         ellipse(this.x + 5 * scale, this.y - 10 * scale, 3 * scale, 3 * scale);
     }
+
+
 }
 
 function updateBats(bats) {

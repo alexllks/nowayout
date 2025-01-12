@@ -38,7 +38,7 @@ class FloatingPlatform extends Platform {
             // // Reduce floating platforms
       const floatingPlatformPositions = [
         //{ x: 600, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300,width:100, speed:2 },
-        { x: secretRoomStartX + 1400, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300,width:100, speed:2  },
+        { x: secretRoomStartX + 1370, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 300,width:100, speed:2  },
         { x: secretRoomStartX + 1800, yStart: height - PLATFORM_HEIGHT - 130, yEnd: height - PLATFORM_HEIGHT - 300,width:100, speed:2  },
         { x: secretRoomStartX + 6500, yStart: height - PLATFORM_HEIGHT - 150, yEnd: height - PLATFORM_HEIGHT - 400 ,width:100, speed:2 },
         
