@@ -1702,6 +1702,7 @@ function drawSignBoard2(x, y) {
 }
 
 function drawSignBoard3(x, y) { 
+  
   const boardWidth = 200; // Πλάτος
   const boardHeight = 150; // Ύψος
 
@@ -1712,22 +1713,27 @@ function drawSignBoard3(x, y) {
   // Εσωτερικό πινακίδας
   fill(255, 240, 240); // Απαλό κόκκινο για σχετική προειδοποίηση
   rect(x + 5, y + 5, boardWidth - 10, boardHeight - 10, 5);
-
+  image(smileyfaceImg,x + 80, y + 70,40, 40);
   // Κείμενο
   fill(0); // Μαύρο για το κείμενο
   textSize(16); 
   textAlign(CENTER, CENTER);
   text("Good Luck!!!", x + boardWidth / 2, y + 50);
 
-  // Χαμογελαστή φατσούλα
-  fill(255, 220, 0); // Κίτρινο για το πρόσωπο
-  ellipse(x + boardWidth / 2, y + 100, 40, 40); // Κύκλος για πρόσωπο
 
-  fill(0); // Μαύρο για τα μάτια
-  ellipse(x + boardWidth / 2 - 10, y + 95, 5, 5); // Αριστερό μάτι
-  ellipse(x + boardWidth / 2 + 10, y + 95, 5, 5); // Δεξί μάτι
+  // image (stairsghostImg,x,y, 150,100);
+  
+  // // Χαμογελαστή φατσούλα
+  // fill(255, 220, 0); // Κίτρινο για το πρόσωπο
+  // ellipse(x + boardWidth / 2, y + 100, 40, 40); // Κύκλος για πρόσωπο
 
-  noFill();
-  stroke(0); // Μαύρο περίγραμμα για χαμόγελο
-  arc(x + boardWidth / 2, y + 105, 20, 10, 0, PI); // Χαμόγελο
+  // fill(0); // Μαύρο για τα μάτια
+  // ellipse(x + boardWidth / 2 - 10, y + 95, 5, 5); // Αριστερό μάτι
+  // ellipse(x + boardWidth / 2 + 10, y + 95, 5, 5); // Δεξί μάτι
+
+  // noFill();
+  // stroke(0); // Μαύρο περίγραμμα για χαμόγελο
+  // arc(x + boardWidth / 2, y + 105, 20, 10, 0, PI); // Χαμόγελο
 }
+
+

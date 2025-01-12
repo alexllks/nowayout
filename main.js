@@ -91,6 +91,7 @@ function preload() {
 
   lightImg = loadImage('assets/images/light.png');
   mooonImg= loadImage('assets/images/hotelscary.jpg');
+  smileyfaceImg = loadImage('assets/images/SmileyFace.jpg');
   receptionImg = loadImage ( 'assets/images/imagereception.jpg');
   castleImg = loadImage('assets/images/castle.jpg');
   libraryImg = loadImage('assets/images/library.jpg');
