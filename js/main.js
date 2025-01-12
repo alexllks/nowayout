@@ -118,7 +118,7 @@ function setup() {
     soundManager.setMasterVolume(newVolume);
 });
 // Πιθανότητα εμφάνισης της πόρτας
-  showCosmicDoor1 = random() < 0.3;
+  showCosmicDoor1 = random() < 0.5;
 }
 
 
