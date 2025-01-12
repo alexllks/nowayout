@@ -269,14 +269,14 @@ function playGame() {
   drawSignBoard2(9630, height - PLATFORM_HEIGHT - 210); // Νέες συντεταγμένες
   drawSignBoard2(270, height - PLATFORM_HEIGHT - 210); // Θέση 2ης πινακίδας
   drawSignBoard3(1590, height - PLATFORM_HEIGHT - 210);
-  drawReceptionDesk();
+  
   drawFireplaces();
   drawObjects();
   drawScaryObjects();
 
   drawCosmicDoor(secretRoomStartX + secretRoomWidth - 215, height - 200);
   drawSpikes();
-
+  drawReceptionDesk();
   
 
 
@@ -656,35 +656,35 @@ function checkExit(isBackExit) {
 }
 
 
-function keyPressed() {
-  // Navigate up and down using arrow keys
-  if (keyCode === ENTER && gameState === "complete") {
-    gameState = "menu";
-    stopAllSounds();
-    console.log(`---- ${gameState}`);  // Correct string interpolation
-    currentLevel = 0;
-  }
-  if ((keyIsDown(ALT) && key === 'n' || key === 'N') && gameState === "playing") {
-    noclipMode = !noclipMode; // Εναλλαγή noclip mode
-    console.log("Noclip Mode: player speed " + (noclipMode ? "Activated" : "Deactivated"));
-  }
-  if ((keyIsDown(ALT) && keyCode === 80) && gameState === "playing") { // 83 is the keycode for 'S'
-    console.log("Alt + P pressed");
-    showMessage("Game paused on level ${currentLevel}");
-    stopAllSounds();
-    isResume = true;
-    saved_x = player.x;
-    saved_y = player.y;
-    gameState = "menu";
-    savedLevel = currentLevel;
-  }
+// function keyPressed() {
+//   // Navigate up and down using arrow keys
+//   if (keyCode === ENTER && gameState === "complete") {
+//     gameState = "menu";
+//     stopAllSounds();
+//     console.log(`---- ${gameState}`);  // Correct string interpolation
+//     currentLevel = 0;
+//   }
+//   if ((keyIsDown(ALT) && key === 'n' || key === 'N') && gameState === "playing") {
+//     noclipMode = !noclipMode; // Εναλλαγή noclip mode
+//     console.log("Noclip Mode: player speed " + (noclipMode ? "Activated" : "Deactivated"));
+//   }
+//   if ((keyIsDown(ALT) && keyCode === 80) && gameState === "playing") { // 83 is the keycode for 'S'
+//     console.log("Alt + P pressed");
+//     showMessage("Game paused on level ${currentLevel}");
+//     stopAllSounds();
+//     isResume = true;
+//     saved_x = player.x;
+//     saved_y = player.y;
+//     gameState = "menu";
+//     savedLevel = currentLevel;
+//   }
   // if ((keyIsDown(18) && keyCode === 77) && gameState === "playing") {
   //   console.log('Alt + M was pressed!');
   //   stopAllSounds();
   //   gameState = "menu";
   //   currentLevel = 0;
   // }
-}
+// }
 
 
 
@@ -763,13 +763,42 @@ function showMessage(newMessage) {
 
 
 
+let paused = false;
 
 
 
+function keyPressed() {
 
 
-
-
+    // Navigate up and down using arrow keys
+  if (keyCode === ENTER && gameState === "complete") {
+    gameState = "menu";
+    stopAllSounds();
+    console.log(`---- ${gameState}`);  // Correct string interpolation
+    currentLevel = 0;
+  }
+  if ((keyIsDown(ALT) && key === 'n' || key === 'N') && gameState === "playing") {
+    noclipMode = !noclipMode; // Εναλλαγή noclip mode
+    console.log("Noclip Mode: player speed " + (noclipMode ? "Activated" : "Deactivated"));
+  }
+    if ((keyIsDown(18) && keyCode === 77) && gameState === "playing") {
+    console.log('Alt + M was pressed!');
+    stopAllSounds();
+    gameState = "menu";
+    currentLevel = 0;
+  }
+  if (key === 'p' || key === 'P' || (keyIsDown(ALT) && keyCode === 80)) { // Παύση με "P"
+      if (paused) {
+          loop(); // Επανεκκίνηση
+          paused = false;
+          soundManager.setMasterVolume(0.4);
+      } else {
+          soundManager.setMasterVolume(0.0);
+          noLoop(); // Παύση
+          paused = true;
+      }
+  }
+}
 
 
 
