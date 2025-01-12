@@ -50,12 +50,7 @@ class SoundManager {
 }
 
 
-function setMasterVolume(volume) {
-    this.masterVolume = constrain(volume, 0.0, 1.0); // Περιορισμός από 0 έως 1
-    for (let name in this.sounds) {
-        this.sounds[name].setVolume(this.masterVolume); // Ενημέρωση όλων των ήχων
-    }
-}
+
 
 function stopAllSounds() {
     allowRainSound = false; // Απαγορεύει τον ήχο της βροχής

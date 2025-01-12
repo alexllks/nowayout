@@ -146,7 +146,10 @@ function draw() {
       displayGz();
   } else if (gameState === "playing") {
       playGame();
-  } else if (gameState === "gameover") {
+  }
+  else if (gameState === "instructions") {
+    displayInstructions(); // Εμφάνιση οδηγιών
+} else if (gameState === "gameover") {
      playGameAfterLost();
   }else if (gameState === "lost"){
     displayLost();
@@ -694,38 +697,116 @@ function mousePressed() {
   ) {
     return;
   }
-  else {
-    // Έλεγχος για click στα κουτιά
-    for (let box of menuBoxes) {
-      if (
-        mouseX > box.x &&
-        mouseX < box.x + box.width &&
-        mouseY > box.y &&
-        mouseY < box.y + box.height
-      ) {
-        if (box.text === "New game") {
-          console.log("Game started!"); // Παράδειγμα λειτουργίας
-          gameState = "playing"; // Ξεκινάει το παιχνίδι
-          isResume = false;
-          initializeGame();
-          allowRainSound = true;
-          setupRoom();
-          currentLevel = 0;
-        } else if (box.text === "Resume game") {
-          gameState = "playing";
-          currentLevel = savedLevel;
-          console.log("Loading Game...");
-          allowRainSound = true;
-          initializeGame();
-          setupRoom();
-        } else if (box.text === "Instructions") {
-          console.log("Instructions displayed!"); // Παράδειγμα λειτουργίας
-          showInstructions = true; // Εμφάνιση οδηγιών
+
+  if (gameState === "instructions") {
+    // Έλεγχος για το κουμπί "Back to Menu"
+    if (
+        mouseX > width / 2 - 100 + 500 &&
+        mouseX < width / 2 + 100 + 500 &&
+        mouseY > height - 100  &&
+        mouseY < height - 50
+    ) {
+        console.log("Returning to menu...");
+        gameState = "menu"; // Επιστροφή στο μενού
+    }
+  }
+  else if (gameState === 'menu') {
+      // Έλεγχος για click στα κουτιά
+      for (let box of menuBoxes) {
+        if (
+          mouseX > box.x &&
+          mouseX < box.x + box.width &&
+          mouseY > box.y &&
+          mouseY < box.y + box.height
+        ) {
+          if (box.text === "New game") {
+            console.log("Game started!"); // Παράδειγμα λειτουργίας
+            gameState = "playing"; // Ξεκινάει το παιχνίδι
+            isResume = false;
+            initializeGame();
+            allowRainSound = true;
+            setupRoom();
+            currentLevel = 0;
+          } else if (box.text === "Resume game") {
+            gameState = "playing";
+            currentLevel = savedLevel;
+            console.log("Loading Game...");
+            allowRainSound = true;
+            initializeGame();
+            setupRoom();
+          } 
+          else if (box.text === "Instructions") {
+            //console.log("Instructions displayed!");
+
+            gameState = "instructions"; // Αλλαγή κατάστασης σε "instructions"
+            
+        }
         }
       }
     }
   }
+
+
+ 
+let scrollOffset = 0; // Αρχική θέση κύλισης
+let contentHeight = 600; // Συνολικό ύψος περιεχομένου οδηγιών
+
+function displayInstructions() {
+    background(30); // Σκούρο φόντο
+
+    fill(255); // Λευκό κείμενο
+    textAlign(CENTER);
+    textSize(32);
+    text("INSTRUCTIONS", width / 2, 50 - scrollOffset); // Τίτλος
+
+    textSize(18);
+    textAlign(CENTER);
+    const story = `
+Welcome to the mysterious corridor.
+Your goal is to escape by making 9 correct decisions.
+Each decision determines whether you can proceed or remain trapped.
+
+How it Works:
+- If there is an anomaly, exit through the LEFT door.
+- If everything seems normal, proceed through the RIGHT door.
+
+Be observant and careful!
+
+Examples of Anomalies:
+- A sofa suddenly changes color.
+- Objects move on their own.
+- Strange noises echo in the room, noises that weren’t there before.
+- A painting looks different than the last time you saw it.
+
+Tips:
+- Explore every corner of the room carefully.
+- Use your hearing to identify sounds that shouldn’t exist.
+- Focus on details: What looks or feels “off” to you?
+
+Remember: You must make 9 correct decisions to escape!
+Good luck!
+    `;
+
+    // Εμφάνιση περιεχομένου με μετατόπιση
+    text(story, 100, 100 - scrollOffset, width - 200, contentHeight);
+
+    // Κουμπί επιστροφής
+    fill(200, 50, 50);
+    rect(width / 2 - 100 + 500, height - 100, 200, 50, 10);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(20);
+    text("Back to Menu", width / 2 + 500, height - 75);
 }
+
+function mouseWheel(event) {
+    // Ενημέρωση κύλισης
+    scrollOffset += event.delta; // Προσθήκη της μετακίνησης του ποντικιού
+    scrollOffset = constrain(scrollOffset, 0, contentHeight - height); // Περιορισμός κύλισης
+}
+
+
+
 
 function drawLevel(cameraX) {
   push(); // Αποθήκευση της τρέχουσας κατάστασης σχεδίασης
