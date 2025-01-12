@@ -9,15 +9,15 @@ class SoundManager {
     }
 
     setMasterVolume(volume) {
-        this.masterVolume = constrain(volume, 0.0, 1.0); // Περιορισμός από 0 έως 1
+        this.masterVolume = constrain(volume, 0.0, 1.0);  
         for (let name in this.sounds) {
-            this.sounds[name].setVolume(this.masterVolume); // Ενημέρωση όλων των ήχων
+            this.sounds[name].setVolume(this.masterVolume);  
         }
     }
 
      play(name, loop = false, volume = 1.0) {
         const sound = this.sounds[name];
-        const adjustedVolume = volume * this.masterVolume; // Ρυθμισμένη ένταση
+        const adjustedVolume = volume * this.masterVolume;  
         if (sound && adjustedVolume > 0) {
             sound.setVolume(adjustedVolume);
             if (loop) sound.loop();
@@ -53,8 +53,8 @@ class SoundManager {
 
 
 function stopAllSounds() {
-    allowRainSound = false; // Απαγορεύει τον ήχο της βροχής
-    soundManager.stopAllSounds(); // Σταματά όλους τους ήχους
+    allowRainSound = false;  
+    soundManager.stopAllSounds();  
   }
 
 function calculateVolume(player, windowX, windowY, maxDistance) {

@@ -76,8 +76,8 @@ let ReceptionDesk = [
 ];
 
 let inclinedEscalators = [
-  { x: 1980, y: 540, width: 220, height: 140, speedX: 0, speedY: -0.5 }, // Escalator 1
-  { x: 2285, y:415, width: 220, height: 175, speedX: 0, speedY: -1 },  // Escalator 2
+  { x: 1980, y: 540, width: 220, height: 140, speedX: 0, speedY: -0.5 },  
+  { x: 2285, y:415, width: 220, height: 175, speedX: 0, speedY: -1 },   
 ];
 
 
@@ -280,8 +280,8 @@ function drawInclinedEscalator(x, y, width, height) {
   beginShape();
   vertex(x, y); // Κάτω-αριστερά
   vertex(x + width, y - height); // Πάνω-δεξιά
-  vertex(x + width, y - height + 10); // Προσαρμογή για το τέλος
-  vertex(x, y + 10); // Προσαρμογή για την αρχή
+  vertex(x + width, y - height + 10);  
+  vertex(x, y + 10);  
   endShape(CLOSE);
 
   
@@ -290,31 +290,31 @@ function checkInclinedEscalatorCollision(player) {
   let onEscalator = false;
 
   for (let escalator of inclinedEscalators) {
-      let slope = escalator.height / escalator.width; // Υπολογισμός κλίσης
-      let relativeX = player.x - escalator.x; // Θέση παίκτη σε σχέση με το escalator
+      let slope = escalator.height / escalator.width;  
+      let relativeX = player.x - escalator.x;  
 
-      // Έλεγχος αν ο παίκτης βρίσκεται εντός των ορίων του escalator
+       
       if (relativeX >= 0 && relativeX <= escalator.width) {
-          let expectedY = escalator.y - relativeX * slope; // Υπολογισμός ύψους στο σημείο
+          let expectedY = escalator.y - relativeX * slope;  
 
           if (
-              player.y + player.height >= expectedY && // Αν ο παίκτης ακουμπά τον escalator
-              player.y + player.height <= expectedY + 10 // Μικρή ανοχή
+              player.y + player.height >= expectedY &&  
+              player.y + player.height <= expectedY + 10  
           ) {
-              player.x += escalator.speedX; // Μετακίνηση του παίκτη
-              player.y = expectedY - player.height; // Τοποθέτηση στο escalator
-              player.velocityY = 0; // Σταματάμε τη βαρύτητα
-              player.isFalling = false; // Δεν πέφτει
-              player.canJump = true; // Μπορεί να πηδήξει
+              player.x += escalator.speedX;  
+              player.y = expectedY - player.height;  
+              player.velocityY = 0;  
+              player.isFalling = false;  
+              player.canJump = true;  
               onEscalator = true;
               
-              break; // Σταματάμε την αναζήτηση
+              break;  
           }
       }
   }
 
   if (!onEscalator) {
-      player.isFalling = true; // Ενεργοποίηση πτώσης
+      player.isFalling = true;  
   }
 }
 
@@ -334,11 +334,11 @@ function drawReceptionDeskStructure(x, y) {
   let scale = 0.5;
 
 
-  // Βασικό σώμα γραφείου
-  fill(245, 222, 179); // Μπεζ χρώμα
-  rect(x, y, 300 * scale, 100 * scale, 10); // Κυρίως σώμα
+   
+  fill(245, 222, 179);  
+  rect(x, y, 300 * scale, 100 * scale, 10);  
 
-  // Διακοσμητικές γραμμές για μαρμάρινη υφή
+   
   stroke(210, 180, 140);
   strokeWeight(1);
   line(x + 20 * scale, y + 20 * scale, x + 280 * scale, y + 40 * scale);
@@ -347,15 +347,15 @@ function drawReceptionDeskStructure(x, y) {
 
  
 
-  // Επάνω μέρος του γραφείου
-  fill(139, 69, 19); // Καφέ χρώμα
+   
+  fill(139, 69, 19);  
   rect(x, y - 20 * scale, 300 * scale, 20 * scale, 5);
 
-  // Οθόνη υπολογιστή
+   
   fill(20, 20, 120);
-  rect(x + 155 * scale, y - 60 * scale, 50 * scale, 40 * scale, 5); // Μεγαλύτερη οθόνη
+  rect(x + 155 * scale, y - 60 * scale, 50 * scale, 40 * scale, 5);  
 
-  rect(x + 175 * scale, y - 20 * scale, 10 * scale, 5 * scale); // Βάση
+  rect(x + 175 * scale, y - 20 * scale, 10 * scale, 5 * scale);  
   fill(255, 255, 255, 80);
   quad(
       x + 15 * scale, y + 15 * scale,
@@ -364,35 +364,35 @@ function drawReceptionDeskStructure(x, y) {
       x + 15 * scale, y + 30 * scale
   );
 
-  // Κουδούνι
-  fill(255, 215, 0); // Ανοιχτό χρυσό χρώμα για κουδούνι
-  ellipse(x + 80 * scale, y - 30 * scale, 20 * scale, 20 * scale); // Σώμα κουδουνιού
+   
+  fill(255, 215, 0);  
+  ellipse(x + 80 * scale, y - 30 * scale, 20 * scale, 20 * scale);  
   fill(255, 240, 180);
-  ellipse(x + 80 * scale, y - 35 * scale, 10 * scale, 10 * scale); // Κορυφή κουδουνιού
+  ellipse(x + 80 * scale, y - 35 * scale, 10 * scale, 10 * scale);  
 }
 
 
 
-// Σ
-// Συνάρτηση για τη σχεδίαση ενός τζακιού με καμινάδα
+ 
+ 
 function drawFireplace(x, y) {
-  const scale = 0.5; // Κλίμακα μεγέθους για το τζάκι
+  const scale = 0.5;  
 
-  // Καμινάδα
-  fill(139, 69, 19); // Καφέ χρώμα για την καμινάδα
-  rect(x + 80 * scale, y - 281 * scale, 40 * scale, 281 * scale); // Ψηλότερο σώμα της καμινάδας
+   
+  fill(139, 69, 19);  
+  rect(x + 80 * scale, y - 281 * scale, 40 * scale, 281 * scale);  
 
-  // Βασική δομή τζακιού
-  fill(139, 69, 19); // Καφέ χρώμα για το ξύλο
-  rect(x, y, 200 * scale, 150 * scale); // Σώμα του τζακιού
+   
+  fill(139, 69, 19);  
+  rect(x, y, 200 * scale, 150 * scale);  
 
-  // Άνοιγμα τζακιού
-  fill(0); // Μαύρο για το εσωτερικό
+   
+  fill(0);  
   rect(x + 50 * scale, y + 50 * scale, 100 * scale, 80 * scale);
 
-  // Φλόγες μέσα στο μαύρο πλαίσιο
+   
   for (let i = 0; i < 5; i++) {
-      fill(255, random(100, 200), 0, random(180, 255)); // Φλόγες με δυναμική φωτεινότητα
+      fill(255, random(100, 200), 0, random(180, 255));  
       beginShape();
       vertex(x + 75 * scale + i * 10 * scale, y + 120 * scale);
       vertex(x + 70 * scale + i * 10 * scale, y + 100 * scale - random(10, 30) * scale);
@@ -400,13 +400,13 @@ function drawFireplace(x, y) {
       endShape(CLOSE);
   }
 
-  // Σκιάσεις και λεπτομέρειες
+   
   fill(100, 50, 25);
-  rect(x, y, 200 * scale, 20 * scale); // Διακοσμητική κορυφή
+  rect(x, y, 200 * scale, 20 * scale);  
   fill(80, 40, 20);
-  rect(x + 20 * scale, y + 140 * scale, 160 * scale, 10 * scale); // Βάση
+  rect(x + 20 * scale, y + 140 * scale, 160 * scale, 10 * scale);  
 
-  // Διακοσμητικές γραμμές
+   
   stroke(120, 60, 30);
   strokeWeight(2 * scale);
   for (let i = 0; i < 4; i++) {
@@ -415,7 +415,7 @@ function drawFireplace(x, y) {
   noStroke();
 }
 
-// Συνάρτηση για τη σχεδίαση όλων των τζακιών
+ 
 function drawFireplaces() {
   for (let fireplace of fireplaces) {
       drawFireplace(fireplace.x, fireplace.y);
@@ -428,15 +428,15 @@ function drawFireplaces() {
 function drawNormalSuitcase(x,y){
   const scale = 0.5;
 
-  // Σώμα βαλίτσας
-  fill(139,  69,  19); // Κόκκινο αν είναι ανωμαλία
-  rect(x, y, 100 * scale, 70 * scale, 5); // Σώμα
+   
+  fill(139,  69,  19);  
+  rect(x, y, 100 * scale, 70 * scale, 5);  
 
-  // Λαβή
+   
   fill(100);
   rect(x + 30 * scale, y - 10 * scale, 40 * scale, 10 * scale, 5);
 
-  // Διακοσμητικές γραμμές
+   
   stroke(80);
   strokeWeight(2);
   line(x + 10 * scale, y + 20 * scale, x + 90 * scale, y + 20 * scale);
@@ -457,22 +457,22 @@ function drawNormalSuitcase(x,y){
 function  drawNormalDoll(x,y){
   const scale = 0.6;
   
-    // Σώμα της κούκλας
-    fill(250, 220, 200); // Κεφάλι
+     
+    fill(250, 220, 200);  
     ellipse(x, y - 50 * scale, 40 * scale, 50 * scale);
   
-    fill(150, 50, 50); // Φόρεμα
+    fill(150, 50, 50);  
     rect(x - 20 * scale, y - 30 * scale, 40 * scale, 60 * scale);
   
-    fill(250, 220, 200); // Χέρια
+    fill(250, 220, 200);  
     ellipse(x - 25 * scale, y - 20 * scale, 15 * scale, 15 * scale);
     ellipse(x + 25 * scale, y - 20 * scale, 15 * scale, 15 * scale);
   
-    fill(150, 50, 50); // Πόδια
+    fill(150, 50, 50);  
     rect(x - 15 * scale, y + 30 * scale, 10 * scale, 20 * scale);
     rect(x + 5 * scale, y + 30 * scale, 10 * scale, 20 * scale);
   
-  // Πρόσωπο
+   
     drawNormalDollFace(x, y - 50 * scale);
   }
   
@@ -481,7 +481,7 @@ function  drawNormalDoll(x,y){
     const scale = 0.6;
   
     fill(0);
-    ellipse(x - 10 * scale, y - 5 * scale, 5 * scale, 5 * scale); // Μάτια
+    ellipse(x - 10 * scale, y - 5 * scale, 5 * scale, 5 * scale);  
     ellipse(x + 10 * scale, y - 5 * scale, 5 * scale, 5 * scale);
     noFill();
     stroke(0);
@@ -492,14 +492,14 @@ function  drawNormalDoll(x,y){
 
   
 function drawNormalMirror(x,y){
-const width = 90;  // Πλάτος καθρέφτη
-    const height = 140; // Ύψος καθρέφτη
+const width = 90;   
+    const height = 140;  
 
-    // Πλαίσιο καθρέφτη
-    fill(100, 50, 20); // Σκούρο ξύλο
+     
+    fill(100, 50, 20);  
     rect(x - width / 2, y - height / 2, width, height);
 
-    // Επιφάνεια καθρέφτη
+     
     fill(50, 70, 100, 200); // Σκούρο μπλε-γκρι για το γυαλί
     rect(x - width / 2 + 5, y - height / 2 + 5, width - 10, height - 10);
 
@@ -507,15 +507,15 @@ const width = 90;  // Πλάτος καθρέφτη
 }
 
   function drawElegantChair(x, y) {
-    const scale = 0.7; // Κλίμακα για μέγεθος
+    const scale = 0.7;  
 
-    // Πλάτη της καρέκλας
-    fill(120, 60, 30); // Καφέ ξύλινο πλαίσιο
-    rect(x + 20 * scale, y - 80 * scale, 60 * scale, 100 * scale, 20); // Πλαίσιο
-    fill(90, 45, 20); // Σκούρο καφέ
-    rect(x + 30 * scale, y - 70 * scale, 40 * scale, 80 * scale, 15); // Εσωτερικό
+     
+    fill(120, 60, 30);  
+    rect(x + 20 * scale, y - 80 * scale, 60 * scale, 100 * scale, 20);  
+    fill(90, 45, 20);  
+    rect(x + 30 * scale, y - 70 * scale, 40 * scale, 80 * scale, 15);  
 
-    // Σχέδιο στην πλάτη
+     
     fill(50, 25, 15);
     for (let i = 0; i < 5; i++) {
         ellipse(
@@ -526,27 +526,27 @@ const width = 90;  // Πλάτος καθρέφτη
         );
     }
 
-    // Μπράτσα της καρέκλας
+     
     fill(120, 60, 30);
-    ellipse(x + 10 * scale, y + 10 * scale, 20 * scale, 40 * scale); // Αριστερό
-    ellipse(x + 90 * scale, y + 10 * scale, 20 * scale, 40 * scale); // Δεξί
+    ellipse(x + 10 * scale, y + 10 * scale, 20 * scale, 40 * scale);  
+    ellipse(x + 90 * scale, y + 10 * scale, 20 * scale, 40 * scale);  
 
-    // Καθίσμα
-    fill(139, 69, 19); // Καφέ για το κάθισμα
-    rect(x + 10 * scale, y, 80 * scale, 30 * scale, 5); // Κάλυψη για ενιαίο σχέδιο
+     
+    fill(139, 69, 19);  
+    rect(x + 10 * scale, y, 80 * scale, 30 * scale, 5);  
 
-    // Σκαλιστά πόδια
+     
     fill(100, 50, 25);
-    rect(x + 20 * scale, y + 30 * scale, 10 * scale, 30 * scale, 5); // Αριστερό μπροστινό
-    rect(x + 70 * scale, y + 30 * scale, 10 * scale, 30 * scale, 5); // Δεξί μπροστινό
-    rect(x + 30 * scale, y + 30 * scale, 40 * scale, 10 * scale); // Στήριξη μέσης
+    rect(x + 20 * scale, y + 30 * scale, 10 * scale, 30 * scale, 5);  
+    rect(x + 70 * scale, y + 30 * scale, 10 * scale, 30 * scale, 5);  
+    rect(x + 30 * scale, y + 30 * scale, 40 * scale, 10 * scale);  
 
-    // Διακοσμητική κορυφή
+     
     fill(160, 82, 45);
     arc(x + 50 * scale, y - 75 * scale, 40 * scale, 20 * scale, PI, TWO_PI);
 
-    // Κόσμημα κορυφής
-    fill(255, 215, 0); // Χρυσό
+     
+    fill(255, 215, 0);  
     ellipse(x + 50 * scale, y - 80 * scale, 10 * scale, 10 * scale);
 }
 
@@ -563,72 +563,72 @@ function drawSpikeRow(x, y, width, height) {
   noStroke();
   for (let i = 0; i < width; i += 10) {
       triangle(
-          x + i, y,                 // Αριστερή κορυφή
-          x + i + 5, y - height,    // Κορυφή τριγώνου
-          x + i + 10, y             // Δεξιά κορυφή
+          x + i, y,                  
+          x + i + 5, y - height,     
+          x + i + 10, y              
       );
   }
 }
 
 
   function drawRealisticSofa(x, y) {
-    const scale =0.4; // Κλίμακα για το μέγεθος
+    const scale =0.4;  
 
-    // Πλήρες σώμα του καναπέ
-    fill(139, 69, 19); // Σκούρο καφέ
-    rect(x, y, 200 * scale, 100 * scale, 20); // Κυρίως σώμα
+     
+    fill(139, 69, 19);  
+    rect(x, y, 200 * scale, 100 * scale, 20);  
 
-    // Πλάτη του καναπέ
-    fill(160, 82, 45); // Ανοιχτό καφέ
-    arc(x + 100 * scale, y, 200 * scale, 150 * scale, PI, TWO_PI); // Ενιαία πλάτη και σώμα
+     
+    fill(160, 82, 45);  
+    arc(x + 100 * scale, y, 200 * scale, 150 * scale, PI, TWO_PI);  
 
-    // Διακοσμητική κορυφή
+     
     fill(120, 60, 30);
     ellipse(x + 100 * scale, y - 50 * scale, 30 * scale, 20 * scale);
 
-    // Κουμπώματα
-    fill(110, 55, 15); // Σκούρο καφέ για κουμπώματα
+     
+    fill(110, 55, 15);  
     for (let i = 1; i <= 4; i++) {
         ellipse(x + i * 40 * scale, y - 30 * scale, 10 * scale, 10 * scale);
     }
 
-    // Μπράτσα
+     
     fill(139, 69, 19);
-    rect(x - 20 * scale, y + 20 * scale, 40 * scale, 60 * scale, 10); // Αριστερό μπράτσο
-    rect(x + 180 * scale, y + 20 * scale, 40 * scale, 60 * scale, 10); // Δεξί μπράτσο
+    rect(x - 20 * scale, y + 20 * scale, 40 * scale, 60 * scale, 10);  
+    rect(x + 180 * scale, y + 20 * scale, 40 * scale, 60 * scale, 10);  
 
-    // Πόδια καναπέ
+     
     fill(100, 50, 25);
-    rect(x + 20 * scale, y + 90 * scale, 20 * scale, 20 * scale); // Αριστερό πόδι
-    rect(x + 160 * scale, y + 90 * scale, 20 * scale, 20 * scale); // Δεξί πόδι
-    rect(x + 90 * scale, y + 90 * scale, 20 * scale, 20 * scale); // Κεντρικό πόδι
+    rect(x + 20 * scale, y + 90 * scale, 20 * scale, 20 * scale);  
+    rect(x + 160 * scale, y + 90 * scale, 20 * scale, 20 * scale);  
+    rect(x + 90 * scale, y + 90 * scale, 20 * scale, 20 * scale);  
 }
 
 function drawDesk(x, y) {
-  const scale = 0.6; // Κλίμακα σχεδίασης
+  const scale = 0.6;  
 
-  // Επιφάνεια γραφείου
-  fill(139, 69, 19); // Καφέ για την επιφάνεια
-  rect(x, y - 10 * scale, 200 * scale, 20 * scale, 5); // Στρογγυλεμένη επιφάνεια
+   
+  fill(139, 69, 19);  
+  rect(x, y - 10 * scale, 200 * scale, 20 * scale, 5);  
 
-  // Συρτάρια αριστερά
-  fill(200); // Γκρι για τα συρτάρια
+   
+  fill(200);  
   rect(x, y, 60 * scale, 100 * scale);
   for (let i = 0; i < 3; i++) {
       rect(x + 10 * scale, y + 10 * scale + i * 30 * scale, 40 * scale, 20 * scale);
   }
 
-  // Συρτάρια δεξιά
+   
   rect(x + 140 * scale, y, 60 * scale, 100 * scale);
   for (let i = 0; i < 3; i++) {
       rect(x + 150 * scale, y + 10 * scale + i * 30 * scale, 40 * scale, 20 * scale);
   }
 
-  // Σκιάσεις
+   
   fill(120);
-  rect(x + 60 * scale, y, 80 * scale, 100 * scale); // Κεντρική περιοχή
+  rect(x + 60 * scale, y, 80 * scale, 100 * scale);  
 
-  // Χερούλια
+   
   fill(50);
   for (let i = 0; i < 3; i++) {
       ellipse(x + 30 * scale, y + 20 * scale + i * 30 * scale, 5 * scale, 5 * scale);
@@ -643,12 +643,12 @@ function drawStairs() {
 }
 
 function drawStair(x, y, steps, stepWidth, stepHeight) {
-  let stepColor = [70, 40, 20]; // Σκούρο καφέ για τα σκαλιά
-    let supportColor = [50, 30, 15]; // Πιο σκούρο καφέ για τα στηρίγματα
-    let shadowColor = [30, 15, 5, 150]; // Σκιά για βάθος
-    let highlightColor = [100, 60, 40]; // Φωτεινές γραμμές για υφή
+  let stepColor = [70, 40, 20];  
+    let supportColor = [50, 30, 15];  
+    let shadowColor = [30, 15, 5, 150];  
+    let highlightColor = [100, 60, 40];  
 
-    // Πλάγιο στήριγμα
+     
     fill(supportColor);
     noStroke();
     beginShape();
@@ -658,35 +658,35 @@ function drawStair(x, y, steps, stepWidth, stepHeight) {
     vertex(x - 5, y + 5);
     endShape(CLOSE);
 
-    // Σκαλιά με λεπτομέρειες
+     
     for (let i = 0; i < steps; i++) {
         let stepX = x + i * stepWidth;
         let stepY = y - i * stepHeight;
 
-        // Σκαλί με υφή
+         
         fill(stepColor);
         rect(stepX, stepY, stepWidth, stepHeight);
 
-        // Προσθήκη γραμμών για υφή ξύλου
+         
         stroke(highlightColor);
         strokeWeight(1);
         for (let j = 1; j <= 3; j++) {
             line(stepX + j * 10, stepY + 2, stepX + j * 10, stepY + stepHeight - 2);
         }
 
-        // Σκιά στο σκαλί
+         
         noStroke();
         fill(shadowColor);
         rect(stepX + 2, stepY + stepHeight - 3, stepWidth - 4, 3);
     }
 
-    // Στρογγυλεμένα κάθετα στηρίγματα
+     
     for (let i = 0; i <= steps; i++) {
         let columnX = x + i * stepWidth;
         fill(supportColor);
         rect(columnX - 2, y - i * stepHeight, 4, stepHeight);
 
-        // Στρογγυλές άκρες
+         
         ellipse(columnX, y - i * stepHeight + stepHeight, 6, 6);
     }
 }
@@ -717,25 +717,25 @@ function drawReceptionBanner(x,y){
 }
 
 function drawLibraryImage(x,y){
-  image(libraryImg, x, y, 75, 40); // Σχεδίαση εικόνας
+  image(libraryImg, x, y, 75, 40);  
 }
 function drawCasteImage(x,y){
-  image(castleImg, x, y, 150, 100); // Σχεδίαση εικόνας
+  image(castleImg, x, y, 150, 100);  
 }
 
 function drawPaintingReception(x,y){
-image(mooonImg, x, y, 150, 100); // Σχεδίαση εικόνας
+image(mooonImg, x, y, 150, 100);  
 }
 
 function drawPaintingimage(x, y, width, height) {
-  image(paintingImg, x, y, 70, 100); // Σχεδίαση εικόνας
+  image(paintingImg, x, y, 70, 100);  
 }
 
 function drawGraveyardPaintingimage(x, y, width, height) {
-  image(graveyardImg , x, y, 70, 100); // Σχεδίαση εικόνας
+  image(graveyardImg , x, y, 70, 100);  
 }
 function drawHousePaintingimage(x, y, width, height) {
-  image( houseImg , x, y, 70, 100); // Σχεδίαση εικόνας
+  image( houseImg , x, y, 70, 100);  
 }
 
 
@@ -746,22 +746,22 @@ function drawBloodyHandprint(x, y) {
 
 
 function drawOpenBook(x, y) {
-  // Βάση βιβλίου
-  fill(165, 42, 42); // Καστανό
-  rect(x, y, 50, 10); // Βάση
+   
+  fill(165, 42, 42);  
+  rect(x, y, 50, 10);  
 
-  // Σελίδες
-  fill(255); // Λευκό για τις σελίδες
+   
+  fill(255);  
   beginShape();
   for (let i = 0; i < 50; i += 10) {
-      let offset = sin(frameCount * 0.1 + i * 0.3) * 2; // Κίνηση στις σελίδες
+      let offset = sin(frameCount * 0.1 + i * 0.3) * 2;  
       vertex(x + i, y + offset);
   }
   vertex(x + 50, y + 10);
   vertex(x, y + 10);
   endShape(CLOSE);
 
-  // Γραμμές σελίδων
+   
   stroke(200);
   line(x + 10, y, x + 10, y + 10);
   line(x + 20, y, x + 20, y + 10);
@@ -769,39 +769,39 @@ function drawOpenBook(x, y) {
 
 
 function drawLantern(x, y) {
-  // Σώμα του φαναριού
-  fill(50); // Σκούρο γκρι
-  rect(x, y, 20, 30); // Κυρίως σώμα
+   
+  fill(50);  
+  rect(x, y, 20, 30);  
 
-  // Φλόγα
-  fill(255, 165, 0, random(100, 255)); // Πορτοκαλί με δυναμική αδιαφάνεια
-  ellipse(x + 10, y + 10, 10, 15); // Φλόγα
+   
+  fill(255, 165, 0, random(100, 255));  
+  ellipse(x + 10, y + 10, 10, 15);  
 
-  // Χερούλι
+   
   stroke(50);
-  line(x + 5, y - 5, x + 15, y - 5); // Χερούλι
+  line(x + 5, y - 5, x + 15, y - 5);  
 }
 
 function drawHangingRope(x, y) {
-  stroke(139, 69, 19); // Καφέ χρώμα
+  stroke(139, 69, 19);  
   strokeWeight(4);
-  let offset = sin(frameCount * 0.1) * 5; // Κίνηση του σχοινιού
-  line(x, y, x + offset, y + 100); // Σχοινί
+  let offset = sin(frameCount * 0.1) * 5;  
+  line(x, y, x + offset, y + 100);  
 }
 
 
 function drawBed(x, y) {
-  // Βάση του κρεβατιού
-  fill(139, 69, 19); // Καφέ
-  rect(x, y, 150, 30); // Κρεβάτι
+   
+  fill(139, 69, 19);  
+  rect(x, y, 150, 30);  
 
-  // Στρώμα
-  fill(200); // Γκρι
-  rect(x + 5, y - 10, 130, 10); // Στρώμα
+   
+  fill(200);  
+  rect(x + 5, y - 10, 130, 10);  
 
-  // Όρθιο Μαξιλάρι
-  fill(255); // Λευκό
-  ellipse(x + 17, y - 15, 20, 10); // Μαξιλάρι
+   
+  fill(255);  
+  ellipse(x + 17, y - 15, 20, 10);  
 }
 
 
@@ -816,73 +816,73 @@ function drawBed(x, y) {
 
 
 function drawCandle(x, y) {
-  fill(255); // Κερί
+  fill(255);  
   rect(x - 5, y-20, 10, 40);
 
-  fill(255, 165, 0, 200); // Φλόγα
+  fill(255, 165, 0, 200);  
   let flameOffset = random(-2, 2);
   ellipse(x, y - 25 + flameOffset, 10, 15);
 }
 
 function drawBrokenImage(x, y) {
-  fill(139, 69, 19); // Πλαίσιο
+  fill(139, 69, 19);  
   rect(x, y, 60, 80);
 
-  fill(255); // Εικόνα
+  fill(255);  
   rect(x + 5, y + 5, 50, 70);
 
   stroke(0);
   strokeWeight(1);
-  line(x + 10, y + 10, x + 50, y + 70); // Ρωγμές
+  line(x + 10, y + 10, x + 50, y + 70);  
   line(x + 50, y + 10, x + 10, y + 70);
 }
 
 // function drawBloodyDoll(x, y) {
-//   fill(250, 220, 200); // Δέρμα
-//   ellipse(x, y - 30, 20, 20); // Κεφάλι
+//   fill(250, 220, 200);  
+//   ellipse(x, y - 30, 20, 20);  
 
-//   fill(200, 0, 0); // Ματωμένο φόρεμα
+//   fill(200, 0, 0);  
 //   rect(x - 10, y - 20, 20, 30);
 
-//   fill(200, 0, 0, 150); // Αίμα
+//   fill(200, 0, 0, 150);  
 //   ellipse(x, y + 10, 15, 10);
 // }
 
 function drawWallClock(x, y, stoppedHour = 3, stoppedMinute = 15, reverse = false) {
-  // Σώμα Ρολογιού
+   
 let scale = 0.5;
-  fill(80, 40, 30); // Καφέ για το ξύλινο πλαίσιο
+  fill(80, 40, 30);  
   stroke(0);
   strokeWeight(3);
-  ellipse(x*scale, y*scale, 80*scale, 80*scale); // Πλαίσιο ρολογιού
+  ellipse(x*scale, y*scale, 80*scale, 80*scale);  
 
-  // Καντράν
-  fill(255); // Λευκό καντράν
+   
+  fill(255);  
   noStroke();
   ellipse(x*scale, y*scale, 70*scale, 70*scale);
   
 
-  // Ωροδείκτες και Λεπτοδείκτες
+   
   let hourAngle = map(stoppedHour % 12, 0, 12, 0, TWO_PI) - HALF_PI;
   let minuteAngle = map(stoppedMinute, 0, 60, 0, TWO_PI) - HALF_PI;
 
   if (reverse) {
-    // Αντίστροφη κίνηση
-    clockRotation -= 0.02; // Αργή αντίστροφη περιστροφή
+     
+    clockRotation -= 0.02;  
     hourAngle += clockRotation;
     minuteAngle += clockRotation * 12;
   }
 
-  // Ωροδείκτης
+   
   stroke(0);
   strokeWeight(4);
   line(x*scale, y*scale, (x*scale) + 10 * cos(hourAngle), (y*scale) + 10 * sin(hourAngle));
 
-  // Λεπτοδείκτης
+   
   strokeWeight(2);
   line(x*scale, y*scale, (x*scale) + 17 * cos(minuteAngle),  (y*scale) + 17 * sin(minuteAngle));
 
-  // Κέντρο Ρολογιού
+   
   fill(0);
   noStroke();
   ellipse(x*scale, y*scale, 5*scale, 5*scale);
@@ -914,26 +914,26 @@ function drawBookshelfs(){
 function drawBookshelf2(x,y){
   let scale = 0.6; // Μείωση μεγέθους κατά 40%
 
-  // Πλαίσιο της βιβλιοθήκης
-  fill(120, 70, 50); // Καφέ χρώμα για το ξύλο
+   
+  fill(120, 70, 50);  
   rect(x, y, 120 * scale, 200 * scale);
 
-  // Ράφια
-  fill(100, 50, 30); // Σκούρο καφέ για τα ράφια
+   
+  fill(100, 50, 30);  
   rect(x, y + 50 * scale, 120 * scale, 5 * scale);
   rect(x, y + 100 * scale, 120 * scale, 5 * scale);
   rect(x, y + 150 * scale, 120 * scale, 5 * scale);
   
 
-  // Βιβλία στο πρώτο ράφι
-  fill(200, 50, 50); // Κόκκινο βιβλίο
+   
+  fill(200, 50, 50);  
   rect(x + 10 * scale, y + 10 * scale, 15 * scale, 40 * scale);
-  fill(50, 100, 200); // Μπλε βιβλίο
+  fill(50, 100, 200);  
   rect(x + 30 * scale, y + 10 * scale, 15 * scale, 40 * scale);
-  fill(50, 200, 100); // Πράσινο βιβλίο
+  fill(50, 200, 100);  
   rect(x + 50 * scale, y + 10 * scale, 15 * scale, 40 * scale);
 
-  // Βιβλία στο δεύτερο ράφι
+   
   fill(255, 200, 0);
   rect(x + 10 * scale, y + 60 * scale, 15 * scale, 40 * scale);
   fill(150, 0, 150);
@@ -956,45 +956,45 @@ function drawDoors() {
 }
 
 function drawHorrorDoor(x, y, roomNumber) {
-  const doorWidth = 80;       // Πλάτος πόρτας
+  const doorWidth = 80;        
   const doorHeight = 140;     // Αυξημένο ύψος πόρτας (π.χ., 160 αντί για 120)
   const doorHandleY = y + doorHeight / 2; // Νέα θέση του πομολού, στο μέσο του ύψους
   noStroke();
 
-  // Σώμα πόρτας με σκούρο ξύλο
-  fill(100, 50, 30); // Σκούρο καφέ για πιο παλιό ξύλο
+   
+  fill(100, 50, 30);  
   rect(x, y, doorWidth, doorHeight);
 
-  // Σκιές για βάθος
-  fill(60, 30, 15); // Σκούρες σκιές
-  rect(x, y, 10, doorHeight); // Αριστερή σκιά
-  rect(x + doorWidth - 10, y, 10, doorHeight); // Δεξιά σκιά
+   
+  fill(60, 30, 15);  
+  rect(x, y, 10, doorHeight);  
+  rect(x + doorWidth - 10, y, 10, doorHeight);  
 
-  // Γρατζουνιές και ραγίσματα
+   
   stroke(80);
   strokeWeight(1);
-  line(x + 10, y + 0.3 * doorHeight, x + 30, y + 0.5 * doorHeight); // Διαγώνια γρατζουνιά
-  line(x + 50, y + 0.2 * doorHeight, x + 60, y + 0.4 * doorHeight); // Άλλη γρατζουνιά
+  line(x + 10, y + 0.3 * doorHeight, x + 30, y + 0.5 * doorHeight);  
+  line(x + 50, y + 0.2 * doorHeight, x + 60, y + 0.4 * doorHeight);  
 
-  // Αιματηρά αποτυπώματα
+   
   noStroke();
-  fill(150, 0, 0, 200); // Σκούρο κόκκινο για αίμα
-  ellipse(x + 20, y + doorHeight - 40, 10, 20); // Στίγμα 1
-  ellipse(x + 25, y + doorHeight - 30, 8, 18); // Στίγμα 2
+  fill(150, 0, 0, 200);  
+  ellipse(x + 20, y + doorHeight - 40, 10, 20);  
+  ellipse(x + 25, y + doorHeight - 30, 8, 18);  
 
   // Χερούλι πόρτας (παλιό και σπασμένο)
-  fill(150, 150, 100); // Φθαρμένο χρυσό
-  ellipse(x + doorWidth - 15, doorHandleY, 8, 8); // Νέο ύψος πομολού στο κέντρο πόρτας
+  fill(150, 150, 100);  
+  ellipse(x + doorWidth - 15, doorHandleY, 8, 8);  
 
-  // Χαραμάδα με μάτια ή σκιές
-  fill(0); // Σκούρο για κενό
-  rect(x + 30, y + doorHeight - 50, 20, 5); // Χαραμάδα
-  fill(255, 0, 0); // Κόκκινα μάτια
-  ellipse(x + 35, y + doorHeight - 48, 3, 3); // Μάτι 1
-  ellipse(x + 45, y + doorHeight - 48, 3, 3); // Μάτι 2
+   
+  fill(0);  
+  rect(x + 30, y + doorHeight - 50, 20, 5);  
+  fill(255, 0, 0);  
+  ellipse(x + 35, y + doorHeight - 48, 3, 3);  
+  ellipse(x + 45, y + doorHeight - 48, 3, 3);  
 
-  // Αριθμός δωματίου
-  fill(200, 0, 0); // Σκούρο κόκκινο για τον αριθμό
+   
+  fill(200, 0, 0);  
   textAlign(CENTER, CENTER);
   textSize(12);
   text(`Room ${roomNumber}`, x + doorWidth / 2, y + 20);
@@ -1003,26 +1003,26 @@ function drawHorrorDoor(x, y, roomNumber) {
 
 
 function drawRoomDoor(x, y, roomNumber) {
-  // Σώμα πόρτας
-  fill(139, 69, 19); // Καφέ χρώμα για την πόρτα
-  rect(x, y, 80, 120); // Πόρτα
+   
+  fill(139, 69, 19);  
+  rect(x, y, 80, 120);  
 
-  // // Πλαίσιο πόρτας
+   
   // noFill();
-  // stroke(100); // Σκούρο γκρι πλαίσιο
+  // stroke(100);  
   // strokeWeight(4);
-  // rect(x - 5, y - 5, 90, 130); // Πλαίσιο
+  // rect(x - 5, y - 5, 90, 130);  
 
-  // Χερούλι
-  fill(255, 223, 0); // Χρυσό χερούλι
-  ellipse(x + 65, y + 60, 10, 10); // Χερούλι
+   
+  fill(255, 223, 0);  
+  ellipse(x + 65, y + 60, 10, 10);  
 
-  // Αριθμός δωματίου
+   
   noStroke();
-  fill(255); // Λευκός αριθμός
+  fill(255);  
   textAlign(CENTER, CENTER);
   textSize(14);
-  text(`Room ${roomNumber}`, x + 40, y + 20); // Τοποθεσία αριθμού
+  text(`Room ${roomNumber}`, x + 40, y + 20);  
 }
 
 
@@ -1043,25 +1043,25 @@ function drawRoomDoor(x, y, roomNumber) {
 function drawSofa2() {
   for (let pos of sofaPositions) {
   noStroke();
-  fill(139, 69, 19); // Καφέ χρώμα για το σώμα
-  rect(pos.x - 30, pos.y - 20, 60, 20); // Σώμα του καναπέ
-  fill(165, 42, 42); // Κόκκινο για το επάνω μέρος
-  rect(pos.x - 25, pos.y - 30, 50, 10); // Πλάτη του καναπέ
+  fill(139, 69, 19);  
+  rect(pos.x - 30, pos.y - 20, 60, 20);  
+  fill(165, 42, 42);  
+  rect(pos.x - 25, pos.y - 30, 50, 10);  
   }
 }
 
 
 
 function drawWindow() {
-  const windowWidth = 100; // Πλάτος παραθύρου
-  const windowHeight = 150; // Ύψος παραθύρου
-  let closestDistance = Infinity; // Αρχικά μεγάλη απόσταση
+  const windowWidth = 100;  
+  const windowHeight = 150;  
+  let closestDistance = Infinity;  
   const windowX = 300; // X-συντεταγμένη παραθύρου
   const windowY = 200; // Y-συντεταγμένη παραθύρου
-  const maxDistance = 500; // Μέγιστη απόσταση για πλήρη ένταση
+  const maxDistance = 500;  
 
   for (let pos of windowPositions) {
-    // Σχέδιο πλαισίου παραθύρου
+     
     fill(139, 69, 19);
     rect(pos.x, pos.y, windowWidth, windowHeight);
 
@@ -1069,30 +1069,30 @@ function drawWindow() {
     fill(173, 216, 230, 150);
     rect(pos.x + 5, pos.y + 5, windowWidth - 10, windowHeight - 10);
 
-    // Πλαίσια μέσα στο παράθυρο
+     
     stroke(139, 69, 19);
     line(pos.x + windowWidth / 2, pos.y + 5, pos.x + windowWidth / 2, pos.y + windowHeight - 5);
     line(pos.x + 5, pos.y + windowHeight / 2, pos.x + windowWidth - 5, pos.y + windowHeight / 2);
     noStroke();
 
-    // Σχέδιο βροχής και κεραυνών
+     
     drawRain(pos.x + 5, pos.y + 5, windowWidth - 10, windowHeight - 20);
     drawLightning(pos.x, pos.y, windowWidth -20, windowHeight - 100);
 
-    // Υπολογισμός απόστασης παίκτη από το παράθυρο
+     
     let distance = dist(player.x, player.y, pos.x + windowWidth / 2, pos.y + windowHeight / 2);
     if (distance < closestDistance) {
-      closestDistance = distance; // Ενημέρωση της πιο κοντινής απόστασης
+      closestDistance = distance;  
     }
   }
 
-    // Έλεγχος αν ο ήχος της βροχής επιτρέπεται
+     
     if (allowRainSound) {
       if (!soundManager.sounds['rain'].isPlaying()) {
-          soundManager.play('rain', true, 0.5); // Παίζει τον ήχο αν δεν παίζει ήδη
+          soundManager.play('rain', true, 0.5);  
       }
   } else {
-      // Σταματά τον ήχο αν παίζει
+       
       if (soundManager.sounds['rain']?.isPlaying()) {
           soundManager.stop('rain');
       }
@@ -1126,7 +1126,7 @@ function drawLightning(x, y, width, height) {
       let endX = startX + random(-20, 20);
       let endY = y + random(height / 2, height);
 
-      // Γραμμές κεραυνού
+       
       for (let i = 0; i < 5; i++) {
           line(startX, startY, endX, endY);
           startX = endX;
@@ -1151,43 +1151,43 @@ function displayScore(score) {
 
 
   function drawWall() {
-    // Βασικό σκούρο φόντο για τον τοίχο
-    fill(20, 20, 20); // Σχεδόν μαύρο χρώμα
+     
+    fill(20, 20, 20);  
     rect(0, 0, PLATFORM_WIDTH, height);
 
-    // Κατακόρυφες ξύλινες σανίδες
-    fill(50, 30, 20); // Σκούρο καφέ
+     
+    fill(50, 30, 20);  
     for (let x = 0; x < secretRoomStartX; x += 120) {
-        rect(x, 0, 20, height); // Σανίδες κάθε 120 pixels
+        rect(x, 0, 20, height);  
     }
 
    
 
-    // Σκιάσεις για πιο τρομακτική ατμόσφαιρα
-    fill(0, 0, 0, 80); // Μαύρη ημιδιαφανής σκιά
-    rect(0, height / 2 + 20, PLATFORM_WIDTH, height / 2); // Κάτω μισό τοίχου
+     
+    fill(0, 0, 0, 80);  
+    rect(0, height / 2 + 20, PLATFORM_WIDTH, height / 2);  
 
    
 }
 
-// Συνάρτηση για τη σχεδίαση στατικών λαμπών
+ 
 function drawLamps() {
-    for (let x = 100; x < width; x += 100) { // Τοποθέτηση λαμπών κάθε 300 pixels
+    for (let x = 100; x < width; x += 100) {  
         noStroke();
 
-        // Εφέ διάχυσης φωτός
+         
         for (let r = 120; r > 0; r -= 20) {
-            fill(255, 220, 150, 150 - r); // Διαφανές κίτρινο φως
+            fill(255, 220, 150, 150 - r);  
             ellipse(x, 150, r, r / 2);
         }
 
-        // Σώμα λάμπας
-        fill(255, 230, 180); // Απαλό κίτρινο
-        ellipse(x, 150, 30, 40); // Γυαλί της λάμπας
+         
+        fill(255, 230, 180);  
+        ellipse(x, 150, 30, 40);  
 
-        // Βάση της λάμπας
-        fill(80, 60, 40); // Σκούρο καφέ
-        rect(x - 5, 170, 10, 30); // Στήριγμα λάμπας
+         
+        fill(80, 60, 40);  
+        rect(x - 5, 170, 10, 30);  
     }
 }
 
@@ -1198,7 +1198,7 @@ function drawLamps() {
 
 
   function drawWallLights() {
-    // Lighting effect
+     
     for (let wall of walllights) {
         drawLight(wall.x, wall.y);
     }
@@ -1209,20 +1209,20 @@ function drawLamps() {
 
 
 function drawPoster(){
-    // Αφίσα με εικόνα
+     
     let posterWidth = 90, posterHeight = 90;
     fill(255);
-    rect( 1550, height -150 ,posterWidth, posterHeight); // Πλαίσιο
-    image(posterImage, 1550, height-150, posterWidth, posterHeight); // Εικόνα αφίσας
+    rect( 1550, height -150 ,posterWidth, posterHeight);  
+    image(posterImage, 1550, height-150, posterWidth, posterHeight);  
 
     fill(255);
-    rect( 1050, height -150 ,posterWidth, posterHeight); // Πλαίσιο
-    image(posterImage2, 1050, height-150, posterWidth, posterHeight); // Εικόνα αφίσας2
+    rect( 1050, height -150 ,posterWidth, posterHeight);  
+    image(posterImage2, 1050, height-150, posterWidth, posterHeight);  
 
 
     fill(255);
-    rect( 700, height -150 ,posterWidth, posterHeight); // Πλαίσιο
-    image(posterImage3, 700, height-150, posterWidth, posterHeight); // Εικόνα αφίσας3
+    rect( 700, height -150 ,posterWidth, posterHeight);  
+    image(posterImage3, 700, height-150, posterWidth, posterHeight);  
   }
 
 
@@ -1232,55 +1232,55 @@ function drawPoster(){
 
   
 function drawLight(x, y) {
-    // Glow effect
+     
     noStroke();
     for (let i = 100; i > 0; i -= 10) {
         fill(255, 220, 150, 255 - i * 2);
         ellipse(x, y, i, i / 2);
     }
-    // Light fixture
+     
     fill(255, 240, 200);
     rect(x - 20, y - 10, 40, 20);
 }   
 let doorCosmicX = 4000;
 let doorCosmicY = 420;
 
-let doorX = 3420; // Θέση της κύριας πόρτας στον άξονα X
-let doorY = 420; // Θέση της πόρτας στον άξονα Y
-let doorWidth = 70; // Πλάτος της πόρτας
-let doorHeight = 150; // Ύψος της πόρτας
-let doorOffset = 0; // Μετατόπιση της πόρτας
-let doorOpening = false; // Κατάσταση ανοίγματος
+let doorX = 3420;  
+let doorY = 420;  
+let doorWidth = 70;  
+let doorHeight = 150;  
+let doorOffset = 0;  
+let doorOpening = false;  
 function drawDoor() {
     // Σχεδίαση λευκής πόρτας (εξωτερικό πλαίσιο)
     fill(255, 255, 255);
     rect(doorX, doorY, doorWidth + 10, doorHeight + 10);
 
-    // Σχεδίαση εσωτερικής καφέ πόρτας που κινείται
+     
     fill(60, 30, 15);
     rect(doorX + doorOffset, doorY + 3, doorWidth + 10, doorHeight + 13);
 }
 
 
 function drawWalls() {
-  // Αριστερός τοίχος
+   
   fill(60, 60, 60);
   rect(0, 0, 20, height);
 
-  // Δεξιός τοίχος
+   
   fill(60, 60, 60);
   rect(RIGHT_WALL_X, 0, 20, height);
 
 
 
-  // Φανταστικές πόρτες
-  drawElegantExitDoor(5, height - 170); // Αριστερή πόρτα
-  drawElegantExitDoor(RIGHT_WALL_X + 5, height - 170); // Δεξιά πόρτα
+   
+  drawElegantExitDoor(5, height - 170);  
+  drawElegantExitDoor(RIGHT_WALL_X + 5, height - 170);  
 
   fill(60, 60, 60);
 
   rect(FIRST_WALL, 0, 20, height);
- // Ρεαλιστική πόρτα με πόμολο αριστερά
+  
  drawRealisticDoor(FIRST_WALL , height / 2 +120);
  drawRealisticDoor(FIRST_WALL , height / 4-40);
 
@@ -1294,7 +1294,7 @@ function drawWalls() {
  rect(UPPER_WALL, height - 580, 30000, 45);
 
 
- fill(100, 100, 100); // Σκούρο γκρι χρώμα
+ fill(100, 100, 100);  
  rect(UPPER_WALL_SECRET, height - 170, 80, 5);
 
 
@@ -1302,13 +1302,13 @@ function drawWalls() {
  fill(60, 60, 60);
 
  rect(SECOND_WALL, 0, 20, height);
-// Ρεαλιστική πόρτα με πόμολο αριστερά
+ 
 drawRealisticDoor(SECOND_WALL , height / 2 +120);
 drawRealisticDoor(SECOND_WALL , height / 4-40);
 
 fill(60, 60, 60);
 rect(THIRD_WALL, 0, 20, height);
-// Ρεαλιστική πόρτα με πόμολο αριστερά
+ 
 drawRealisticDoor(THIRD_WALL , height / 2 +120);
 drawRealisticDoor(THIRD_WALL , height / 4-40);
 
@@ -1317,7 +1317,7 @@ drawRealisticDoor(THIRD_WALL , height / 4-40);
 fill(60, 60, 60);
 
 rect(FORTH_WALL, 0, 20, height);
-// Ρεαλιστική πόρτα με πόμολο αριστερά
+ 
 drawRealisticDoor(FORTH_WALL , height / 2 +120);
 drawRealisticDoor(FORTH_WALL , height / 4-40);
 
@@ -1329,13 +1329,13 @@ rect(FIFTH_WALL, 0, 20, height);
 
 
 
-   // Αρχικό τοίχος secretRoom
+    
    fill(60, 60, 60);
    rect(NEW_WALL_X, 0,WALL_WIDTH, height);
 
 
 
-//Τελικος τοιχος secreRoom
+ 
    fill(60, 60, 60);
    rect(NEW_WALL_X2, 0,WALL_WIDTH, height);
 
@@ -1343,26 +1343,26 @@ rect(FIFTH_WALL, 0, 20, height);
 }
 
 function drawElegantExitDoor(x, y) {
-  const width = 50; // Πλάτος της πόρτας
-  const height = 150; // Ύψος της πόρτας
+  const width = 50;  
+  const height = 150;  
 
-  // Πλαίσιο πόρτας
-  fill(139, 69, 19); // Σκούρο καφέ για το ξύλο
+   
+  fill(139, 69, 19);  
   rect(x, y, width, height);
 
-  // Φωτεινό περίγραμμα
+   
   noFill();
-  stroke(255, 223, 0, 150); // Χρυσό με διαφάνεια
+  stroke(255, 223, 0, 150);  
   strokeWeight(4);
   rect(x - 5, y - 5, width + 10, height + 10, 5);
 
-  // Χερούλι
-  fill(255, 215, 0); // Χρυσό
-  ellipse(x + width - 10, y + height / 2, 8, 8); // Κυκλικό χερούλι
+   
+  fill(255, 215, 0);  
+  ellipse(x + width - 10, y + height / 2, 8, 8);  
 
-  // Σήμανση EXIT
+   
   noStroke();
-  fill(255); // Λευκό για το κείμενο
+  fill(255);  
   textSize(14);
   textAlign(CENTER, CENTER);
   text("EXIT", x + width / 2, y + height + 15);
@@ -1370,63 +1370,63 @@ function drawElegantExitDoor(x, y) {
 
 
 function drawRealisticDoor(x, y) {
-  // Σχεδίαση πλαισίου πόρτας
-  fill(100, 50, 30); // Καφέ για το ξύλο
-  rect(x, y, 15, 150, 2); // Πλαίσιο με μικρή καμπύλη
+   
+  fill(100, 50, 30);  
+  rect(x, y, 15, 150, 2);  
 
-  // Χρωματική διαβάθμιση για 3D εφέ
+   
   noStroke();
   for (let i = 0; i < 15; i++) {
-      let colorValue = map(i, 0, 15, 120, 80); // Από ανοιχτό σε σκούρο καφέ
+      let colorValue = map(i, 0, 15, 120, 80);  
       fill(colorValue, 50, 30);
-      rect(x + i, y + 3, 1, 144); // Σκίαση προς τα δεξιά
+      rect(x + i, y + 3, 1, 144);  
   }
 
-  // Χερούλι πόρτας
-  fill(180, 180, 0); // Χρυσό
-  ellipse(x + 12, y + 75, 4, 4); // Κυκλικό χερούλι
+   
+  fill(180, 180, 0);  
+  ellipse(x + 12, y + 75, 4, 4);  
 
-  // Εσωτερικό σκούρο μέρος για βάθος
-  fill(50, 30, 20, 100); // Σκούρο καφέ με διαφάνεια
+   
+  fill(50, 30, 20, 100);  
   rect(x + 2, y + 5, 11, 140, 2);
 }
 
 
 
-// Συνάρτηση για τη σχεδίαση μιας elegant πόρτας
+ 
 function drawElegantDoor(x, y) {
-  const scale = 0.9; // Κλίμακα για το μέγεθος της πόρτας
+  const scale = 0.9;  
 
-  // Πλαίσιο της πόρτας
-  fill(120, 60, 30); // Καφέ ξύλινο πλαίσιο
-  rect(x, y, 60 * scale, 120 * scale, 10); // Κυρίως σώμα
+   
+  fill(120, 60, 30);  
+  rect(x, y, 60 * scale, 120 * scale, 10);  
 
-    // Κενό μέσα στην πόρτα
-fill(0); // Μαύρο για το εσωτερικό
-rect(x + 55, y , 20, 115); // Εσωτερικό της πόρτας
+     
+fill(0);  
+rect(x + 55, y , 20, 115);  
 
-  // Διακοσμητικά στοιχεία
-  fill(100, 50, 25); // Σκούρο καφέ για διακοσμητικά
-  rect(x + 10 * scale, y + 10 * scale, 40 * scale, 20 * scale, 5); // Πάνω διακοσμητικό
-  rect(x + 10 * scale, y + 40 * scale, 40 * scale, 20 * scale, 5); // Κεντρικό διακοσμητικό
-  rect(x + 10 * scale, y + 70 * scale, 40 * scale, 30 * scale, 5); // Κάτω διακοσμητικό
+   
+  fill(100, 50, 25);  
+  rect(x + 10 * scale, y + 10 * scale, 40 * scale, 20 * scale, 5);  
+  rect(x + 10 * scale, y + 40 * scale, 40 * scale, 20 * scale, 5);  
+  rect(x + 10 * scale, y + 70 * scale, 40 * scale, 30 * scale, 5);  
 
-  // Πόμολο
-  fill(255, 215, 0); // Χρυσό πόμολο
-  ellipse(x + 15 * scale, y + 60 * scale, 8 * scale, 8 * scale); // Τοποθέτηση αριστερά
+   
+  fill(255, 215, 0);  
+  ellipse(x + 15 * scale, y + 60 * scale, 8 * scale, 8 * scale);  
 
 }
 
 
 
-// Συνάρτηση για τη σχεδίαση μιας πόρτας με φωτεινό εφέ όπως στην εικόνα
+ 
 function drawCosmicDoor(x, y) {
-  const scale = 1.2; // Κλίμακα για την πόρτα
+  const scale = 1.2;  
 
-  // Σχεδίαση λαμπερής αύρας γύρω από την πόρτα
+   
   noStroke();
   for (let i = 0; i < 12; i++) {
-    fill(20, 70, 150, 100 - i * 8); // Ακόμα πιο σκούρο μπλε με σταδιακή διαφάνεια
+    fill(20, 70, 150, 100 - i * 8);  
       rect(
           x - 20 * scale - i * 6, 
           y - 30 * scale - i * 6, 
@@ -1437,22 +1437,22 @@ function drawCosmicDoor(x, y) {
   }
 
  
-  // Σώμα της πόρτας
-  fill(10, 10, 40); // Σκούρο μπλε για την πόρτα
-  rect(x + 15, y, 70 * scale, 150 * scale, 5); // Κυρίως σώμα
+   
+  fill(10, 10, 40);  
+  rect(x + 15, y, 70 * scale, 150 * scale, 5);  
 
-  // Φωτεινό περίγραμμα της πόρτας
+   
   stroke(80, 200, 255);
   strokeWeight(6);
   noFill();
   rect(x + 15, y, 70 * scale, 150 * scale, 5);
 
-  // Εσωτερική λάμψη
+   
   noStroke();
-  fill(255, 200, 50, 200); // Φωτεινό χρυσό
+  fill(255, 200, 50, 200);  
 
 
-  // Σωματίδια φωτός
+   
   for (let i = 0; i < 40; i++) {
       let particleX = x + 25 * scale + Math.random() * 40 * scale;
       let particleY = y + 20 * scale + Math.random() * 110 * scale;
@@ -1460,24 +1460,24 @@ function drawCosmicDoor(x, y) {
       ellipse(particleX, particleY, 3, 3);
   }
 
-  // Δεξιά και αριστερά φύλλα της πόρτας
-  fill(10, 10, 40); // Σκούρο μπλε
-  rect(x - 60, y, 60 * scale, 150 * scale, 5); // Αριστερό φύλλο
-  rect(x + 101, y, 60 * scale, 150 * scale, 5); // Δεξιό φύλλο
+   
+  fill(10, 10, 40);  
+  rect(x - 60, y, 60 * scale, 150 * scale, 5);  
+  rect(x + 101, y, 60 * scale, 150 * scale, 5);  
 
-  // Χερούλια
+   
   fill(200, 200, 200);
-  rect(x - 35, y + 70, 8, 4); // Αριστερό χερούλι
-  rect(x + 110, y + 70, 8, 4); // Δεξιό χερούλι
+  rect(x - 35, y + 70, 8, 4);  
+  rect(x + 110, y + 70, 8, 4);  
 }
 
 function checkCosmicDoorSound(player, showCosmicDoor1) {
-  let doorX = 3470; // Θέση της πρώτης πόρτας
-  let doorX2 = 28320; // Θέση της δεύτερης πόρτας
-  let range = 600; // Μέγιστη απόσταση για τον ήχο
-  let volume; // Ένταση του ήχου
+  let doorX = 3470;  
+  let doorX2 = 28320;  
+  let range = 600;  
+  let volume;  
 
-  // Υπολογισμός απόστασης από την πρώτη πόρτα
+   
   if (player.x >= doorX - range && player.x <= doorX + range) {
     let distance = Math.abs(player.x - doorX);
     volume = map(distance, 0, range, 1.0, 0.0); // Υπολογισμός έντασης (1.0 όταν είναι κοντά, 0.0 όταν είναι μακριά)
@@ -1485,25 +1485,25 @@ function checkCosmicDoorSound(player, showCosmicDoor1) {
 
     if (showCosmicDoor1) {
       if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
-        soundManager.play('cosmicdoor', true, volume); // Ξεκίνα τον ήχο αν δεν παίζει ήδη
+        soundManager.play('cosmicdoor', true, volume);  
       }
-      soundManager.setVolume('cosmicdoor', volume); // Ρύθμιση έντασης
+      soundManager.setVolume('cosmicdoor', volume);  
     }
   } 
-  // Υπολογισμός απόστασης από τη δεύτερη πόρτα
+   
   else if (player.x >= doorX2 - range && player.x <= doorX2 + range) {
     let distance = Math.abs(player.x - doorX2);
-    volume = map(distance, 0, range, 1.0, 0.0); // Υπολογισμός έντασης
+    volume = map(distance, 0, range, 1.0, 0.0);  
     volume = constrain(volume, 0.0, 1.0); // Περιορισμός στα όρια [0.0, 1.0]
 
     if (!soundManager.sounds['cosmicdoor'].isPlaying()) {
-      soundManager.play('cosmicdoor', true, volume); // Ξεκίνα τον ήχο αν δεν παίζει ήδη
+      soundManager.play('cosmicdoor', true, volume);  
     }
-    soundManager.setVolume('cosmicdoor', volume); // Ρύθμιση έντασης
+    soundManager.setVolume('cosmicdoor', volume);  
   } 
-  // Αν ο παίκτης είναι εκτός εύρους και για τις δύο πόρτες
+   
   else {
-    soundManager.stop('cosmicdoor'); // Σταμάτα τον ήχο
+    soundManager.stop('cosmicdoor');  
   }
 }
 
@@ -1535,91 +1535,91 @@ function updateCosmicDoorSound(player, cosmicDoorX, cosmicDoorY) {
 function drawNoSmokingSign() {
   const x = width +550;
   const y = 480;
-  const diameter = 25; // Πολύ μικρό μέγεθος
+  const diameter = 25;  
 
   fill(255, 0, 0);
   noStroke();
   ellipse(x, y, diameter);
 
   stroke(255);
-  strokeWeight(2); // Λεπτό πάχος γραμμής
+  strokeWeight(2);  
   line(x - diameter / 2.5, y - diameter / 2.5, x + diameter / 2.5, y + diameter / 2.5);
 
   noStroke();
   fill(255);
-  rect(x - 5, y + 2, 12, 2); // Μικρή οριζόντια γραμμή
+  rect(x - 5, y + 2, 12, 2);  
   fill(255, 165, 0);
-  rect(x + 5, y + 2, 2, 2); // Μικρότερο πορτοκαλί πλαίσιο
+  rect(x + 5, y + 2, 2, 2);  
 
   noFill();
   stroke(255);
   strokeWeight(1);
-  arc(x - 7, y - 2, 5, 5, PI / 4, (3 * PI) / 4); // Μικρό τόξο
+  arc(x - 7, y - 2, 5, 5, PI / 4, (3 * PI) / 4);  
   arc(x - 8, y - 4, 4, 4, PI / 4, (3 * PI) / 4);
 }
 
 
 
-// ************************* SIGN BOARDS ******************************* //
+// ************************* SIGN BOARDS *******************************  
 
 
 function drawExitSignArrow(x, y) {
-  const signWidth = 80; // Διπλάσιο πλάτος της πινακίδας
-  const signHeight = 30; // Διπλάσιο ύψος της πινακίδας
-  const lightHeight = 10; // Διπλάσιο ύψος της πάνω λάμπας
+  const signWidth = 80;  
+  const signHeight = 30;  
+  const lightHeight = 10;  
 
-  // Πάνω φωτισμός
-  fill(200); // Ανοιχτό γκρι για τη λάμπα
+   
+  fill(200);  
   rect(x, y - lightHeight, signWidth, lightHeight);
 
-  // Γραμμές φωτισμού
-  fill(255); // Λευκό για το φως
+   
+  fill(255);  
   noStroke();
   rect(x, y - lightHeight + 2, signWidth, 2);
 
-  // Πλαίσιο πινακίδας
-  fill(0, 128, 0); // Πράσινο φόντο
+   
+  fill(0, 128, 0);  
   rect(x, y, signWidth, signHeight);
 
   // Κείμενο "EXIT"
-  textSize(12); // Μεγαλύτερο μέγεθος γραμματοσειράς
+  textSize(12);  
   textAlign(CENTER, CENTER);
-  fill(255); // Λευκό για το κείμενο
+  fill(255);  
   text("EXIT", x + signWidth / 2 - 6, y + signHeight / 2);
 
-  // Βέλος
-  fill(255); // Λευκό για το βέλος
+   
+  fill(255);  
   noStroke();
   beginShape();
-  vertex(x + signWidth - 20, y + signHeight / 2 - 8); // Αριστερή άκρη
-  vertex(x + signWidth - 4, y + signHeight / 2); // Μύτη του βέλους
-  vertex(x + signWidth - 20, y + signHeight / 2 + 8); // Δεξιά άκρη
-  vertex(x + signWidth - 24, y + signHeight / 2 + 8); // Κάτω γραμμή
-  vertex(x + signWidth - 24, y + signHeight / 2 - 8); // Επάνω γραμμή
+  vertex(x + signWidth - 20, y + signHeight / 2 - 8);  
+  vertex(x + signWidth - 4, y + signHeight / 2);  
+  vertex(x + signWidth - 20, y + signHeight / 2 + 8);  
+  vertex(x + signWidth - 24, y + signHeight / 2 + 8);  
+  vertex(x + signWidth - 24, y + signHeight / 2 - 8);  
   endShape(CLOSE);
 }
 function drawExitSign(x, y) {
-  const signWidth = 80; // Διπλάσιο πλάτος της πινακίδας
-  const signHeight = 30; // Διπλάσιο ύψος της πινακίδας
-  const lightHeight = 10; // Διπλάσιο ύψος της πάνω λάμπας
+  const signWidth = 80;  
+  const signHeight = 30;  
+  const lightHeight = 10;  
 
-  // Πάνω φωτισμός
-  fill(200); // Ανοιχτό γκρι για τη λάμπα
+   
+  fill(200);  
   rect(x, y - lightHeight, signWidth, lightHeight);
 
-  // Γραμμές φωτισμού
-  fill(255); // Λευκό για το φως
+   
+  fill(255);  
   noStroke();
   rect(x, y - lightHeight + 2, signWidth, 2);
 
-  // Πλαίσιο πινακίδας
-  fill(0, 128, 0); // Πράσινο φόντο
+   
+  fill(0, 128, 0);  
   rect(x, y, signWidth, signHeight);
 
   // Κείμενο "EXIT"
-  textSize(12); // Μεγαλύτερο μέγεθος γραμματοσειράς
+  textSize(12);  
   textAlign(CENTER, CENTER);
-  fill(255); // Λευκό για το κείμενο
+  fill(255);  
   text("EXIT", x + signWidth / 2, y + signHeight / 2);
 }
 
@@ -1628,24 +1628,24 @@ function drawExitSign(x, y) {
 
 
 function drawCourageSign(x, y) {
-  const boardWidth = 200; // Πλάτος πινακίδας
-  const boardHeight = 80; // Ύψος πινακίδας
+  const boardWidth = 200;  
+  const boardHeight = 80;  
 
-  // Πλαίσιο πινακίδας
-  fill(139, 69, 19); // Καφέ για το ξύλο
-  rect(x, y, boardWidth, boardHeight, 5); // Πλαίσιο με στρογγυλεμένες γωνίες
+   
+  fill(139, 69, 19);  
+  rect(x, y, boardWidth, boardHeight, 5);  
 
-  // Εσωτερικό πινακίδας
-  fill(240, 255, 240); // Απαλό πράσινο για ενθαρρυντικό μήνυμα
+   
+  fill(240, 255, 240);  
   rect(x + 5, y + 5, boardWidth - 10, boardHeight - 10, 5);
 
-  // Κείμενο
-  fill(0); // Μαύρο για το κείμενο
-  textSize(14); // Τίτλος
+   
+  fill(0);  
+  textSize(14);  
   textAlign(CENTER, CENTER);
   text("Stay Strong!", x + boardWidth / 2, y + 30);
 
-  textSize(12); // Μήνυμα
+  textSize(12);  
   text("Reach the end to gain 4 levels!", x + boardWidth / 2, y + 55);
 
     
@@ -1653,24 +1653,24 @@ function drawCourageSign(x, y) {
 
 
 function drawSignBoard1(x, y) {
-  const boardWidth = 300; // Μικρότερο πλάτος
-  const boardHeight = 150; // Μικρότερο ύψος
+  const boardWidth = 300;  
+  const boardHeight = 150;  
 
-  // Πλαίσιο πινακίδας
-  fill(139, 69, 19); // Καφέ για το ξύλο
-  rect(x, y, boardWidth, boardHeight, 5); // Πλαίσιο με στρογγυλεμένες γωνίες
+   
+  fill(139, 69, 19);  
+  rect(x, y, boardWidth, boardHeight, 5);  
 
-  // Εσωτερικό πινακίδας
-  fill(255, 240, 240); // Απαλό κόκκινο για σχετική προειδοποίηση
+   
+  fill(255, 240, 240);  
   rect(x + 5, y + 5, boardWidth - 10, boardHeight - 10, 5);
 
-  // Κείμενο
-  fill(0); // Μαύρο για το κείμενο
-  textSize(14); // Τίτλος
+   
+  fill(0);  
+  textSize(14);  
   textAlign(CENTER, CENTER);
   text("Anomalies Rules", x + boardWidth / 2, y + 30);
   
-  textSize(12); // Κανόνες
+  textSize(12);  
   text("- Don't overlook any anomalies.", x + boardWidth / 2, y + 65);
   text("- If you find anomalies, turn back immediately.", x + boardWidth / 2, y + 85);
   text("- If you don't find anomalies, do not turn back.", x + boardWidth / 2, y + 105);
@@ -1678,21 +1678,21 @@ function drawSignBoard1(x, y) {
 
 
 function drawSignBoard2(x, y) {
-  const boardWidth = 350; // Μικρότερο πλάτος
-  const boardHeight = 150; // Μικρότερο ύψος
+  const boardWidth = 350;  
+  const boardHeight = 150;  
 
-  // Πλαίσιο πινακίδας
-  fill(139, 69, 19); // Καφέ για το ξύλο
-  rect(x, y, boardWidth, boardHeight, 5); // Στρογγυλεμένες γωνίες
+   
+  fill(139, 69, 19);  
+  rect(x, y, boardWidth, boardHeight, 5);  
 
 
-  // Εσωτερικό πινακίδας
-  fill(255, 240, 240); // Απαλό κόκκινο για σχετική προειδοποίηση
+   
+  fill(255, 240, 240);  
   rect(x + 5, y + 5, boardWidth - 10, boardHeight - 10, 5);
 
-  // Κείμενο
-  fill(0); // Μαύρο για το κείμενο
-  textSize(14); // Μικρότερη γραμματοσειρά
+   
+  fill(0);  
+  textSize(14);  
   textAlign(CENTER, CENTER);
   text("Welcome!", x + boardWidth / 2, y + 30);
   textSize(12);
@@ -1703,19 +1703,19 @@ function drawSignBoard2(x, y) {
 
 function drawSignBoard3(x, y) { 
   
-  const boardWidth = 200; // Πλάτος
-  const boardHeight = 150; // Ύψος
+  const boardWidth = 200;  
+  const boardHeight = 150;  
 
-  // Πλαίσιο πινακίδας
-  fill(139, 69, 19); // Καφέ για το ξύλο
-  rect(x, y, boardWidth, boardHeight, 5); // Στρογγυλεμένες γωνίες
+   
+  fill(139, 69, 19);  
+  rect(x, y, boardWidth, boardHeight, 5);  
 
-  // Εσωτερικό πινακίδας
-  fill(255, 240, 240); // Απαλό κόκκινο για σχετική προειδοποίηση
+   
+  fill(255, 240, 240);  
   rect(x + 5, y + 5, boardWidth - 10, boardHeight - 10, 5);
   image(smileyfaceImg,x + 80, y + 70,40, 40);
-  // Κείμενο
-  fill(0); // Μαύρο για το κείμενο
+   
+  fill(0);  
   textSize(16); 
   textAlign(CENTER, CENTER);
   text("Good Luck!!!", x + boardWidth / 2, y + 50);
@@ -1723,17 +1723,17 @@ function drawSignBoard3(x, y) {
 
   // image (stairsghostImg,x,y, 150,100);
   
-  // // Χαμογελαστή φατσούλα
-  // fill(255, 220, 0); // Κίτρινο για το πρόσωπο
-  // ellipse(x + boardWidth / 2, y + 100, 40, 40); // Κύκλος για πρόσωπο
+   
+  // fill(255, 220, 0);  
+  // ellipse(x + boardWidth / 2, y + 100, 40, 40);  
 
-  // fill(0); // Μαύρο για τα μάτια
-  // ellipse(x + boardWidth / 2 - 10, y + 95, 5, 5); // Αριστερό μάτι
-  // ellipse(x + boardWidth / 2 + 10, y + 95, 5, 5); // Δεξί μάτι
+  // fill(0);  
+  // ellipse(x + boardWidth / 2 - 10, y + 95, 5, 5);  
+  // ellipse(x + boardWidth / 2 + 10, y + 95, 5, 5);  
 
   // noFill();
-  // stroke(0); // Μαύρο περίγραμμα για χαμόγελο
-  // arc(x + boardWidth / 2, y + 105, 20, 10, 0, PI); // Χαμόγελο
+  // stroke(0);  
+  // arc(x + boardWidth / 2, y + 105, 20, 10, 0, PI);  
 }
 
 

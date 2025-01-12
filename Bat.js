@@ -1,58 +1,58 @@
 class Bat {
     constructor(x, y, range, speed) {
-        this.x = x; // Σταθερή θέση X
-        this.y = y; // Αρχική θέση Y
-        this.startY = y; // Αρχική θέση για το εύρος κίνησης
-        this.range = range; // Εύρος κίνησης στον άξονα Y
-        this.speed = speed; // Ταχύτητα κίνησης
-        this.direction = 1; // 1 = πάνω, -1 = κάτω
+        this.x = x;  
+        this.y = y;  
+        this.startY = y;  
+        this.range = range;  
+        this.speed = speed;  
+        this.direction = 1;
     }
 
     update() {
-        this.y += this.speed * this.direction; // Κίνηση στον άξονα Y
+        this.y += this.speed * this.direction;  
 
-        // Αντιστροφή κατεύθυνσης όταν φτάσει στα όρια
+         
         if (this.y >= this.startY + this.range || this.y <= this.startY) {
             this.direction *= -1;
         }
     
   
-        // // Debugging
+         
         // console.log(`Νυχτερίδα X: ${this.x}, Y: ${this.y}`);
-         // Έλεγχος σύγκρουσης με τον παίκτη
+          
          if (
             player.x + player.width / 2 > this.x - 20 &&
             player.x - player.width / 2 < this.x + 20 &&
             player.y + player.height > this.y - 20 &&
             player.y < this.y + 20
         ) {
-            gameState = "gameover"; // Τερματισμός παιχνιδιού
+            gameState = "gameover";  
         }
     }
 
     show() {
-        let scale = 0.6; // Κλίμακα μεγέθους
+        let scale = 0.6;  
 
-        // Σώμα της νυχτερίδας
-        fill(0); // Μαύρο
+         
+        fill(0);  
         beginShape();
-        vertex(this.x, this.y); // Κέντρο
-        bezierVertex(this.x - 50 * scale, this.y - 20 * scale, this.x - 70 * scale, this.y - 50 * scale, this.x - 90 * scale, this.y - 30 * scale); // Αριστερό φτερό
-        bezierVertex(this.x - 70 * scale, this.y - 10 * scale, this.x - 90 * scale, this.y + 40 * scale, this.x - 50 * scale, this.y + 30 * scale); // Κάτω μέρος αριστερού φτερού
-        vertex(this.x, this.y + 50 * scale); // Κέντρο σώματος
-        bezierVertex(this.x + 50 * scale, this.y + 30 * scale, this.x + 90 * scale, this.y + 40 * scale, this.x + 70 * scale, this.y); // Κάτω μέρος δεξιού φτερού
-        bezierVertex(this.x + 70 * scale, this.y - 50 * scale, this.x + 50 * scale, this.y - 20 * scale, this.x, this.y); // Δεξί φτερό
+        vertex(this.x, this.y);  
+        bezierVertex(this.x - 50 * scale, this.y - 20 * scale, this.x - 70 * scale, this.y - 50 * scale, this.x - 90 * scale, this.y - 30 * scale);  
+        bezierVertex(this.x - 70 * scale, this.y - 10 * scale, this.x - 90 * scale, this.y + 40 * scale, this.x - 50 * scale, this.y + 30 * scale);  
+        vertex(this.x, this.y + 50 * scale);  
+        bezierVertex(this.x + 50 * scale, this.y + 30 * scale, this.x + 90 * scale, this.y + 40 * scale, this.x + 70 * scale, this.y);  
+        bezierVertex(this.x + 70 * scale, this.y - 50 * scale, this.x + 50 * scale, this.y - 20 * scale, this.x, this.y);  
         endShape(CLOSE);
 
-        // Κεφάλι
-        triangle(this.x - 15 * scale, this.y, this.x, this.y - 30 * scale, this.x + 15 * scale, this.y); // Τρίγωνο κεφάλι
+         
+        triangle(this.x - 15 * scale, this.y, this.x, this.y - 30 * scale, this.x + 15 * scale, this.y);  
 
-        // Αυτιά
-        triangle(this.x - 10 * scale, this.y - 30 * scale, this.x - 20 * scale, this.y - 40 * scale, this.x - 5 * scale, this.y - 30 * scale); // Αριστερό αυτί
-        triangle(this.x + 10 * scale, this.y - 30 * scale, this.x + 20 * scale, this.y - 40 * scale, this.x + 5 * scale, this.y - 30 * scale); // Δεξί αυτί
+         
+        triangle(this.x - 10 * scale, this.y - 30 * scale, this.x - 20 * scale, this.y - 40 * scale, this.x - 5 * scale, this.y - 30 * scale);  
+        triangle(this.x + 10 * scale, this.y - 30 * scale, this.x + 20 * scale, this.y - 40 * scale, this.x + 5 * scale, this.y - 30 * scale);  
 
-        // Μάτια
-        fill(255, 0, 0); // Κόκκινα μάτια
+         
+        fill(255, 0, 0);  
         ellipse(this.x - 5 * scale, this.y - 10 * scale, 3 * scale, 3 * scale);
         ellipse(this.x + 5 * scale, this.y - 10 * scale, 3 * scale, 3 * scale);
     }
@@ -67,7 +67,7 @@ function updateBats(bats) {
     for (let bat of bats) {
         bat.update();
 
-        // Υπολογισμός της απόστασης από τον παίκτη
+         
         let distance = dist(player.x, player.y, bat.x, bat.y);
         if (distance < closestDistance) {
             closestDistance = distance;
@@ -75,9 +75,9 @@ function updateBats(bats) {
         }
     }
 
-    // Ρύθμιση έντασης μόνο για την πλησιέστερη νυχτερίδα
+     
     if (closestBat) {
-        let maxDistance = 500; // Μέγιστη απόσταση για ήχο
+        let maxDistance = 500;  
         let volume = map(closestDistance, 0, maxDistance, 1.0, 0.0);
         volume = constrain(volume, 0.0, 1.0);
 
@@ -95,4 +95,4 @@ function drawBats(bats) {
     }
 }
 
-let bats = []; // Αρχικοποίηση λίστας νυχτερίδων
+let bats = [];  

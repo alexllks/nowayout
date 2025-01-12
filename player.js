@@ -8,17 +8,17 @@ class Player {
       this.velocityY = 0;
       this.gravity = 0.6;
 
-      // Καταστάσεις του παίκτη
+       
       this.isLeft = false;
       this.isRight = false;
       this.isFalling = false;
       this.isPlummeting = false;
-      this.isJumping = false; // Προστέθηκε για να διαχειρίζεται το άλμα
-      this.isDying = false; // Νέα ιδιότητα για το animation θανάτου
-      this.rotation = 0; // Περιστροφή κατά την πτώση
-      this.canJump = true; // Ελέγχει αν μπορεί να πηδήξει
-      this.onStair = false; // Ελέγχει αν βρίσκεται σε σκάλα
-      this.lastDirection = null; // Αποθηκεύει την τελευταία κατεύθυνση
+      this.isJumping = false;  
+      this.isDying = false;  
+      this.rotation = 0;  
+      this.canJump = true;  
+      this.onStair = false;  
+      this.lastDirection = null;  
   }
 
   update() {
@@ -28,9 +28,9 @@ class Player {
     }
 
     if (this.isDying) {
-        this.rotation += 0.1; // Περιστροφή
-        this.y += 5; // Γρήγορη πτώση
-        return; // Σταματά η υπόλοιπη ενημέρωση
+        this.rotation += 0.1;  
+        this.y += 5;  
+        return;  
     }
 
     
@@ -44,7 +44,7 @@ class Player {
     const movingLeft = keyIsDown(LEFT_ARROW);
     const movingRight = keyIsDown(RIGHT_ARROW);
 
-    // Κίνηση αριστερά
+     
     if (movingLeft) {
         this.x -= this.speed;
         this.isLeft = true;
@@ -54,7 +54,7 @@ class Player {
         
     }
 
-    // Κίνηση δεξιά
+     
     if (movingRight) {
         this.x += this.speed;
         this.isRight = true;
@@ -94,7 +94,7 @@ class Player {
   checkCollisions() {
       let onPlatform = false;
       this.onStair = false;
-      this.currentStair = null; // Επαναφορά του currentStair
+      this.currentStair = null;  
 
 
       for (let platform of platforms) {
@@ -125,24 +125,24 @@ class Player {
               this.isFalling = false;
           }
           
-        // Αν ο παίκτης συγκρούεται από τα αριστερά
+         
         if (
-          this.y + this.height > platform.y && // Ο παίκτης βρίσκεται μέσα στο ύψος της πλατφόρμας
+          this.y + this.height > platform.y &&  
           this.y < platform.y + platform.height &&
-          this.x + this.width > platform.x+15 && // Δεξί άκρο του παίκτη αγγίζει την αριστερή πλευρά
+          this.x + this.width > platform.x+15 &&  
           this.x < platform.x+15
       ) {
-          this.x = platform.x+15 - this.width; // Τοποθέτηση ακριβώς αριστερά
+          this.x = platform.x+15 - this.width;  
       }
 
-      // Αν ο παίκτης συγκρούεται από τα δεξιά
+       
       if (
           this.y + this.height > platform.y &&
           this.y < platform.y + platform.height &&
-          this.x <= platform.x +8+ platform.width && // Αριστερό άκρο του παίκτη αγγίζει τη δεξιά πλευρά
+          this.x <= platform.x +8+ platform.width &&  
           this.x + this.width > platform.x+8 + platform.width
       ) {
-          this.x = platform.x + platform.width; // Τοποθέτηση ακριβώς δεξιά
+          this.x = platform.x + platform.width;  
       }
 
       
@@ -157,7 +157,7 @@ class Player {
           this.canJump = false;
       }
 
-      // Εμφάνιση συντεταγμένων στην κονσόλα
+       
       //console.log(`Player coordinates: x=${this.x}, y=${this.y}`);
 }
 

@@ -1,20 +1,20 @@
 
-let isFlooding = false; // Flag για την ανωμαλία πλημμύρας
-let floodX = 0; // Θέση του νερού
+let isFlooding = false;  
+let floodX = 0;  
 
 function setupRoom() {
-  // Λίστα ανωμαλιών με βάρη
- // const anomalies = ['wideSofa','wideSofa','suitcase','suitcase','roomDoorNumber','roomDoorNumber',"sofa","sofa",'door', "fridge", "kitchen", "table","mirror", "doll", "TV","TV", "Bookshelf","radio", "ghost","npc","none","none","none" ];
-  const anomalies = ["none"];
+   
+  const anomalies = ['wideSofa','wideSofa','suitcase','suitcase','roomDoorNumber','roomDoorNumber',"sofa","sofa",'door', "fridge", "kitchen", "table","mirror", "doll", "TV","TV", "Bookshelf","radio", "ghost","npc","none","none","none" ];
+  //const anomalies = ["none"];
   // Το "ghost" εμφανίζεται περισσότερες φορές για να έχει μεγαλύτερη πιθανότητα
   let selectedAnomaly = "";
 
   if (gameState != 'menu'){  
-    selectedAnomaly = random(anomalies); // Επιλογή ανωμαλίας με βάση τα βάρη
+    selectedAnomaly = random(anomalies);  
     console.log(`Selected anomaly: ${selectedAnomaly}`);
 
 
-    hasAnomaly = true; // Υποδεικνύει ότι υπάρχει ανωμαλία
+    hasAnomaly = true;  
     objects = [
      
       {x: 6010, y: height - 347, type: 'doll', isAnomaly: false, speed: 2, direction: 1},
@@ -47,15 +47,15 @@ function setupRoom() {
     // Αν επιλεγεί "none", δεν υπάρχει ανωμαλία
     if (selectedAnomaly === "none") {
       console.log("No anomalies in this room.");
-      hasAnomaly = false; // Υποδεικνύει ότι δεν υπάρχει ανωμαλία
-      ghosts = []; // Καθαρισμός φαντασμάτων αν δεν υπάρχει ανωμαλία
-      return; // Τερματίζει την εκτέλεση της setupRoom
+      hasAnomaly = false;  
+      ghosts = [];  
+      return;  
     }
 
     if (selectedAnomaly === "radio") {
       for (let obj of objects) {
           if (obj.type === "radio") {
-              obj.isAnomaly = true; // Set one radio as an anomaly
+              obj.isAnomaly = true;  
               console.log("Radio anomaly activated!");
           }
       }
@@ -64,22 +64,22 @@ function setupRoom() {
     if (selectedAnomaly === "character") {
       for (let obj of objects) {
           if (obj.type === "character") {
-              obj.speed = 3; // Ενεργοποίηση ταχύτητας αν χρειάζεται
+              obj.speed = 3;  
           }
       }
   }
     if (selectedAnomaly === "ghost") {
-        createGhosts(1); // Δημιουργία φαντασμάτων μόνο αν η ανωμαλία είναι ghost
+        createGhosts(1);  
         console.log("Ghost anomaly activated!");
     } else {
-        // Ορισμός άλλου αντικειμένου ως ανωμαλία
+         
         for (let obj of objects) {
             if (obj.type === selectedAnomaly && gameState != 'menu') {
-                obj.isAnomaly = true; // Ορισμός του αντικειμένου ως ανώμαλο
+                obj.isAnomaly = true;  
                 console.log(`${selectedAnomaly} anomaly activated!`);
             }
         }
-        ghosts = []; // Καθαρισμός φαντασμάτων
+        ghosts = [];  
     }
   }
 }
@@ -131,13 +131,13 @@ function createGhosts(count) {
 }
 
 function drawGhosts() {
-if (ghosts.length === 0) return; // Επιστροφή αν δεν υπάρχουν φαντάσματα
+if (ghosts.length === 0) return;  
 
 for (let ghost of ghosts) {
-    // Draw ghost body
+     
     fill(255, 255, 255, 180); // Semi-transparent
     noStroke();
-    beginShape(); // Create body
+    beginShape();  
     vertex(ghost.x - ghost.size / 2, ghost.y);
     bezierVertex(
         ghost.x - ghost.size / 2,
@@ -154,28 +154,28 @@ for (let ghost of ghosts) {
     vertex(ghost.x - ghost.size / 2, ghost.y + ghost.size / 2);
     endShape(CLOSE);
 
-    // Draw eyes
+     
     fill(0);
     ellipse(ghost.x - ghost.size / 4, ghost.y - ghost.size / 4, ghost.size / 8, ghost.size / 8);
     ellipse(ghost.x + ghost.size / 4, ghost.y - ghost.size / 4, ghost.size / 8, ghost.size / 8);
 
-    // Draw mouth
+     
     noFill();
     stroke(0);
     strokeWeight(2);
     arc(ghost.x, ghost.y, ghost.size / 3, ghost.size / 6, 0, PI);
 
-    // Chase logic
+     
     if (player.x > 3400  && player.x < 10000) { // Start chasing if player is past x=100
         let dx = player.x - ghost.x;
         let dy = player.y - ghost.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
         
-        // Normalize to get direction vector
+         
         ghost.x += (dx / distance) * ghost.speed;
         ghost.y += (dy / distance) * ghost.speed;
 
-        // Check collision with the player
+         
         if (
             Math.abs(player.x - ghost.x) < ghost.size / 2 &&
             Math.abs(player.y - ghost.y) < ghost.size / 2
@@ -193,10 +193,10 @@ function drawFlood(x, y, isActive, floodObj, isAnomaly) {
   let waveHeight = 10;
   let waveFrequency = 0.02;
 
-  // Χρησιμοποίησε το speed για να τροποποιήσεις το waveSpeed
-  let waveSpeed = floodObj.speed * 2; // Πολλαπλασίασε το speed για εφέ κυμάτων
+   
+  let waveSpeed = floodObj.speed * 2;  
 
-  fill(0, 0, 255, 180); // Μπλε χρώμα νερού
+  fill(0, 0, 255, 180);  
   noStroke();
   beginShape();
   for (let posX = x; posX >= x - floodObj.width; posX--) {
@@ -210,7 +210,7 @@ function drawFlood(x, y, isActive, floodObj, isAnomaly) {
   // Αύξησε το πλάτος της πλημμύρας μόνο αν το speed > 0
   floodObj.width += floodObj.speed; 
   if (x - floodObj.width <= 0) {
-      floodObj.width = x; // Περιορισμός της πλημμύρας
+      floodObj.width = x;  
   }
 }
 
@@ -220,7 +220,7 @@ for (let obj of objects) {
     if (obj.type === 'flood' && player.x >= 1000 && !obj.active && obj.isAnomaly) {
         obj.active = true;
         console.log("Flood triggered!");
-        soundManager.play('waters', true, 0.5); // Ήχος πλημμύρας
+        soundManager.play('waters', true, 0.5);  
     }
 }
 }
@@ -240,60 +240,60 @@ for (let obj of objects) {
 function drawSuitcase(x, y, isAnomaly) {
     const scale = 0.5;
 
-    // Σώμα βαλίτσας
+     
     fill(isAnomaly ? 101 : 139, isAnomaly ? 67 : 69, isAnomaly ? 33 : 19); // Σκούρο καφέ αν είναι ανωμαλία, καφέ κανονικά
-    rect(x, y, 100 * scale, 70 * scale, 5); // Σώμα
+    rect(x, y, 100 * scale, 70 * scale, 5);  
 
-    // Λαβή
+     
     fill(100);
     rect(x + 30 * scale, y - 10 * scale, 40 * scale, 10 * scale, 5);
 
-    // Διακοσμητικές γραμμές
+     
     stroke(80);
     strokeWeight(2);
     line(x + 10 * scale, y + 20 * scale, x + 90 * scale, y + 20 * scale);
     line(x + 10 * scale, y + 50 * scale, x + 90 * scale, y + 50 * scale);
     noStroke();
 }
-// Συνάρτηση για τον καναπέ με περισσότερες γωνίες
+ 
 function drawWideSofa(x, y, isAnomaly) {
-  const scale = 0.5; // Κλίμακα για μεγαλύτερο μέγεθος
+  const scale = 0.5;  
 
-  // Σώμα του καναπέ
-  fill(139, 69, 19); // Καφέ για το σώμα
-  rect(x, y, 300 * scale, 100 * scale); // Κυρίως σώμα με αιχμηρές άκρες
+   
+  fill(139, 69, 19);  
+  rect(x, y, 300 * scale, 100 * scale);  
 
-  // Πλάτη του καναπέ
-  fill(160, 82, 45); // Ανοιχτό καφέ για την πλάτη
-  rect(x, y - 70 * scale, 300 * scale, 70 * scale); // Πλάτη μεγαλύτερη με αιχμηρές γωνίες
+   
+  fill(160, 82, 45);  
+  rect(x, y - 70 * scale, 300 * scale, 70 * scale);  
 
-  // Μαξιλάρια
-  fill(210, 180, 140); // Ανοιχτό μπεζ για τα μαξιλάρια
-  rect(x + 20 * scale, y - 60 * scale, 120 * scale, 60 * scale); // Πρώτο μαξιλάρι
-  rect(x + 160 * scale, y - 60 * scale, 120 * scale, 60 * scale); // Δεύτερο μαξιλάρι
+   
+  fill(210, 180, 140);  
+  rect(x + 20 * scale, y - 60 * scale, 120 * scale, 60 * scale);  
+  rect(x + 160 * scale, y - 60 * scale, 120 * scale, 60 * scale);  
 
-  // Χέρια καναπέ
-  fill(139, 69, 19); // Καφέ για τα χέρια
-  rect(x - 20 * scale, y, 40 * scale, 100 * scale); // Αριστερό χέρι
-  rect(x + 280 * scale, y, 40 * scale, 100 * scale); // Δεξί χέρι
+   
+  fill(139, 69, 19);  
+  rect(x - 20 * scale, y, 40 * scale, 100 * scale);  
+  rect(x + 280 * scale, y, 40 * scale, 100 * scale);  
 
-  // Διακοσμητικές ραφές
+   
   stroke(100, 50, 30);
   strokeWeight(2);
-  line(x + 20 * scale, y - 30 * scale, x + 140 * scale, y - 30 * scale); // Ραφή στο πρώτο μαξιλάρι
-  line(x + 160 * scale, y - 30 * scale, x + 280 * scale, y - 30 * scale); // Ραφή στο δεύτερο μαξιλάρι
+  line(x + 20 * scale, y - 30 * scale, x + 140 * scale, y - 30 * scale);  
+  line(x + 160 * scale, y - 30 * scale, x + 280 * scale, y - 30 * scale);  
   noStroke();
 
-  // Πόδια καναπέ
-  fill(101, 67, 33); // Σκούρο καφέ για τα πόδια
-  rect(x + 20 * scale, y + 100 * scale, 20 * scale, 20 * scale); // Αριστερό πόδι
-  rect(x + 260 * scale, y + 100 * scale, 20 * scale, 20 * scale); // Δεξί πόδι
+   
+  fill(101, 67, 33);  
+  rect(x + 20 * scale, y + 100 * scale, 20 * scale, 20 * scale);  
+  rect(x + 260 * scale, y + 100 * scale, 20 * scale, 20 * scale);  
 
-  // Εφέ ανωμαλίας
+   
   if (isAnomaly) {
-      fill(101, 67, 33, 150); // Διαφανές σκούρο καφέ για την ανωμαλία
-      rect(x, y, 300 * scale, 100 * scale); // Αλλαγή χρώματος στο σώμα
-      triangle(x + 50 * scale, y + 30 * scale, x + 150 * scale, y - 20 * scale, x + 250 * scale, y + 30 * scale); // Τρίγωνο ανωμαλίας
+      fill(101, 67, 33, 150);  
+      rect(x, y, 300 * scale, 100 * scale);  
+      triangle(x + 50 * scale, y + 30 * scale, x + 150 * scale, y - 20 * scale, x + 250 * scale, y + 30 * scale);  
   }
 }
 
@@ -301,52 +301,52 @@ function drawWideSofa(x, y, isAnomaly) {
 function drawRoomDoorNumber(x,y,roomNumber,isAnomaly){
 
 
-  const doorWidth = 80;       // Πλάτος πόρτας
+  const doorWidth = 80;        
   const doorHeight = 140;     // Αυξημένο ύψος πόρτας (π.χ., 160 αντί για 120)
   const doorHandleY = y + doorHeight / 2; // Νέα θέση του πομολού, στο μέσο του ύψους
   noStroke();
 
-  // Σώμα πόρτας με σκούρο ξύλο
-  fill(100, 50, 30); // Σκούρο καφέ για πιο παλιό ξύλο
+   
+  fill(100, 50, 30);  
   rect(x, y, doorWidth, doorHeight);
 
-  // Σκιές για βάθος
-  fill(60, 30, 15); // Σκούρες σκιές
-  rect(x, y, 10, doorHeight); // Αριστερή σκιά
-  rect(x + doorWidth - 10, y, 10, doorHeight); // Δεξιά σκιά
+   
+  fill(60, 30, 15);  
+  rect(x, y, 10, doorHeight);  
+  rect(x + doorWidth - 10, y, 10, doorHeight);  
 
-  // Γρατζουνιές και ραγίσματα
+   
   stroke(80);
   strokeWeight(1);
-  line(x + 10, y + 0.3 * doorHeight, x + 30, y + 0.5 * doorHeight); // Διαγώνια γρατζουνιά
-  line(x + 50, y + 0.2 * doorHeight, x + 60, y + 0.4 * doorHeight); // Άλλη γρατζουνιά
+  line(x + 10, y + 0.3 * doorHeight, x + 30, y + 0.5 * doorHeight);  
+  line(x + 50, y + 0.2 * doorHeight, x + 60, y + 0.4 * doorHeight);  
 
-  // Αιματηρά αποτυπώματα
+   
   noStroke();
-  fill(150, 0, 0, 200); // Σκούρο κόκκινο για αίμα
-  ellipse(x + 20, y + doorHeight - 40, 10, 20); // Στίγμα 1
-  ellipse(x + 25, y + doorHeight - 30, 8, 18); // Στίγμα 2
+  fill(150, 0, 0, 200);  
+  ellipse(x + 20, y + doorHeight - 40, 10, 20);  
+  ellipse(x + 25, y + doorHeight - 30, 8, 18);  
 
   // Χερούλι πόρτας (παλιό και σπασμένο)
-  fill(150, 150, 100); // Φθαρμένο χρυσό
-  ellipse(x + doorWidth - 15, doorHandleY, 8, 8); // Νέο ύψος πομολού στο κέντρο πόρτας
+  fill(150, 150, 100);  
+  ellipse(x + doorWidth - 15, doorHandleY, 8, 8);  
 
-  // Χαραμάδα με μάτια ή σκιές
-  fill(0); // Σκούρο για κενό
-  rect(x + 30, y + doorHeight - 50, 20, 5); // Χαραμάδα
-  fill(255, 0, 0); // Κόκκινα μάτια
-  ellipse(x + 35, y + doorHeight - 48, 3, 3); // Μάτι 1
-  ellipse(x + 45, y + doorHeight - 48, 3, 3); // Μάτι 2
+   
+  fill(0);  
+  rect(x + 30, y + doorHeight - 50, 20, 5);  
+  fill(255, 0, 0);  
+  ellipse(x + 35, y + doorHeight - 48, 3, 3);  
+  ellipse(x + 45, y + doorHeight - 48, 3, 3);  
 
   if(!isAnomaly){
-  // Αριθμός δωματίου
-  fill(200, 0, 0); // Σκούρο κόκκινο για τον αριθμό
+   
+  fill(200, 0, 0);  
   textAlign(CENTER, CENTER);
   textSize(12);
   text(`Room ${roomNumber}`, x + doorWidth / 2, y + 20);
   }else if(isAnomaly){
-     // Αριθμός δωματίου
-  fill(200, 0, 0); // Σκούρο κόκκινο για τον αριθμό
+      
+  fill(200, 0, 0);  
   textAlign(CENTER, CENTER);
   textSize(12);
   text(`Room ${roomNumber+1}`, x + doorWidth / 2, y + 20);
@@ -355,24 +355,24 @@ function drawRoomDoorNumber(x,y,roomNumber,isAnomaly){
 
 
 function drawFloodingWater(startX, startY, isAnomaly) {
-  let waveHeight = 10; // Height of the wave peaks
+  let waveHeight = 10;  
   let waveSpeed = 2; // Speed of the waves' motion
-  let waveFrequency = 0.02; // Frequency of the waves
-  let floodWidth = isAnomaly ? frameCount * 2 : 0; // Flood progression
+  let waveFrequency = 0.02;  
+  let floodWidth = isAnomaly ? frameCount * 2 : 0;  
   
-  // Draw the water surface with waves
-  fill(0, 0, 255, 180); // Blue with transparency
+   
+  fill(0, 0, 255, 180);  
   noStroke();
   beginShape();
   for (let x = startX; x >= startX - floodWidth; x--) {
       let y = startY + sin((x + frameCount * waveSpeed) * waveFrequency) * waveHeight;
       vertex(x, y);
   }
-  vertex(startX - floodWidth, height); // Extend down to the bottom
+  vertex(startX - floodWidth, height);  
   vertex(startX, height); // Bottom-right corner
   endShape(CLOSE);
   
-  // Flood limit to prevent it from filling indefinitely
+   
   if (startX - floodWidth <= 0) {
       floodWidth = startX; 
   }
@@ -383,90 +383,90 @@ function drawNpc(x, y, isAnomaly) {
     return ;
   }
 
-  const scale = 1.0; // Κλίμακα μεγέθους
+  const scale = 1.0;  
   noStroke();
 
-  // Κεφάλι με λεπτομέρεια
-  fill(200, 100, 100); // Σκούρο κόκκινο για το κεφάλι
-  ellipse(x, y - 50 * scale, 22 * scale, 22 * scale); // Κεφάλι
+   
+  fill(200, 100, 100);  
+  ellipse(x, y - 50 * scale, 22 * scale, 22 * scale);  
 
-  // Καπέλο με σκίαση
-  fill(100, 0, 0); // Σκούρο κόκκινο καπέλο
-  arc(x, y - 55 * scale, 26 * scale, 15 * scale, PI, TWO_PI); // Πάνω μέρος καπέλου
-  fill(80, 0, 0); // Πιο σκούρα απόχρωση για σκίαση
-  arc(x, y - 55 * scale, 26 * scale, 10 * scale, PI, TWO_PI); // Εσωτερική σκίαση
+   
+  fill(100, 0, 0);  
+  arc(x, y - 55 * scale, 26 * scale, 15 * scale, PI, TWO_PI);  
+  fill(80, 0, 0);  
+  arc(x, y - 55 * scale, 26 * scale, 10 * scale, PI, TWO_PI);  
 
-  // Μάτια με σκιάσεις
-  fill(255); // Λευκά των ματιών
-  ellipse(x - 5 * scale, y - 52 * scale, 5 * scale, 3 * scale); // Αριστερό μάτι
-  ellipse(x + 5 * scale, y - 52 * scale, 5 * scale, 3 * scale); // Δεξί μάτι
+   
+  fill(255);  
+  ellipse(x - 5 * scale, y - 52 * scale, 5 * scale, 3 * scale);  
+  ellipse(x + 5 * scale, y - 52 * scale, 5 * scale, 3 * scale);  
 
-  fill(0); // Κόρες
-  ellipse(x - 5 * scale, y - 52 * scale, 2 * scale, 2 * scale); // Αριστερή κόρη
-  ellipse(x + 5 * scale, y - 52 * scale, 2 * scale, 2 * scale); // Δεξιά κόρη
+  fill(0);  
+  ellipse(x - 5 * scale, y - 52 * scale, 2 * scale, 2 * scale);  
+  ellipse(x + 5 * scale, y - 52 * scale, 2 * scale, 2 * scale);  
 
-  // Στόμα με ρεαλιστική έκφραση
-  fill(255, 100, 100); // Χείλη
-  arc(x, y - 46 * scale, 10 * scale, 4 * scale, 0, PI); // Στόμα
+   
+  fill(255, 100, 100);  
+  arc(x, y - 46 * scale, 10 * scale, 4 * scale, 0, PI);  
 
-  // Σώμα με υφή
-  fill(150, 30, 30); // Σκούρο κόκκινο για το σώμα
-  rect(x - 10 * scale, y - 42 * scale, 20 * scale, 40 * scale); // Σώμα
-  rect(x - 8 * scale, y - 40 * scale, 16 * scale, 36 * scale); // Εσωτερική σκίαση
+   
+  fill(150, 30, 30);  
+  rect(x - 10 * scale, y - 42 * scale, 20 * scale, 40 * scale);  
+  rect(x - 8 * scale, y - 40 * scale, 16 * scale, 36 * scale);  
 
-  // Χέρια
-  fill(150, 30, 30); // Ίδιο χρώμα με το σώμα
-  rect(x - 15 * scale, y - 42 * scale, 5 * scale, 20 * scale); // Αριστερό χέρι
-  rect(x + 10 * scale, y - 42 * scale, 5 * scale, 20 * scale); // Δεξί χέρι
+   
+  fill(150, 30, 30);  
+  rect(x - 15 * scale, y - 42 * scale, 5 * scale, 20 * scale);  
+  rect(x + 10 * scale, y - 42 * scale, 5 * scale, 20 * scale);  
 
-//   // Πόδια με μπότες
-//   fill(100, 20, 20); // Σκούρο κόκκινο για τα πόδια
-//   rect(x - 8 * scale, y - 5 * scale, 6 * scale, 15 * scale); // Αριστερό πόδι
-//   rect(x + 2 * scale, y - 5 * scale, 6 * scale, 15 * scale); // Δεξί πόδι
-//   fill(50); // Μαύρες μπότες
-//   rect(x - 8 * scale, y + 10 * scale, 6 * scale, 5 * scale); // Μπότες αριστερό πόδι
-//   rect(x + 2 * scale, y + 10 * scale, 6 * scale, 5 * scale); // Μπότες δεξί πόδι
+ 
+//   fill(100, 20, 20);  
+//   rect(x - 8 * scale, y - 5 * scale, 6 * scale, 15 * scale);  
+//   rect(x + 2 * scale, y - 5 * scale, 6 * scale, 15 * scale);  
+//   fill(50);  
+//   rect(x - 8 * scale, y + 10 * scale, 6 * scale, 5 * scale);  
+//   rect(x + 2 * scale, y + 10 * scale, 6 * scale, 5 * scale);  
 // }
-// Ψεύτικο γραφείο για κάλυψη του σώματος του NPC
-fill(245, 222, 179); // Χρώμα γραφείου
-rect(2810, 510, 300 * 0.5, 100 * 0.5); // Προσαρμογή διαστάσεων
+ 
+fill(245, 222, 179);  
+rect(2810, 510, 300 * 0.5, 100 * 0.5);  
 
-// Επάνω μέρος γραφείου
+ 
 fill(139, 69, 19);
 rect(2810, 510 - 20 * 0.5, 300 * 0.5, 20 * 0.5);
 }
   function drawRadio(x, y, isAnomaly) {
-    const scale = 0.3; // Κλίμακα μεγέθους για να προσαρμόσεις το μέγεθος
+    const scale = 0.3;  
     if (!isAnomaly) {
      
-        // Τρομακτικό Ραδιόφωνο
-        fill(50, 20, 20); // Σκούρο κόκκινο για το ξύλο
-        // Σώμα ραδιοφώνου
-      //fill(139, 69, 19); // Καφέ χρώμα για το ξύλο
-      rect(x, y, 150 * scale, 100 * scale, 10); // Κυρίως σώμα με στρογγυλεμένες γωνίες
+         
+        fill(50, 20, 20);  
+         
+      //fill(139, 69, 19);  
+      rect(x, y, 150 * scale, 100 * scale, 10);  
   
-      // Χρυσές γραμμές
-      stroke(255, 215, 0); // Χρυσό
+       
+      stroke(255, 215, 0);  
       strokeWeight(2);
-      line(x + 5 * scale, y + 10 * scale, x + 145 * scale, y + 10 * scale); // Πάνω χρυσή γραμμή
-      line(x + 5 * scale, y + 90 * scale, x + 145 * scale, y + 90 * scale); // Κάτω χρυσή γραμμή
+      line(x + 5 * scale, y + 10 * scale, x + 145 * scale, y + 10 * scale);  
+      line(x + 5 * scale, y + 90 * scale, x + 145 * scale, y + 90 * scale);  
       noStroke();
   
-      // Γρίλια ηχείου
+       
       fill(50);
-      rect(x + 20 * scale, y + 20 * scale, 110 * scale, 30 * scale); // Κεντρική γρίλια
+      rect(x + 20 * scale, y + 20 * scale, 110 * scale, 30 * scale);  
   
-      // Κουμπιά έντασης και συντονισμού
-      fill(200, 200, 200); // Ασημί για τα κουμπιά
-      ellipse(x + 30 * scale, y + 75 * scale, 20 * scale, 20 * scale); // Κουμπί αριστερά
-      ellipse(x + 120 * scale, y + 75 * scale, 20 * scale, 20 * scale); // Κουμπί δεξιά
+       
+      fill(200, 200, 200);  
+      ellipse(x + 30 * scale, y + 75 * scale, 20 * scale, 20 * scale);  
+      ellipse(x + 120 * scale, y + 75 * scale, 20 * scale, 20 * scale);  
   
-      // Οθόνη
-      fill(255, 165, 0); // Πορτοκαλί για την οθόνη
-      rect(x + 50 * scale, y + 60 * scale, 50 * scale, 15 * scale, 2); // Ορθογώνιο για την οθόνη
+       
+      fill(255, 165, 0);  
+      rect(x + 50 * scale, y + 60 * scale, 50 * scale, 15 * scale, 2);  
   
-      // Στοιχεία οθόνης
-      fill(0); // Μαύρο για κείμενο
+       
+      fill(0);  
       textSize(10 * scale);
       textAlign(CENTER, CENTER);
       text("88.5 FM", x + 75 * scale, y + 67.5 * scale);
@@ -477,33 +477,33 @@ rect(2810, 510 - 20 * 0.5, 300 * 0.5, 20 * 0.5);
           rect(x + 50 * scale + i * 10 * scale, y + 80 * scale, 8 * scale, 5 * scale);
       }
   
-      // Κεραία
+       
       stroke(200);
       strokeWeight(2);
-      line(x + 10 * scale, y, x - 20 * scale, y - 30 * scale); // Κεραία που προεξέχει
+      line(x + 10 * scale, y, x - 20 * scale, y - 30 * scale);  
       noStroke();
     } else {
-        // Τρομακτικό Ραδιόφωνο
-        fill(50, 20, 20); // Σκούρο κόκκινο για το ξύλο
-        // Σώμα ραδιοφώνου
-      //fill(139, 69, 19); // Καφέ χρώμα για το ξύλο
-      rect(x, y, 150 * scale, 100 * scale, 10); // Κυρίως σώμα με στρογγυλεμένες γωνίες
+         
+        fill(50, 20, 20);  
+         
+      //fill(139, 69, 19);  
+      rect(x, y, 150 * scale, 100 * scale, 10);  
   
-      // Χρυσές γραμμές
-      stroke(255, 215, 0); // Χρυσό
+       
+      stroke(255, 215, 0);  
       strokeWeight(2);
-      line(x + 5 * scale, y + 10 * scale, x + 145 * scale, y + 10 * scale); // Πάνω χρυσή γραμμή
-      line(x + 5 * scale, y + 90 * scale, x + 145 * scale, y + 90 * scale); // Κάτω χρυσή γραμμή
+      line(x + 5 * scale, y + 10 * scale, x + 145 * scale, y + 10 * scale);  
+      line(x + 5 * scale, y + 90 * scale, x + 145 * scale, y + 90 * scale);  
       noStroke();
   
-      // Γρίλια ηχείου
+       
       fill(50);
-      rect(x + 20 * scale, y + 20 * scale, 110 * scale, 30 * scale); // Κεντρική γρίλια
+      rect(x + 20 * scale, y + 20 * scale, 110 * scale, 30 * scale);  
   
-      // Κεραία
+       
       stroke(200);
       strokeWeight(2);
-      line(x + 10 * scale, y, x - 20 * scale, y - 30 * scale); // Κεραία που προεξέχει
+      line(x + 10 * scale, y, x - 20 * scale, y - 30 * scale);  
       noStroke();
 }
 
@@ -512,20 +512,20 @@ rect(2810, 510 - 20 * 0.5, 300 * 0.5, 20 * 0.5);
 
 
   function drawMirror(x, y, isAnomaly) {
-    const width = 90;  // Πλάτος καθρέφτη
-    const height = 140; // Ύψος καθρέφτη
+    const width = 90;   
+    const height = 140;  
 
-    // Πλαίσιο καθρέφτη
-    fill(100, 50, 20); // Σκούρο ξύλο
+     
+    fill(100, 50, 20);  
     rect(x - width / 2, y - height / 2, width, height);
 
-    // Επιφάνεια καθρέφτη
+     
     fill(50, 70, 100, 200); // Σκούρο μπλε-γκρι για το γυαλί
     rect(x - width / 2 + 5, y - height / 2 + 5, width - 10, height - 10);
 
     if (isAnomaly) {
 
-        // Τρομακτική αντανάκλαση
+         
         drawScaryReflection(x, y, width, height);
 
     }
@@ -535,19 +535,19 @@ rect(2810, 510 - 20 * 0.5, 300 * 0.5, 20 * 0.5);
 
 // Στοιχείο: Τρομακτική αντανάκλαση
 function drawScaryReflection(x, y, width, height) {
-    const offsetX = sin(frameCount * 0.1) * 5; // Κίνηση φιγούρας
+    const offsetX = sin(frameCount * 0.1) * 5;  
     const offsetY = cos(frameCount * 0.1) * 2; // Κίνηση πάνω-κάτω
 
-    fill(0); // Μαύρο για τη σκιά
-    ellipse(x + offsetX, y - height / 4 + offsetY, 30, 40); // Σιλουέτα
+    fill(0);  
+    ellipse(x + offsetX, y - height / 4 + offsetY, 30, 40);  
 
-    fill(255, 0, 0); // Κόκκινα μάτια
-    ellipse(x + offsetX - 5, y - height / 4 - 5 + offsetY, 8, 8); // Αριστερό μάτι
-    ellipse(x + offsetX + 5, y - height / 4 - 5 + offsetY, 8, 8); // Δεξί μάτι
+    fill(255, 0, 0);  
+    ellipse(x + offsetX - 5, y - height / 4 - 5 + offsetY, 8, 8);  
+    ellipse(x + offsetX + 5, y - height / 4 - 5 + offsetY, 8, 8);  
 
     noFill();
     stroke(255, 0, 0, 150);
-    arc(x + offsetX, y - height / 4 + 10 + offsetY, 20, 10, 0, PI); // Στόμα με καμπύλη
+    arc(x + offsetX, y - height / 4 + 10 + offsetY, 20, 10, 0, PI);  
     noStroke();
 }
 
@@ -556,36 +556,36 @@ function drawScaryReflection(x, y, width, height) {
 function drawDoll(x, y, isAnomaly) {
   const scale = 0.6;
 
-  // Σώμα της κούκλας
-  fill(250, 220, 200); // Κεφάλι
+   
+  fill(250, 220, 200);  
   ellipse(x, y - 50 * scale, 40 * scale, 50 * scale);
 
-  fill(150, 50, 50); // Φόρεμα
+  fill(150, 50, 50);  
   rect(x - 20 * scale, y - 30 * scale, 40 * scale, 60 * scale);
 
-  fill(250, 220, 200); // Χέρια
+  fill(250, 220, 200);  
   ellipse(x - 25 * scale, y - 20 * scale, 15 * scale, 15 * scale);
   ellipse(x + 25 * scale, y - 20 * scale, 15 * scale, 15 * scale);
 
-  fill(150, 50, 50); // Πόδια
+  fill(150, 50, 50);  
   rect(x - 15 * scale, y + 30 * scale, 10 * scale, 20 * scale);
   rect(x + 5 * scale, y + 30 * scale, 10 * scale, 20 * scale);
 
-  // Πρόσωπο
+   
   drawDollFace(x, y - 50 * scale, scale, isAnomaly);
 }
 
 function drawDollFace(x, y, scale, isAnomaly) {
   if (!isAnomaly) {
       fill(0);
-      ellipse(x - 10 * scale, y - 5 * scale, 5 * scale, 5 * scale); // Μάτια
+      ellipse(x - 10 * scale, y - 5 * scale, 5 * scale, 5 * scale);  
       ellipse(x + 10 * scale, y - 5 * scale, 5 * scale, 5 * scale);
       noFill();
       stroke(0);
       arc(x, y + 10 * scale, 10 * scale, 5 * scale, 0, PI);
       noStroke();
   } else {
-      fill(255, 0, 0); // Τρομακτικά μάτια
+      fill(255, 0, 0);  
       ellipse(x - 10 * scale, y - 5 * scale, 8 * scale, 8 * scale);
       ellipse(x + 10 * scale, y - 5 * scale, 8 * scale, 8 * scale);
 
@@ -601,18 +601,18 @@ function drawDollFace(x, y, scale, isAnomaly) {
 
 function updateDoll(obj, player) {
   if (obj.isAnomaly) {
-      // Υπολογισμός κατεύθυνσης προς τον παίκτη
+       
       let dx = player.x - obj.x - 5300;
       let dy = player.y - obj.y ;
       let distance = Math.sqrt(dx * dx + dy * dy);
 
-      // Κίνηση της κούκλας προς τον παίκτη
-      if (distance > 10) { // Αν δεν είναι πολύ κοντά στον παίκτη
+       
+      if (distance > 10) {  
           obj.x += (dx / distance) * obj.speed;
           obj.y += (dy / distance) * obj.speed;
       }
 
-      // Περιορισμός κίνησης στα όρια της οθόνης
+       
       obj.x = constrain(obj.x, 50, width - 50);
       obj.y = constrain(obj.y, 50, height - 50);
   }
@@ -621,23 +621,23 @@ function updateDoll(obj, player) {
 
 
   function drawDoor2(x, y, isMoving) {
-    fill(139, 69, 19); // Καφέ
+    fill(139, 69, 19);  
     if (isMoving) x += sin(frameCount * 0.05) * 5; // Κίνηση αριστερά-δεξιά
-    rect(x, y - 100, 50, 100); // Πόρτα
+    rect(x, y - 100, 50, 100);  
     fill(255);
-    ellipse(x + 40, y - 50, 10); // Χερούλι
+    ellipse(x + 40, y - 50, 10);  
 }
 
 
 function drawTV(x, y, isAnomaly) {
   let scale = 0.5;
 
-  // Πλαίσιο τηλεόρασης
+   
   fill(50);
   rect(x, y, 140 * scale, 80 * scale, 5 * scale);
 
   if (isAnomaly) {
-    // Στατικός θόρυβος
+     
     fill(200);
     for (let i = 0; i < 100; i++) {
       let px = random(x + 10 * scale, x + 130 * scale);
@@ -645,23 +645,23 @@ function drawTV(x, y, isAnomaly) {
       rect(px, py, 2, 2);
     }
 
-    // Υπολογισμός απόστασης παίκτη από την τηλεόραση
-    let distance = dist(player.x, player.y, x + 70 * scale, y + 40 * scale); // Κέντρο τηλεόρασης
+     
+    let distance = dist(player.x, player.y, x + 70 * scale, y + 40 * scale);  
 
-    if (distance < 300) { // Εντός 300 pixels να ακούγεται
-      // Υπολογισμός έντασης με βάση την απόσταση
+    if (distance < 300) {  
+       
       let volume = map(distance, 0, 300, 0.3, 0); // Μέγιστη ένταση 0.5
       volume = constrain(volume, 0, 0.3); // Περιορισμός στο εύρος [0, 0.5]
 
-      // Ρύθμιση έντασης ήχου
+       
       tvSound.setVolume(volume);
 
-      // Ξεκινά ο ήχος αν δεν παίζει
+       
       if (!tvSound.isPlaying()) {
         tvSound.loop();
       }
     } else {
-      // Σταματά ο ήχος αν ο παίκτης είναι εκτός εύρους
+       
       tvSound.stop();
     }
   } else {
@@ -677,47 +677,47 @@ function drawTV(x, y, isAnomaly) {
       x + 15 * scale, y + 30 * scale
     );
 
-    // Σταματά τον ήχο αν δεν υπάρχει ανωμαλία
+     
     tvSound.stop();
   }
 
-  // Στήριγμα τηλεόρασης
+   
   fill(70);
   rect(x + 60 * scale, y + 80 * scale, 20 * scale, 10 * scale);
 }
 function drawPainting(x, y, isAnomaly) {
   let scale = 0.6;
 
-  // Πλαίσιο πίνακα
-  fill(139, 69, 19); // Καφέ ξύλο
-  rect(x, y, 120 * scale, 80 * scale); // Πλαίσιο
+   
+  fill(139, 69, 19);  
+  rect(x, y, 120 * scale, 80 * scale);  
 
-  // Κανονική ζωγραφική
+   
   if (!isAnomaly) {
-    fill(200, 200, 150); // Απαλό μπεζ φόντο
+    fill(200, 200, 150);  
     rect(x + 5 * scale, y + 5 * scale, 110 * scale, 70 * scale);
 
     // Κανονικό έργο τέχνης (τοπίο)
-    fill(50, 150, 255); // Ουρανός
+    fill(50, 150, 255);  
     rect(x + 5 * scale, y + 5 * scale, 110 * scale, 35 * scale);
-    fill(0, 200, 100); // Γρασίδι
+    fill(0, 200, 100);  
     rect(x + 5 * scale, y + 40 * scale, 110 * scale, 35 * scale);
 
-    fill(255, 200, 0); // Ήλιος
+    fill(255, 200, 0);  
     ellipse(x + 100 * scale, y + 15 * scale, 15 * scale, 15 * scale);
   } 
-  // Ανωμαλία στη ζωγραφική
+   
   else {
-    fill(50, 50, 50); // Σκοτεινό γκρι φόντο
+    fill(50, 50, 50);  
     rect(x + 5 * scale, y + 5 * scale, 110 * scale, 70 * scale);
 
     // Αλλοιωμένο έργο τέχνης (μάτια και τρομακτικά στοιχεία)
-    fill(255, 0, 0); // Κόκκινα μάτια
+    fill(255, 0, 0);  
     ellipse(x + 40 * scale, y + 30 * scale, 10 * scale, 10 * scale);
     ellipse(x + 80 * scale, y + 30 * scale, 10 * scale, 10 * scale);
 
     fill(0);
-    arc(x + 60 * scale, y + 60 * scale, 30 * scale, 15 * scale, 0, PI); // Στόμα με καμπύλη
+    arc(x + 60 * scale, y + 60 * scale, 30 * scale, 15 * scale, 0, PI);  
   }
 }
 
@@ -726,26 +726,26 @@ function drawPainting(x, y, isAnomaly) {
 function drawBookshelf(x, y, isAnomaly) {
   let scale = 0.6; // Μείωση μεγέθους κατά 40%
 
-  // Πλαίσιο της βιβλιοθήκης
-  fill(120, 70, 50); // Καφέ χρώμα για το ξύλο
+   
+  fill(120, 70, 50);  
   rect(x, y, 120 * scale, 200 * scale);
 
-  // Ράφια
-  fill(100, 50, 30); // Σκούρο καφέ για τα ράφια
+   
+  fill(100, 50, 30);  
   rect(x, y + 50 * scale, 120 * scale, 5 * scale);
   rect(x, y + 100 * scale, 120 * scale, 5 * scale);
   rect(x, y + 150 * scale, 120 * scale, 5 * scale);
   
 
-  // Βιβλία στο πρώτο ράφι
-  fill(200, 50, 50); // Κόκκινο βιβλίο
+   
+  fill(200, 50, 50);  
   rect(x + 10 * scale, y + 10 * scale, 15 * scale, 40 * scale);
-  fill(50, 100, 200); // Μπλε βιβλίο
+  fill(50, 100, 200);  
   rect(x + 30 * scale, y + 10 * scale, 15 * scale, 40 * scale);
-  fill(50, 200, 100); // Πράσινο βιβλίο
+  fill(50, 200, 100);  
   rect(x + 50 * scale, y + 10 * scale, 15 * scale, 40 * scale);
 
-  // Βιβλία στο δεύτερο ράφι
+   
   fill(255, 200, 0);
   rect(x + 10 * scale, y + 60 * scale, 15 * scale, 40 * scale);
   fill(150, 0, 150);
@@ -756,14 +756,14 @@ function drawBookshelf(x, y, isAnomaly) {
 
     // Ανωμαλία: Προσθήκη επιπλέον σειράς βιβλίων στα ράφια
     if (isAnomaly) {
-      fill(250, 100, 50); rect(x + 10 * scale, y + 110 * scale, 15 * scale, 40 * scale); // Πορτοκαλί
-      fill(0, 150, 200); rect(x + 30 * scale, y + 110 * scale, 15 * scale, 40 * scale); // Τιρκουάζ
-      fill(180, 80, 40); rect(x + 50 * scale, y + 110 * scale, 15 * scale, 40 * scale); // Καφέ
+      fill(250, 100, 50); rect(x + 10 * scale, y + 110 * scale, 15 * scale, 40 * scale);  
+      fill(0, 150, 200); rect(x + 30 * scale, y + 110 * scale, 15 * scale, 40 * scale);  
+      fill(180, 80, 40); rect(x + 50 * scale, y + 110 * scale, 15 * scale, 40 * scale);  
   
-      // Νέα σειρά βιβλίων στο κάτω μέρος
-      fill(255, 150, 50); rect(x + 10 * scale, y + 160 * scale, 15 * scale, 40 * scale); // Νέο Βιβλίο 1
-      fill(100, 200, 100); rect(x + 30 * scale, y + 160 * scale, 15 * scale, 40 * scale); // Νέο Βιβλίο 2
-      fill(50, 50, 200); rect(x + 50 * scale, y + 160 * scale, 15 * scale, 40 * scale); // Νέο Βιβλίο 3
+       
+      fill(255, 150, 50); rect(x + 10 * scale, y + 160 * scale, 15 * scale, 40 * scale);  
+      fill(100, 200, 100); rect(x + 30 * scale, y + 160 * scale, 15 * scale, 40 * scale);  
+      fill(50, 50, 200); rect(x + 50 * scale, y + 160 * scale, 15 * scale, 40 * scale);  
     }
 
 
@@ -775,55 +775,55 @@ function drawBookshelf(x, y, isAnomaly) {
   function drawSofa(x, y, isAnomaly) {
     if (isAnomaly) {
      
-        fill(255, 0, 0); // Κόκκινο χρώμα για ανωμαλία
-        rect(x - 30, y - 25, 120, 80); // Μεγαλύτερο σώμα για ανωμαλία
-        rect(x - 25, y - 30, 110, 70); // Πλάτη του καναπέ
+        fill(255, 0, 0);  
+        rect(x - 30, y - 25, 120, 80);  
+        rect(x - 25, y - 30, 110, 70);  
     } else {
-        fill(139, 69, 19); // Καφέ χρώμα για το σώμα
-        rect(x - 30, y - 25, 120, 80); // Σώμα του καναπέ
-        fill(165, 42, 42); // Κόκκινο για το επάνω μέρος
-        rect(x - 25, y - 30, 110, 70); // Πλάτη του καναπέ
+        fill(139, 69, 19);  
+        rect(x - 30, y - 25, 120, 80);  
+        fill(165, 42, 42);  
+        rect(x - 25, y - 30, 110, 70);  
     }
   }
   
   function drawFridge(x, y, isAnomaly) {
-    let fridgeWidth = 60;  // Νέο πλάτος ψυγείου
-    let fridgeHeight = 120; // Νέο ύψος ψυγείου
-    let freezerHeight = 40; // Νέο ύψος κατάψυξης
-    let doorHeight = fridgeHeight - freezerHeight; // Ύψος κύριας πόρτας
-    let handleWidth = 4; // Πλάτος λαβής
-    let handleHeightFreezer = 20; // Ύψος λαβής κατάψυξης
-    let handleHeightDoor = 40; // Ύψος λαβής κύριας πόρτας
+    let fridgeWidth = 60;   
+    let fridgeHeight = 120;  
+    let freezerHeight = 40;  
+    let doorHeight = fridgeHeight - freezerHeight;  
+    let handleWidth = 4;  
+    let handleHeightFreezer = 20;  
+    let handleHeightDoor = 40;  
 
     if (isAnomaly) {
-        // Ψυγείο με ανωμαλία
-        fill(0, 255, 255); // Γαλάζιο για ανωμαλία
-        rect(x - fridgeWidth / 2, y - fridgeHeight, fridgeWidth, fridgeHeight); // Μεγαλύτερο σώμα
-        fill(255, 0, 0); // Κόκκινο για τη λαβή
-        rect(x + fridgeWidth / 2 - handleWidth - 5, y - fridgeHeight + 10, handleWidth + 2, handleHeightDoor + 10); // Παχύτερη λαβή
+         
+        fill(0, 255, 255);  
+        rect(x - fridgeWidth / 2, y - fridgeHeight, fridgeWidth, fridgeHeight);  
+        fill(255, 0, 0);  
+        rect(x + fridgeWidth / 2 - handleWidth - 5, y - fridgeHeight + 10, handleWidth + 2, handleHeightDoor + 10);  
     } else {
-        // Σώμα ψυγείου
-        fill(192, 192, 192); // Γκρι
+         
+        fill(192, 192, 192);  
         rect(x - fridgeWidth / 2, y - fridgeHeight, fridgeWidth, fridgeHeight);
 
-        // Πόρτα κατάψυξης
-        fill(220, 220, 220); // Πιο ανοιχτό γκρι
+         
+        fill(220, 220, 220);  
         rect(x - fridgeWidth / 2, y - fridgeHeight, fridgeWidth, freezerHeight);
 
-        // Πόρτα ψυγείου
-        fill(200, 200, 200); // Πιο σκούρο γκρι
+         
+        fill(200, 200, 200);  
         rect(x - fridgeWidth / 2, y - fridgeHeight + freezerHeight, fridgeWidth, doorHeight);
 
-        // Λαβή κατάψυξης
-        fill(0); // Μαύρο
+         
+        fill(0);  
         rect(x + fridgeWidth / 2 - handleWidth - 2, y - fridgeHeight + 10, handleWidth, handleHeightFreezer);
 
-        // Λαβή κύριας πόρτας
+         
         rect(x + fridgeWidth / 2 - handleWidth - 2, y - fridgeHeight + freezerHeight + 10, handleWidth, handleHeightDoor);
     }
 
-    // Γραμμή διαχωρισμού πόρτας κατάψυξης και ψυγείου
-    stroke(50); // Μαύρο περίγραμμα
+     
+    stroke(50);  
     line(x - fridgeWidth / 2, y - fridgeHeight + freezerHeight, x + fridgeWidth / 2, y - fridgeHeight + freezerHeight);
     noStroke();
 }
@@ -831,44 +831,44 @@ function drawBookshelf(x, y, isAnomaly) {
 
   
 function drawKitchen(x, y, isAnomaly) {
-  let scale = 0.7; // Κλίμακα μείωσης μεγέθους
+  let scale = 0.7;  
 
   if (isAnomaly) {
     // Ανωμαλία: Ο νεροχύτης γεμίζει νερό και ξεχειλίζει
-    fill(0, 100, 255); // Γαλάζιο νερό που ξεχειλίζει
+    fill(0, 100, 255);  
     rect(x + 90 * scale, y + 20 * scale, 80 * scale, 40 * scale);
   }
 
-  // Πάγκος εργασίας
-  fill(120, 100, 80); // Καφέ για τον πάγκο
+   
+  fill(120, 100, 80);  
   rect(x, y, 300 * scale, 40 * scale);
 
-  // Ντουλάπια πάνω από τον πάγκο
-  fill(160); // Ανοιχτό γκρι για τα ντουλάπια
+   
+  fill(160);  
   rect(x, y - 100 * scale, 70 * scale, 60 * scale);
   rect(x + 80 * scale, y - 100 * scale, 70 * scale, 60 * scale);
   rect(x + 160 * scale, y - 100 * scale, 70 * scale, 60 * scale);
 
   if (!isAnomaly) {
     fill(100, 100, 255);
-    rect(x + 100 * scale, y, 60 * scale, 20 * scale); // Κανονικός νεροχύτης
+    rect(x + 100 * scale, y, 60 * scale, 20 * scale);  
   }
   
 
-  // Βρύση
+   
   stroke(80);
   strokeWeight(2);
   noFill();
   arc(x + 130 * scale, y - 10 * scale, 20 * scale, 20 * scale, PI, TWO_PI);
   noStroke();
 
-  // // Φούρνος
-  // fill(80); // Σκούρο γκρι
+   
+  // fill(80);  
   // rect(x + 220 * scale, y - 40 * scale, 50 * scale, 80 * scale);
   // fill(40);
   // rect(x + 230 * scale, y - 30 * scale, 30 * scale, 40 * scale);
 
-  // Χερούλια ντουλαπιών
+   
   fill(50);
   ellipse(x + 60 * scale, y - 70 * scale, 5 * scale, 5 * scale);
   ellipse(x + 140 * scale, y - 70 * scale, 5 * scale, 5 * scale);
@@ -876,36 +876,36 @@ function drawKitchen(x, y, isAnomaly) {
 }
 
 function drawDiningTable(x, y) {
-  let scale = 0.6; // Κλίμακα μείωσης μεγέθους
+  let scale = 0.6;  
 
-  // Τραπέζι
-  fill(120, 70, 50); // Καφέ για το τραπέζι
+   
+  fill(120, 70, 50);  
   rect(x, y, 150 * scale, 80 * scale);
 
-  // Πόδια τραπεζιού
+   
   fill(90, 50, 30);
   rect(x + 10 * scale, y + 70 * scale, 10 * scale, 30 * scale);
   rect(x + 130 * scale, y + 70 * scale, 10 * scale, 30 * scale);
 
-  // // Καρέκλες
-  // fill(150, 80, 60); // Χρώμα για τις καρέκλες
-  // rect(x - 30 * scale, y + 20 * scale, 20 * scale, 50 * scale); // Αριστερή καρέκλα
-  // rect(x + 160 * scale, y + 20 * scale, 20 * scale, 50 * scale); // Δεξιά καρέκλα
+   
+  // fill(150, 80, 60);  
+  // rect(x - 30 * scale, y + 20 * scale, 20 * scale, 50 * scale);  
+  // rect(x + 160 * scale, y + 20 * scale, 20 * scale, 50 * scale);  
 }
   
   function drawCart(x, y, isAnomaly) {
     if (isAnomaly) {
-        fill(255, 0, 255); // Ροζ για ανωμαλία
-        rect(x - 15, y - 15, 30, 25); // Υψηλότερο σώμα για ανωμαλία
-        fill(0, 255, 0); // Πράσινοι τροχοί για ανωμαλία
-        ellipse(x - 10, y + 10, 15, 15); // Αριστερός τροχός
-        ellipse(x + 10, y + 10, 15, 15); // Δεξιός τροχός
+        fill(255, 0, 255);  
+        rect(x - 15, y - 15, 30, 25);  
+        fill(0, 255, 0);  
+        ellipse(x - 10, y + 10, 15, 15);  
+        ellipse(x + 10, y + 10, 15, 15);  
     } else {
-        fill(102, 51, 0); // Καφέ για το καρότσι
-        rect(x - 15, y - 10, 30, 15); // Σώμα του καροτσιού
-        fill(0); // Μαύρο για τους τροχούς
-        ellipse(x - 10, y + 5, 10, 10); // Αριστερός τροχός
-        ellipse(x + 10, y + 5, 10, 10); // Δεξιός τροχός
+        fill(102, 51, 0);  
+        rect(x - 15, y - 10, 30, 15);  
+        fill(0);  
+        ellipse(x - 10, y + 5, 10, 10);  
+        ellipse(x + 10, y + 5, 10, 10);  
     }
   }
   
@@ -913,23 +913,23 @@ function drawDiningTable(x, y) {
   
   function drawChair(x, y, isAnomaly) {
     if (isAnomaly) {
-        fill(0, 128, 128); // Τιρκουάζ για ανωμαλία
-        rect(x - 15, y - 15, 30, 15); // Μεγαλύτερο κάθισμα
-        fill(139, 69, 19); // Σκούρο καφέ για τα πόδια
-        rect(x - 14, y, 5, 20); // Πλατύτερα πόδια
+        fill(0, 128, 128);  
+        rect(x - 15, y - 15, 30, 15);  
+        fill(139, 69, 19);  
+        rect(x - 14, y, 5, 20);  
         rect(x + 9, y, 5, 20);
-        rect(x - 14, y - 30, 5, 10); // Επέκταση πίσω ποδιών
+        rect(x - 14, y - 30, 5, 10);  
         rect(x + 9, y - 30, 5, 10);
-        fill(139, 69, 19); // Σκούρο καφέ για την πλάτη
-        rect(x - 15, y - 40, 30, 5); // Πλάτη της καρέκλας
+        fill(139, 69, 19);  
+        rect(x - 15, y - 40, 30, 5);  
     } else {
-        fill(205, 133, 63); // Ξανθό καφέ για το κάθισμα
-        rect(x - 10, y - 10, 20, 10); // Κάθισμα της καρέκλας
-        fill(139, 69, 19); // Σκούρο καφέ για τα πόδια
-        rect(x - 9, y, 4, 10); // Αριστερό πόδι μπροστά
-        rect(x + 5, y, 4, 10); // Δεξιό πόδι μπροστά
-        rect(x - 9, y - 20, 4, 10); // Αριστερό πόδι πίσω
-        rect(x + 5, y - 20, 4, 10); // Δεξιό πόδι πίσω
-        rect(x - 10, y - 30, 20, 5); // Πλάτη της καρέκλας
+        fill(205, 133, 63);  
+        rect(x - 10, y - 10, 20, 10);  
+        fill(139, 69, 19);  
+        rect(x - 9, y, 4, 10);  
+        rect(x + 5, y, 4, 10);  
+        rect(x - 9, y - 20, 4, 10);  
+        rect(x + 5, y - 20, 4, 10);  
+        rect(x - 10, y - 30, 20, 5);  
     }
   }

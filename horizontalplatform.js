@@ -11,12 +11,12 @@ class HorizontalPlatform extends Platform {
     update() {
         this.x += this.speed * this.direction;
         if (this.x < this.xStart || this.x > this.xEnd) {
-            this.direction *= -1; // Αντιστροφή κατεύθυνσης
+            this.direction *= -1;  
         }
     }
 
     show() {
-        fill(200, 100, 100); // Κόκκινο χρώμα
+        fill(200, 100, 100);  
         rect(this.x, this.y, this.width, this.height);
     }
 
@@ -25,17 +25,17 @@ class HorizontalPlatform extends Platform {
         const platforms = [];
 
         
-            // // Reduce floating platforms
+             
             const horizontalPlatformPositions = [
                 { xStart: secretRoomStartX + 700, xEnd: secretRoomStartX + 1100, y:350, width:200, speed:3 },
                 { xStart: secretRoomStartX + 2300, xEnd:secretRoomStartX + 2800, y:300, width:200, speed:3 },
                 { xStart: secretRoomStartX + 8800, xEnd:secretRoomStartX + 9300, y:300, width:200, speed:3 }
                 //{ x: secretRoomStartX + 700, yStart: height - PLATFORM_HEIGHT - 200, yEnd: height - PLATFORM_HEIGHT - 400 },
                 //{ x: secretRoomStartX + 1100, yStart: height - PLATFORM_HEIGHT - 250, yEnd: height - PLATFORM_HEIGHT - 450 },
-                // Πρόσθεσε κι άλλες πλατφόρμες όπως χρειάζεται
+                 
               ];
         
-              // Δημιουργία των πλατφορμών
+               
               for (let pos of horizontalPlatformPositions) {
                 platforms.push(new HorizontalPlatform(pos.xStart, pos.xEnd,pos.y, pos.width,pos.speed));
                // xStart, xEnd, y, width, speed
