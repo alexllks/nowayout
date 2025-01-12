@@ -16,7 +16,7 @@ function setupRoom() {
 
     hasAnomaly = true; // Υποδεικνύει ότι υπάρχει ανωμαλία
     objects = [
-      { x: secretRoomStartX - 100, y: 200, type: 'flood', isAnomaly: false, active: false, width: 0, speed: 2 },
+      { x: secretRoomStartX - 100, y: 200, type: 'flood', isAnomaly: false, active: false, width: 0, speed: 4 },
 
       {x: 5510, y: height - 110, type: 'radio', isAnomaly: false },
       {x: 5930, y: height - 55, type: 'suitcase', isAnomaly: false },
@@ -89,7 +89,7 @@ function drawObjects() {
 
   if (obj.type === 'suitcase') {drawSuitcase(obj.x, obj.y, obj.isAnomaly);}
   if (obj.type === 'wideSofa') drawWideSofa(obj.x, obj.y, obj.isAnomaly);
-  if (obj.type === 'flood') {drawFlood(obj.x, obj.y, obj.active, obj);}
+  if (obj.type === 'flood') {drawFlood(obj.x, obj.y, obj.active, obj, obj.isAnomaly);}
     if(obj.type === 'roomDoorNumber') drawRoomDoorNumber(obj.x,obj.y,obj.roomNumber,obj.isAnomaly);
     if (obj.type === 'npc') drawNpc(obj.x, obj.y, obj.isAnomaly);
       if (obj.type === 'door') drawDoor2(obj.x, obj.y, obj.isMoving);
@@ -183,9 +183,9 @@ for (let ghost of ghosts) {
 }
 
 
-function drawFlood(x, y, isActive, floodObj) {
+function drawFlood(x, y, isActive, floodObj, isAnomaly) {
   if (!isActive) return; // Αν δεν είναι ενεργή, σταμάτα την πλημμύρα
-
+  if (!isAnomaly) return;
   let waveHeight = 10;
   let waveFrequency = 0.02;
 
@@ -213,7 +213,7 @@ function drawFlood(x, y, isActive, floodObj) {
 
 function checkFloodTrigger(player) {
 for (let obj of objects) {
-    if (obj.type === 'flood' && player.x >= 1000 && !obj.active) {
+    if (obj.type === 'flood' && player.x >= 1000 && !obj.active && obj.isAnomaly) {
         obj.active = true;
         console.log("Flood triggered!");
         soundManager.play('waters', true, 0.5); // Ήχος πλημμύρας
