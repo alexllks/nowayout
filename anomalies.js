@@ -4,20 +4,13 @@ let floodX = 0; // Θέση του νερού
 
 function setupRoom() {
   // Λίστα ανωμαλιών με βάρη
-  //const anomalies = ['wideSofa','wideSofa','suitcase','suitcase','roomDoorNumber','roomDoorNumber',"sofa","sofa",'door', "fridge", "kitchen", "table","mirror", "doll", "TV","TV", "Bookshelf","radio", "ghost","npc","none","none","none" ];
-  const anomalies = ["flood"];
+  const anomalies = ['wideSofa','wideSofa','suitcase','suitcase','roomDoorNumber','roomDoorNumber',"sofa","sofa",'door', "fridge", "kitchen", "table","mirror", "doll", "TV","TV", "Bookshelf","radio", "ghost","npc","none","none","none" ];
+  //const anomalies = ["flood"];
   // Το "ghost" εμφανίζεται περισσότερες φορές για να έχει μεγαλύτερη πιθανότητα
   let selectedAnomaly = "";
 
   if (gameState != 'menu'){  
-
-    // if (!isResume) {
-    //   selectedAnomaly = random(anomalies); // Επιλογή ανωμαλίας με βάση τα βάρη
-    //   saved_anomaly = selectedAnomaly;
-    // } else {
-    //   selectedAnomaly = saved_anomaly;
-    //   isResume = false;
-    // }
+    selectedAnomaly = random(anomalies); // Επιλογή ανωμαλίας με βάση τα βάρη
     console.log(`Selected anomaly: ${selectedAnomaly}`);
 
 
