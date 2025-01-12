@@ -1291,7 +1291,7 @@ function drawWalls() {
 
  fill(60, 60, 60);
 
- rect(UPPER_WALL, height - 575, 30000, 40);
+ rect(UPPER_WALL, height - 580, 30000, 45);
 
 
  fill(100, 100, 100); // Σκούρο γκρι χρώμα

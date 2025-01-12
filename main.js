@@ -84,7 +84,7 @@ function preload() {
   soundManager.load('waters', 'assets/sounds/waters.mp3');
   soundManager.load('jump', 'assets/sounds/jumping.wav');
   soundManager.load('background', 'assets/sounds/horror_background.mp3');
-  doorSound = loadSound ("assets/sounds/scary-background.mp3")
+  soundManager.load('death', 'assets/sounds/death.wav');
   tvSound = loadSound('assets/sounds/tv.mp3'); // Φόρτωση του ήχου
 
   soundFormats('mp3', 'ogg','wav'); // Ορισμός μορφών για συμβατότητα
@@ -219,11 +219,13 @@ function isDying(){
 
        // Ξεκινά το animation θανάτου
        player.isDying = true;
+           // Παίζει τον ήχο θανάτου
+    soundManager.play('death', false, 1.0);
 
        // Μετατροπή σε κατάσταση "lost" μετά από 3 δευτερόλεπτα
        setTimeout(() => {
            gameState = "lost"; // Ορισμός της κατάστασης σε lost
-       }, 1000);
+       }, 800);
 }
 
 
@@ -305,18 +307,9 @@ function playGame() {
   checkCosmicDoorInteraction(player);
   checkDoorInteraction(player,showCosmicDoor1); // Έλεγχος για άνοιγμα πόρτας
   
+  checkSpikeCollision(player);
 
 
-  // Έλεγχος σύγκρουσης με καρφιά
-  if (checkSpikeCollision(player)) {
-    console.log("Ο παίκτης χτύπησε σε καρφιά!");
-   // gameState = "gameover"; // Ορισμός της κατάστασης σε "gameover"
-      soundManager.stop('bats'); // Διακοπή του ήχου νυχτερίδων
-      soundManager.stop('waters');
-      soundManager.stopAllSounds();
-      allowRainSound = true; // Επαναφορά του ήχου της βροχής
-      isDying();
-  }
 
     // Έλεγχος αν ο παίκτης βγήκε εκτός ορίων
   if (player.x > PLATFORM_WIDTH) {
@@ -523,6 +516,7 @@ function checkDoorInteraction(player,showCosmicDoor1) {
 
 
 function checkSpikeCollision(player) {
+  
   for (let spike of Spikes) {
       if (
           player.x-40 + player.width > spike.x &&
@@ -530,7 +524,17 @@ function checkSpikeCollision(player) {
           player.y + player.height >= spike.y &&
           player.y < spike.y + spike.height
       ) {
-          return true; // Επιστροφή αν υπάρχει σύγκρουση
+        if(player.x<=secretRoomStartX+secretRoomWidth-400){
+          console.log("Ο παίκτης έπεσε στο νερό!");
+          // isGameOver = true; // Ορισμός της κατάστασης "game over
+          soundManager.stop('bats'); // Διακοπή του ήχου νυχτερίδων
+          soundManager.stop('waters');
+          soundManager.stopAllSounds();
+          
+        
+            // isGameOver = true; // Ενεργοποίηση του flag για game over
+          isDying();
+        }
       }
   }
   return false;
