@@ -4,9 +4,9 @@ class Player {
       this.y = height - PLATFORM_HEIGHT - 60;
       this.width = 40;
       this.height = 0;
-      this.speed = 10;
+      this.speed = 7;
       this.velocityY = 0;
-      this.gravity = 0.6;
+      this.gravity = 0.7;
 
        
       this.isLeft = false;

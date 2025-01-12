@@ -3,10 +3,12 @@ let isFlooding = false;
 let floodX = 0;  
 
 function setupRoom() {
-   
-  const anomalies = ['wideSofa','wideSofa','suitcase','suitcase','roomDoorNumber','roomDoorNumber',"sofa","sofa",'door', "fridge", "kitchen", "table","mirror", "doll", "TV","TV", "Bookshelf","radio", "ghost","npc","none","none","none" ];
+
+  // pool 
+  const anomalies = ['wideSofa','suitcase','suitcase','roomDoorNumber','roomDoorNumber','roomDoorNumber',"sofa","sofa",'door', "fridge",
+     "kitchen", "table","mirror","mirror", "doll", "TV","TV", "Bookshelf","radio", "ghost", "ghost","npc","none","none","none","none" ];
   //const anomalies = ["none"];
-  // Το "ghost" εμφανίζεται περισσότερες φορές για να έχει μεγαλύτερη πιθανότητα
+
   let selectedAnomaly = "";
 
   if (gameState != 'menu'){  
