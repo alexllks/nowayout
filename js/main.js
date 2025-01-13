@@ -118,7 +118,7 @@ function setup() {
     soundManager.setMasterVolume(newVolume);
 });
 // Πιθανότητα εμφάνισης της πόρτας
-  showCosmicDoor1 = random() < 0.5;
+  showCosmicDoor1 = random() < 0.4;
 }
 
 
@@ -359,6 +359,7 @@ function exitSecretRoom() {
   player.x =730; // Τοποθετούμε τον παίκτη μέσα στο δωμάτιο
   player.y = height - PLATFORM_HEIGHT - player.height;
   currentLevel += 4;
+  showCosmicDoor1 = random() < 0.4;
 
   console.log(`Exited secret room. Current level: ${currentLevel}`);
   allowRainSound = true; // Επαναφορά του ήχου της βροχής
@@ -574,6 +575,7 @@ function displayGz() {
   textSize(20);
   text("Press ENTER to return to Menu", width / 2, height / 2 + 20);
   if (keyIsDown(ENTER)) {
+      showCosmicDoor1 = random() < 0.4;
       gameState = "playing";
       initializeGame();
       setupRoom();
@@ -590,6 +592,7 @@ function  playGameAfterLost() {
         showMessage("Congratulations! You've completed all levels!");
         gameState = "gameover";
     } else {
+      showCosmicDoor1 = random() < 0.4;
         setupRoom(); 
         player.x = 730; 
         player.y = height - PLATFORM_HEIGHT - player.height;
@@ -612,20 +615,25 @@ function checkExit(isBackExit) {
   if ((isBackExit && hasAnomaly) || (!isBackExit && !hasAnomaly)) {
       showMessage("Correct! Moving to the next level.");
       currentLevel++;
-      
+      showCosmicDoor1 = random() < 0.4;
+
       
       if (currentLevel > totalLevels) {
           showMessage("Congratulations! You've completed all levels!");
           gameState = "gameover";
+
       } else {
           setupRoom(); // Επαναφορά σκηνής για το νέο επίπεδο
           player.x = 730; // Επαναφορά παίκτη
           player.y = height - PLATFORM_HEIGHT - player.height;
+          showCosmicDoor1 = random() < 0.4;
         
       }
   } else {
       showMessage("Game Over!");
+      showCosmicDoor1 = random() < 0.4;
       gameState = "gameover";
+
   }
   
   
