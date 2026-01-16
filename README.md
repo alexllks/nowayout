@@ -71,7 +71,7 @@ Make **9 correct decisions** to escape the hotel corridor.
 ### Rules
 1. **If you see an anomaly** → Exit through the **LEFT door** ⬅️
 2. **If everything is normal** → Exit through the **RIGHT door** ➡️
-3. **Wrong decision** → Restart from the beginning 🔄
+3. **Wrong decision** → Game Over 💀
 
 ### What Counts as an Anomaly?
 
