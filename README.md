@@ -8,6 +8,7 @@
 
 [![Made with p5.js](https://img.shields.io/badge/Made%20with-p5.js-ED225D?style=flat-square&logo=p5.js)](https://p5js.org/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=flat-square&logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![HTML5](https://img.shields.io/badge/HTML5-Structure-E34F26?style=flat-square&logo=html5)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![Node.js](https://img.shields.io/badge/Node.js-Server-339933?style=flat-square&logo=node.js)](https://nodejs.org/)
 
 </div>
@@ -135,10 +136,12 @@ Anomalies can be:
 ## 🛠️ Technical Stack
 
 ### Core Technologies
+- **HTML5** - Page structure and canvas element
 - **p5.js v1.6.0** - Graphics rendering and canvas management
 - **p5.sound** - Audio playback and spatial sound
 - **Node.js** - Local HTTP server
 - **Vanilla JavaScript (ES6)** - Game logic and mechanics
+- **CSS3** - Styling and layout
 
 ### Architecture
 
