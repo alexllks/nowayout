@@ -1,0 +1,15 @@
+{
+  "name": "nowayout",
+  "version": "2.0.0",
+  "description": "No Way Out: a looping hotel corridor. Spot what changed, pick the right door, nine times.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node scripts/check.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

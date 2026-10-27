@@ -1,67 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2D Platformer Game</title>
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
-  <script src="js/settings.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js"></script>
-  <script src="js/platform.js"></script>
-  <script src="js/soundmanager.js"></script>
-  <script src="js/player.js"></script>
-  <script src="js/Bat.js"></script>
-  <script src="js/visuals.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/characterRender.js"></script>
-  <script src="js/anomalies.js"></script>
-  <script src="js/floatingplatform.js"></script>
-  <script src="js/horizontalplatform.js"></script>
-
-
-
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>No Way Out</title>
+  <meta name="description" content="A hotel corridor that repeats. Spot what has changed, choose the right door, nine times in a row. A short psychological-horror platformer.">
+  <meta name="theme-color" content="#0b0d0f">
+  <meta property="og:title" content="No Way Out">
+  <meta property="og:description" content="Fourth floor. Lift at one end, stairs at the other. Nine corridors and you may leave.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/images/title.webp">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b0d0f'/%3E%3Crect x='9' y='7' width='14' height='20' rx='1' fill='%233a2416' stroke='%23c9a24a' stroke-width='1.5'/%3E%3Ccircle cx='20' cy='17' r='1.5' fill='%23c9a24a'/%3E%3C/svg%3E">
   <style>
-
-    
-    body {
-        background-color:black;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-    }
-
-
-
-    #controls {
-      position:relative;
-      top: 620px;
-      left: 520px;
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
-      padding: 10px;
-      border-radius: 8px;
-      z-index: 1000;
-    }
-
-    
+    html, body { margin: 0; padding: 0; height: 100%; background: #000; overflow: hidden; }
+    body { font-family: Georgia, "Times New Roman", serif; color: #e8e2d0; }
+    #game { position: absolute; left: 0; top: 0; display: block; image-rendering: auto; outline: none; }
+    noscript { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 2rem; }
+    #rotate { display: none; position: absolute; inset: 0; background: #000; color: #9c9484; place-items: center; text-align: center; padding: 2rem; font-size: 1.1rem; }
+    @media (orientation: portrait) and (max-width: 900px) { #rotate { display: grid; } }
   </style>
 </head>
 <body>
-  <div id="game-container">
-    <div id="controls">
-      <input id="volume-slider" type="range" min="0" max="1" step="0.1" value="0.5">
-    </div>
-
-  </div>
-
-  </div>
+  <canvas id="game" width="1280" height="720" tabindex="0" aria-label="No Way Out, a 2D horror game. Keyboard required."></canvas>
+  <div id="rotate">No Way Out needs a keyboard and a landscape screen.<br><br>Turn your device, or play on a computer.</div>
+  <noscript>No Way Out needs JavaScript to run.</noscript>
+  <script type="module" src="src/main.js"></script>
 </body>
 </html>
